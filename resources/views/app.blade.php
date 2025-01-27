@@ -13,6 +13,7 @@
     </title>
     <script src="{{asset('jquery.min.js')}}"></script>
     <script src="{{asset('assets/app/js/format.js')}}"></script>
+    <script src="{{asset('assets/app/js/urlHis.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/style.css') }}">
@@ -222,10 +223,12 @@
         </div>
     </div>
 
+    <script src="{{ asset('assets/app/js/script.js') }}"></script>
     <script src="{{ asset('assets/js/bundlee1e3.js') }}"></script>
     <script src="{{ asset('assets/js/scriptse1e3.js') }}"></script>
     <script src="{{ asset('assets/js/demo-settingse1e3.js') }}"></script>
     <script src="{{ asset('assets/js/libs/datatable-btnse1e3.js') }}"></script>
+    <script>$(document).ready(function () {urlHistorique(@json(Auth::user()->login));});</script>
 
 </body>
 

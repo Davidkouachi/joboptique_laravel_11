@@ -271,7 +271,7 @@
                                                 </div>
                                                 <div class="card-bordered card-preview mt-5">
                                                     <div class="card-inner">
-                                                        <table class="datatable-init nowrap table table_client" data-auto-responsive="true" style="font-size: 12px;" >
+                                                        <table class="datatable-init table table_client" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
                                                             <thead>
                                                                 <tr class="nk-tb-item nk-tb-head">
                                                                     <th class="nk-tb-col" >
