@@ -1,0 +1,7 @@
+body {
+    background-image: url('../../images/plan1.jpg'); /* Chemin de l'image */
+    background-size: cover; /* Ajuste l'image pour couvrir tout l'écran */
+    background-repeat: no-repeat; /* Empêche la répétition */
+    background-position: center; /* Centre l'image */
+    background-attachment: fixed; /* Garde l'image fixe lors du défilement */
+}
