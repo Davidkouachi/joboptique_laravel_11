@@ -20,12 +20,13 @@ class ListeController extends Controller
     {
         $clients = DB::table('client')
             ->leftJoin('societe_assurance', 'societe_assurance.id', '=', 'client.societe_assurance')
-            ->leftJoin('assurance', 'assurance.code', '=', 'societe_assurance.code_assurance')
+            ->leftJoin('assurance', 'assurance.code', '=', 'client.assurance')
+            ->leftJoin('tauxes', 'tauxes.id', '=', 'client.tauxes')
             ->select(
                 'client.*',
                 'societe_assurance.libelle as societe',
-                'societe_assurance.taux_couverture as taux',
-                'assurance.denomination as assurance',
+                'tauxes.valeur as taux',
+                'assurance.denomination as assurance_lib',
             )
             ->orderBy('client.dateenregistre','desc')
             ->get();

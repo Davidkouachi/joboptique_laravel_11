@@ -12,6 +12,7 @@
         @yield('titre') | JOBOPTIQUE
     </title>
     <script src="{{asset('jquery.min.js')}}"></script>
+    <script src="{{asset('assets/app/js/alert.js')}}"></script>
     <script src="{{asset('assets/app/js/format.js')}}"></script>
     <script src="{{asset('assets/app/js/urlHis.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
@@ -19,7 +20,8 @@
     <link rel="stylesheet" href="{{ asset('assets/app/css/style.css') }}">
 </head>
 
-<body class="nk-body bg-lighter npc-default has-sidebar ">  
+<body class="nk-body bg-lighter npc-default has-sidebar "> 
+    <input type="hidden" id="login" value="{{ Auth::user()->login }}">
     <div class="nk-app-root">
         <div class="nk-main ">
             <div class="nk-sidebar nk-sidebar-fixed is-light " data-content="sidebarMenu">

@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.jpg') }}">
     <title>Login | JobOptique</title>
+    <script src="{{asset('jquery.min.js')}}"></script>
+    <script src="{{asset('assets/app/js/alert.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/style_login.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/style.css') }}">

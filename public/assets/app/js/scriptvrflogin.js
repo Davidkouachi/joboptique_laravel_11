@@ -1,14 +1,5 @@
 $(document).ready(function () {
 
-    // Fonction pour afficher une alerte avec SweetAlert
-    function showAlert(title, message, icon) {
-        Swal.fire({
-            title: title,
-            text: message,
-            icon: icon,
-        });
-    }
-
     // Gestionnaire pour le formulaire de login
     $("#formulaire_login").on("submit", function (event) {
         event.preventDefault();

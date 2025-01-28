@@ -70,68 +70,23 @@
                                                                     Né(e) le
                                                                 </label>
                                                                 <div class="form-control-wrap">
-                                                                    <input type="date" class="form-control" id="datenaissnce" placeholder="Saisie Obligatoire">
+                                                                    <input type="date" class="form-control" id="datenais" placeholder="Saisie Obligatoire">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">
-                                                                    Civilité
+                                                                    sexe
                                                                 </label>
                                                                 <div class="form-control-wrap">
-                                                                    <select id="civilite" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
+                                                                    <select id="sexe" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
                                                                         <option value=""></option>
-                                                                        <option value="default_option">
-                                                                            Option
+                                                                        <option value="M">
+                                                                            Masculin
                                                                         </option>
-                                                                        <option value="option_select_name">
-                                                                            Option name
-                                                                        </option>
-                                                                        <option value="option_select_name">
-                                                                            Option name
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label">
-                                                                    Société
-                                                                </label>
-                                                                <div class="form-control-wrap">
-                                                                    <select id="societe" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
-                                                                        <option value=""></option>
-                                                                        <option value="default_option">
-                                                                            Option
-                                                                        </option>
-                                                                        <option value="option_select_name">
-                                                                            Option name
-                                                                        </option>
-                                                                        <option value="option_select_name">
-                                                                            Option name
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label">
-                                                                    Sondage
-                                                                </label>
-                                                                <div class="form-control-wrap">
-                                                                    <select id="sondage" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
-                                                                        <option value=""></option>
-                                                                        <option value="default_option">
-                                                                            Option
-                                                                        </option>
-                                                                        <option value="option_select_name">
-                                                                            Option name
-                                                                        </option>
-                                                                        <option value="option_select_name">
-                                                                            Option name
+                                                                        <option value="F">
+                                                                            Féminin
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -176,7 +131,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        {{-- <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">
                                                                     Contact 2
@@ -188,7 +143,7 @@
                                                                     <input type="tel" class="form-control" id="tel2" placeholder="Facultatif">
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">
@@ -205,6 +160,27 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">
+                                                                    Sondage
+                                                                </label>
+                                                                <div class="form-control-wrap">
+                                                                    <select id="sondage" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
+                                                                        <option value=""></option>
+                                                                        <option value="Ancien Client">
+                                                                            Ancien Client
+                                                                        </option>
+                                                                        <option value="Nouveau Client">
+                                                                            Nouveau Client
+                                                                        </option>
+                                                                        <option value="Bouche à oreille">
+                                                                            Bouche à oreille
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {{-- <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">
                                                                     Réseaux Sociaux
                                                                 </label>
                                                                 <div class="form-control-wrap">
@@ -212,6 +188,68 @@
                                                                         <em class="icon ni ni-globe"></em>
                                                                     </div>
                                                                     <input type="text" class="form-control" id="reseau_sociaux" placeholder="Facultatif">
+                                                                </div>
+                                                            </div>
+                                                        </div> --}}
+                                                        {{-- <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">
+                                                                    Commercial
+                                                                </label>
+                                                                <div class="form-control-wrap">
+                                                                    <select id="commercial" class="form-select js-select2" data-search="on">
+                                                                        <option selected value="0">
+                                                                            Attribuer le prospect à un commercial
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div> --}}
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">
+                                                                    Assurer ?
+                                                                </label>
+                                                                <div class="form-control-wrap">
+                                                                    <select id="assurer" class="form-select js-select2" data-placeholder="Selectionnez">
+                                                                        <option selected value="0">Non</option>
+                                                                        <option value="1">Oui</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-gs mt-1" id="div_assurer" style="display: none;">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">
+                                                                    Assurance
+                                                                </label>
+                                                                <div class="form-control-wrap">
+                                                                    <select id="assurance_id" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">
+                                                                    Société
+                                                                </label>
+                                                                <div class="form-control-wrap">
+                                                                    <select id="societe_id" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">
+                                                                    Taux
+                                                                </label>
+                                                                <div class="form-control-wrap">
+                                                                    <select id="taux_id" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -224,33 +262,12 @@
                                                                     <div class="form-icon form-icon-left">
                                                                         <em class="icon ni ni-scan"></em>
                                                                     </div>
-                                                                    <input type="text" class="form-control" id="reseau_sociaux" placeholder="Facultatif">
+                                                                    <input type="text" class="form-control" id="matricule" placeholder="Facultatif">
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label">
-                                                                    Commercial
-                                                                </label>
-                                                                <div class="form-control-wrap">
-                                                                    <select id="commercial" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez">
-                                                                        <option value=""></option>
-                                                                        <option value="default_option">Default Option</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                        <option value="option_select_name">Option select name</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    </div>
+                                                    <div class="row g-gs mt-1">
                                                         <div class="col-md-12">
                                                             <div class="form-group text-center">
                                                                 <button type="submit" class="btn btn-lg btn-outline-success">
@@ -368,5 +385,15 @@
 
 <script src="{{asset('assets/app/js/Datatable/init.js')}}"></script>
 <script src="{{asset('assets/app/js/list/list_user_all.js')}}"></script>
+<script src="{{asset('assets/app/js/select.js')}}"></script>
+<script src="{{asset('assets/app/js/insert/client.js')}}"></script>
+
+<script>
+    $(document).ready(function () {
+        select_societe('#societe_id');
+        select_assurance('#assurance_id');
+        select_taux('#taux_id');
+    });
+</script>
 
 @endsection

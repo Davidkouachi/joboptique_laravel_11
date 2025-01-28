@@ -41,8 +41,8 @@ $(document).ready(function () {
                                     <span class="tb-amount">+225 ${item.cel}</span>
                                 </td>
                                 <td class="nk-tb-col" >
-                                    <span class="tb-amount ${ item.matricule_assurance != null ? `text-success` : `text-danger` }" >
-                                        ${ item.matricule_assurance != null ? `Oui` : `Non` }
+                                    <span class="tb-amount ${ item.assurance != null ? `text-success` : `text-danger` }" >
+                                        ${ item.assurance != null ? `Oui` : `Non` }
                                     </span>
                                 </td>
                                 <td class="nk-tb-col">
@@ -61,7 +61,7 @@ $(document).ready(function () {
                                                                 id="detail-${item.matricule}" 
                                                                 data-bs-toggle="modal" 
                                                                 data-bs-target="#modalLarge" 
-                                                                class="text-warning"
+                                                                class="text-warning btn-detail"
                                                                 data-matricule="${item.matricule}" 
                                                                 data-nom="${item.nom}" 
                                                                 data-prenom="${item.prenom}" 
@@ -76,11 +76,11 @@ $(document).ready(function () {
                                                                 data-email="${item.email != null ? item.email : `Néant` }"
                                                                 data-sondage="${item.sondage != null ? item.sondage : `Néant` }"
                                                                 data-commercial="${item.commercial != null ? item.commercial : `Néant` }"
-                                                                data-assurer="${item.matricule_assurance != null ? 'Client assurer' : `Client non-assurer` }"
-                                                                data-assurance="${item.assurance != null ? item.assurance : `Néant` }"
-                                                                data-societe="${item.societe != null ? item.societe : `Néant` }"
-                                                                data-taux="${item.taux != null ? item.taux+'%' : `Néant` }"
-                                                                data-matriculeass="${item.matricule_assurance != null ? item.matricule_assurance : `Néant` }"
+                                                                data-assurer="${item.assurance != null ? 'Client assurer' : `Client non-assurer` }"
+                                                                data-assurance="${item.assurance != null ? item.assurance_lib : `Néant` }"
+                                                                data-societe="${item.societe_assurance != null ? item.societe : `Néant` }"
+                                                                data-taux="${item.tauxes != null ? item.taux+'%' : `Néant` }"
+                                                                data-matriculeass="${item.assurance != null ? item.matricule_assurance : `Néant` }"
                                                                 data-dateenregistre="${formatDateHeure(item.dateenregistre)}"
                                                             >
                                                                 <em class="icon ni ni-eye"></em>
@@ -103,57 +103,6 @@ $(document).ready(function () {
                         //     $('#m_nom').text(item.nomprenom);
                         // });
 
-                        table.on('click', '[id^="detail-"]', function() {
-                            const matricule = $(this).data('matricule');
-                            const nom = $(this).data('nom');
-                            const prenom = $(this).data('prenom');
-                            const np = $(this).data('np');
-                            const civilite = $(this).data('civilite');
-                            const sexe = $(this).data('sexe');
-                            const datenaiss = $(this).data('datenaiss');
-                            const age = $(this).data('age');
-                            const profession = $(this).data('profession');
-                            const residence = $(this).data('residence');
-                            const contact = $(this).data('contact');
-                            const email = $(this).data('email');
-                            const sondage = $(this).data('sondage');
-                            const commercial = $(this).data('commercial');
-                            const assurer = $(this).data('assurer');
-                            const assurance = $(this).data('assurance');
-                            const societe = $(this).data('societe');
-                            const taux = $(this).data('taux');
-                            const matriculeass = $(this).data('matriculeass');
-                            const dateenregistre = $(this).data('dateenregistre');
-
-                            $('#d_matricule').text(matricule);
-                            $('#d_nom').text(nom);
-                            $('#d_prenom').text(prenom);
-                            $('#d_np').text(`${civilite} ${np}`);
-                            $('#d_sexe').text(sexe);
-                            $('#d_datenaiss').text(datenaiss);
-                            $('#d_age').text(age+' ans');
-                            $('#d_profession').text(profession);
-                            $('#d_residence').text(residence);
-                            $('#d_tel').text(contact);
-                            $('#d_email').text(email);
-                            $('#d_sondage').text(sondage);
-                            $('#d_commercial').text(commercial);
-                            $('#d_assurer').text(assurer);
-                            $('#d_assurance').text(assurance);
-                            $('#d_societe').text(societe);
-                            $('#d_taux').text(taux);
-                            $('#d_matriculeass').text(matriculeass);
-                            $('#d_datecreat').text('Date d\'enregistrement : '+dateenregistre);
-
-                            if (matriculeass != 'Néant') {
-                                $('#d_div_assurer1').show();
-                                $('#d_div_assurer2').show();
-                            } else {
-                                $('#d_div_assurer1').hide();
-                                $('#d_div_assurer2').hide();
-                            }
-                        });
-
                         // $(`#delete-${item.id}`).on('click', function() {
                         //     $('#litIddelete').val(item.id);
                         // });
@@ -168,6 +117,60 @@ $(document).ready(function () {
                 initializeDataTable(".table_client", { responsive: { details: true } });
             }
         });
+
+        $('.table_client').on('click', '.btn-detail', function () {
+            const matricule = $(this).data('matricule');
+            const nom = $(this).data('nom');
+            const prenom = $(this).data('prenom');
+            const np = $(this).data('np');
+            const civilite = $(this).data('civilite');
+            const sexe = $(this).data('sexe');
+            const datenaiss = $(this).data('datenaiss');
+            const age = $(this).data('age');
+            const profession = $(this).data('profession');
+            const residence = $(this).data('residence');
+            const contact = $(this).data('contact');
+            const email = $(this).data('email');
+            const sondage = $(this).data('sondage');
+            const commercial = $(this).data('commercial');
+            const assurer = $(this).data('assurer');
+            const assurance = $(this).data('assurance');
+            const societe = $(this).data('societe');
+            const taux = $(this).data('taux');
+            const matriculeass = $(this).data('matriculeass');
+            const dateenregistre = $(this).data('dateenregistre');
+
+            console.log(matricule);
+
+            $('#d_matricule').text(matricule);
+            $('#d_nom').text(nom);
+            $('#d_prenom').text(prenom);
+            $('#d_np').text(`${civilite} ${np}`);
+            $('#d_sexe').text(sexe);
+            $('#d_datenaiss').text(datenaiss);
+            $('#d_age').text(age+' ans');
+            $('#d_profession').text(profession);
+            $('#d_residence').text(residence);
+            $('#d_tel').text(contact);
+            $('#d_email').text(email);
+            $('#d_sondage').text(sondage);
+            $('#d_commercial').text(commercial);
+            $('#d_assurer').text(assurer);
+            $('#d_assurance').text(assurance);
+            $('#d_societe').text(societe);
+            $('#d_taux').text(taux);
+            $('#d_matriculeass').text(matriculeass);
+            $('#d_datecreat').text('Date d\'enregistrement : '+dateenregistre);
+
+            if (assurer === 'Client assurer') {
+                $('#d_div_assurer1').show();
+                $('#d_div_assurer2').show();
+            } else {
+                $('#d_div_assurer1').hide();
+                $('#d_div_assurer2').hide();
+            }
+        });
+        
     }
 
     list_user_all();
