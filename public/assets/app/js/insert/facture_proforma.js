@@ -294,7 +294,9 @@ $(document).ready(function () {
                 if (response.success) {
 
                     restForm();
+                    list_proforma_all();
                     showAlert("Succès", "Opération éffectuée", "success");
+                    PDF_Facture_Proforma(response.client, response.pres, response.produits,$('#agence').val());
 
                 } else if (response.json) {
                     showAlert("Alert", "Echec de l\'opération (Format JSON)", "info");

@@ -38,7 +38,7 @@ class ListeController extends Controller
 
     public function list_prospect_all()
     {
-        $clients = DB::table('prospect')
+        $prospect = DB::table('prospect')
             ->leftJoin('societe_assurance', 'societe_assurance.id', '=', 'prospect.societe_assurance')
             ->leftJoin('assurance', 'assurance.code', '=', 'prospect.assurance')
             ->leftJoin('tauxes', 'tauxes.id', '=', 'prospect.tauxes')
@@ -52,7 +52,16 @@ class ListeController extends Controller
             ->get();
 
         return response()->json([
-            'data' => $clients,
+            'data' => $prospect,
+        ]);
+    }
+
+    public function list_proforma_all()
+    {
+        $proforma = DB::table('proforma')->select('proforma.*',)->orderBy('date','desc')->get();
+
+        return response()->json([
+            'data' => $proforma,
         ]);
     }
     

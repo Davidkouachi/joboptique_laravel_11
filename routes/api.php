@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ListeController;
 use App\Http\Controllers\SelectController;
 use App\Http\Controllers\InsertController;
+use App\Http\Controllers\FactureController;
 
 Route::middleware(['web'])->group(function () {
 
@@ -32,4 +33,9 @@ Route::get('/insert_proforma', [InsertController::class, 'insert_proforma']);
 // Liste debut
 Route::get('/list_client_all', [ListeController::class, 'list_client_all']);
 Route::get('/list_prospect_all', [ListeController::class, 'list_prospect_all']);
+Route::get('/list_proforma_all', [ListeController::class, 'list_proforma_all']);
 // Liste fin
+
+// Facture debut
+Route::get('/imp_fac_proforma/{code}', [FactureController::class, 'imp_fac_proforma']);
+// Facture fin

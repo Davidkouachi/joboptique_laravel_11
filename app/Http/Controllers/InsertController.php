@@ -251,13 +251,9 @@ class InsertController extends Controller
 
         try {
 
-            $OD = $request->sphere_OD.'|'.$request->cylindre_OD.'|'.$request->axe_OD.'|'.$request->addition_OD.'|'.$request->traitement_OD.'|'.$request->type_verre_OD;
-
-            $OG = $request->sphere_OG.'|'.$request->cylindre_OG.'|'.$request->axe_OG.'|'.$request->addition_OG.'|'.$request->traitement_OG.'|'.$request->type_verre_OG;
-
             $Inserted0 = DB::table('proforma')->insert([
                 'code' => $code,
-                'date' => now(),
+                'date' => $request->date,
                 'tauxred' => $request->remise,
                 'nomclient' => $request->nom,
                 'contact' => $request->tel,
@@ -308,9 +304,20 @@ class InsertController extends Controller
                 throw new Exception('Erreur lors de l\'insertion dans la table proforma_prescriptions');
             }
 
+            $client = [$code,$request->nom,$request->tel,$request->date,$request->total,$request->netPayer,$request->remise];
+            $pres = [$request->sphere_OD,$request->cylindre_OD,$request->axe_OD,$request->addition_OD,$request->sphere_OG,$request->cylindre_OG,$request->axe_OG,$request->addition_OG];
+            $produits = $selections;
+
             // Valider la transaction
             DB::commit();
-            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+            return response()->json(
+                [
+                    'success' => true, 
+                    'message' => 'Opération éffectuée',
+                    'client' => $client,
+                    'pres' => $pres,
+                    'produits' => $produits,
+                ]);
         } catch (Exception $e) {
             DB::rollback();
             return response()->json(['error' => true, 'message' => $e->getMessage()]);

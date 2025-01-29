@@ -22,6 +22,7 @@
 
 <body class="nk-body bg-lighter npc-default has-sidebar "> 
     <input type="hidden" id="login" value="{{ Auth::user()->login }}">
+    <input type="hidden" id="agence" value="{{ session('user_magasin') }}">
     <div class="nk-app-root">
         <div class="nk-main ">
             <div class="nk-sidebar nk-sidebar-fixed is-light " data-content="sidebarMenu">
