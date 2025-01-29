@@ -35,4 +35,25 @@ class ListeController extends Controller
             'data' => $clients,
         ]);
     }
+
+    public function list_prospect_all()
+    {
+        $clients = DB::table('prospect')
+            ->leftJoin('societe_assurance', 'societe_assurance.id', '=', 'prospect.societe_assurance')
+            ->leftJoin('assurance', 'assurance.code', '=', 'prospect.assurance')
+            ->leftJoin('tauxes', 'tauxes.id', '=', 'prospect.tauxes')
+            ->select(
+                'prospect.*',
+                'societe_assurance.libelle as societe',
+                'tauxes.valeur as taux',
+                'assurance.denomination as assurance_lib',
+            )
+            ->orderBy('prospect.dateenregistre','desc')
+            ->get();
+
+        return response()->json([
+            'data' => $clients,
+        ]);
+    }
+    
 }

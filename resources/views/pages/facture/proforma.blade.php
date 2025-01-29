@@ -18,7 +18,7 @@
                                         <h3 class="title fw-normal">FACTURE PROFORMA</h3>
                                     </div>
                                 </div>
-                                <form id="formulaire_new_client" class="mt-5">
+                                <form id="formulaire_proforma" class="mt-5">
                                     <div class="card-inner border border-1 rounded mb-5">
                                         <div class="row g-gs">
                                             <div class="col-md-7">
@@ -43,7 +43,7 @@
                                                         <div class="form-icon form-icon-right">
                                                             <em class="icon ni ni-call"></em>
                                                         </div>
-                                                        <input type="tel" class="form-control" id="tel1" placeholder="Saisie Obligatoire">
+                                                        <input type="tel" class="form-control" id="tel" placeholder="Saisie Obligatoire">
                                                     </div>
                                                 </div>
                                             </div>
@@ -63,144 +63,88 @@
                                         <div class="row g-gs">
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Sphère OD
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Sphere_OD" class="form-select js-select2" data-search="on" data-placeholder="Sphère OD">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Sphere_OD" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Cylindre OD
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Cylindre_OD" class="form-select js-select2" data-search="on" data-placeholder="Cylindre OD">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Cylindre_OD" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Axe OD
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Axe_OD" class="form-select js-select2" data-search="on" data-placeholder="Axe OD">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Axe_OD" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Addition OD
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Addition_OD" class="form-select js-select2" data-search="on" data-placeholder="Addition OD">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Addition_OD" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Sphère OG
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Sphere_OG" class="form-select js-select2" data-search="on" data-placeholder="Sphère OG">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Sphere_OG" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Cylindre OG
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Cylindre_OG" class="form-select js-select2" data-search="on" data-placeholder="Cylindre OG">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Cylindre_OG" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Axe OG
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Axe_OG" class="form-select js-select2" data-search="on" data-placeholder="Axe OG">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Axe_OG" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label class="form-label">
+                                                        Addition OG
+                                                    </label>
                                                     <div class="form-control-wrap">
-                                                        <select id="Addition_OG" class="form-select js-select2" data-search="on" data-placeholder="Addition OG">
-                                                        <option value=""></option>
-                                                        <option value="default_option">
-                                                            Option
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
-                                                        <option value="option_select_name">
-                                                            Option name
-                                                        </option>
+                                                        <select id="Addition_OG" class="form-select js-select2" data-search="on" data-placeholder="Selectionner">
                                                     </select>
                                                     </div>
                                                 </div>
@@ -211,58 +155,14 @@
                                         <div class="row g-gs">
                                             <div class="col-12">
                                                 <div class="form-group text-center">
-                                                    <a class="btn btn-md btn-outline-info">
+                                                    <a class="btn btn-md btn-outline-info" id="btn_ajouter">
                                                         <span>Ajouter</span>
                                                         <em class="icon ni ni-plus-circle"></em>
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="card-inner border border-1 rounded mb-5">
-                                                <div class="row g-gs">
-                                                    <div class="col-md-9">
-                                                        <div class="form-group">
-                                                            <label class="form-label">
-                                                                Désignation
-                                                            </label>
-                                                            <div class="form-control-wrap">
-                                                                <div class="form-icon form-icon-right">
-                                                                    <em class="icon ni ni-archived"></em>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="designation" placeholder="Saisie Obligatoire">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label class="form-label">
-                                                                Prix
-                                                            </label>
-                                                            <div class="form-control-wrap">
-                                                                <div class="form-icon form-icon-right">
-                                                                    Fcfa
-                                                                </div>
-                                                                <input type="tel" class="form-control" id="prix" value="0">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <div class="form-group">
-                                                            <label class="form-label">
-                                                                Quantité
-                                                            </label>
-                                                            <div class="form-control-wrap">
-                                                                <input type="tel" class="form-control" id="qte" value="0">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group text-center">
-                                                            <a class="btn btn-md btn-outline-danger">
-                                                                <em class="icon ni ni-trash"></em>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div id="contenu">
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -270,7 +170,7 @@
                                         <div class="row g-gs ">
                                             <div class="col-12 ">
                                                 <div class="row d-flex flex-row-reverse" >
-                                                    <div class="col-md-3" >
+                                                    <div class="col-md-5 col-lg-4" >
                                                         <div class="form-group">
                                                             <div class="form-control-wrap">
                                                                 <div class="input-group">
@@ -279,7 +179,12 @@
                                                                             Total
                                                                         </span> 
                                                                     </div> 
-                                                                    <input readonly type="tel" class="form-control">
+                                                                    <input id="mTotal" readonly type="tel" class="form-control">
+                                                                    <div class="input-group-prepend"> 
+                                                                        <span class="input-group-text">
+                                                                            Fcfa
+                                                                        </span> 
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -288,14 +193,10 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="row d-flex flex-row-reverse" >
-                                                    <div class="col-md-3" >
+                                                    <div class="col-md-5 col-lg-4" >
                                                         <div class="form-group">
                                                             <div class="form-control-wrap">
                                                                 <select id="remise" class="form-select js-select2" data-search="on" data-placeholder="Rémise">
-                                                                    <option value=""></option>
-                                                                    <option value="default_option">
-                                                                        Remise 20%
-                                                                    </option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -304,7 +205,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="row d-flex flex-row-reverse" >
-                                                    <div class="col-md-3" >
+                                                    <div class="col-md-5 col-lg-4" >
                                                         <div class="form-group">
                                                             <div class="form-control-wrap">
                                                                 <div class="input-group">
@@ -313,19 +214,24 @@
                                                                             Net à payer
                                                                         </span> 
                                                                     </div> 
-                                                                    <input readonly type="tel" class="form-control">
+                                                                    <input id="netPayer" readonly type="tel" class="form-control">
+                                                                    <div class="input-group-prepend"> 
+                                                                        <span class="input-group-text">
+                                                                            Fcfa
+                                                                        </span> 
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            <div class="col-md-12" id="div_btn" style="display: none;">
                                                 <div class="form-group text-center">
-                                                    <a class="btn btn-lg btn-outline-success">
+                                                    <button type="submit" class="btn btn-lg btn-outline-success">
                                                         <span>Validé</span>
                                                         <em class="icon ni ni-printer"></em>
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -339,5 +245,8 @@
         </div>
     </div>
 </div>
+
+<script src="{{asset('assets/app/js/select.js')}}"></script>
+<script src="{{asset('assets/app/js/insert/facture_proforma.js')}}"></script>
 
 @endsection

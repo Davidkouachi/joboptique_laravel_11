@@ -1,15 +1,15 @@
 $(document).ready(function () {
 
-    window.list_user_all = function () {
+    window.list_prospect_all = function () {
         $.ajax({
-            url: '/api/list_client_all',
+            url: '/api/list_prospect_all',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
                 const clients = data.data;
 
                 // Détruire l'instance DataTable existante (si elle existe)
-                const table = $('.table_client');
+                const table = $('.table_prospect');
                 if ($.fn.DataTable.isDataTable(table)) {
                     table.DataTable().destroy();
                 }
@@ -30,7 +30,7 @@ $(document).ready(function () {
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
                                 <td class="nk-tb-col">
-                                    <span class="tb-amount">${item.matricule}</span>
+                                    <span class="tb-amount">${item.code}</span>
                                 </td>
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">
@@ -58,11 +58,11 @@ $(document).ready(function () {
                                                     <ul class="link-list-opt no-bdr">
                                                         <li>
                                                             <a  href="#"
-                                                                id="detail-${item.matricule}" 
+                                                                id="detail-${item.code}" 
                                                                 data-bs-toggle="modal" 
                                                                 data-bs-target="#modalLarge" 
                                                                 class="text-warning btn-detail"
-                                                                data-matricule="${item.matricule}" 
+                                                                data-code="${item.code}" 
                                                                 data-nom="${item.nom}" 
                                                                 data-prenom="${item.prenom}" 
                                                                 data-np="${item.nomprenom}"
@@ -73,9 +73,10 @@ $(document).ready(function () {
                                                                 data-residence="${item.residence != null ? item.residence : `Néant` }"
                                                                 data-contact="${item.cel != null ? '+225 '+item.cel : `Néant` }"
                                                                 data-email="${item.email != null ? item.email : `Néant` }"
-                                                                data-sondage="${item.sondage != null ? item.sondage : `Néant` }"
+                                                                data-obs="${item.obs != null ? item.obs : `Néant` }"
+                                                                data-motif="${item.motif_visite != null ? item.motif_visite : `Néant` }"
                                                                 data-commercial="${item.commercial != null ? item.commercial : `Néant` }"
-                                                                data-assurer="${item.assurance != null ? 'Client assurer' : `Client non-assurer` }"
+                                                                data-assurer="${item.assurance != null ? 'Prospect assurer' : `Prospect non-assurer` }"
                                                                 data-assurance="${item.assurance != null ? item.assurance_lib : `Néant` }"
                                                                 data-societe="${item.societe_assurance != null ? item.societe : `Néant` }"
                                                                 data-taux="${item.tauxes != null ? item.taux+'%' : `Néant` }"
@@ -107,18 +108,19 @@ $(document).ready(function () {
                         // });
                     });
 
-                    initializeDataTable(".table_client", { responsive: { details: true } });
+                    initializeDataTable(".table_prospect", { responsive: { details: true } });
                 } else {
-                    initializeDataTable(".table_client", { responsive: { details: true } });
+                    initializeDataTable(".table_prospect", { responsive: { details: true } });
                 }
             },
             error: function() {
-                initializeDataTable(".table_client", { responsive: { details: true } });
+                initializeDataTable(".table_prospect", { responsive: { details: true } });
             }
         });
 
-        $('.table_client').on('click', '.btn-detail', function () {
-            const matricule = $(this).data('matricule');
+        $('.table_prospect').on('click', '.btn-detail', function () {
+            
+            const code = $(this).data('code');
             const nom = $(this).data('nom');
             const prenom = $(this).data('prenom');
             const np = $(this).data('np');
@@ -129,7 +131,8 @@ $(document).ready(function () {
             const residence = $(this).data('residence');
             const contact = $(this).data('contact');
             const email = $(this).data('email');
-            const sondage = $(this).data('sondage');
+            const obs = $(this).data('obs');
+            const motif = $(this).data('motif');
             const commercial = $(this).data('commercial');
             const assurer = $(this).data('assurer');
             const assurance = $(this).data('assurance');
@@ -138,7 +141,7 @@ $(document).ready(function () {
             const matriculeass = $(this).data('matriculeass');
             const dateenregistre = $(this).data('dateenregistre');
 
-            $('#d_matricule').text(matricule);
+            $('#d_code').text(code);
             $('#d_nom').text(nom);
             $('#d_prenom').text(prenom);
             $('#d_np').text(np);
@@ -149,7 +152,8 @@ $(document).ready(function () {
             $('#d_residence').text(residence);
             $('#d_tel').text(contact);
             $('#d_email').text(email);
-            $('#d_sondage').text(sondage);
+            $('#d_obs').text(obs);
+            $('#d_motif').text(motif);
             $('#d_commercial').text(commercial);
             $('#d_assurer').text(assurer);
             $('#d_assurance').text(assurance);
@@ -158,7 +162,7 @@ $(document).ready(function () {
             $('#d_matriculeass').text(matriculeass);
             $('#d_datecreat').text('Date d\'enregistrement : '+dateenregistre);
 
-            if (assurer === 'Client assurer') {
+            if (assurer === 'Prospect assurer') {
                 $('#d_div_assurer1').show();
                 $('#d_div_assurer2').show();
             } else {
@@ -169,6 +173,6 @@ $(document).ready(function () {
         
     }
 
-    list_user_all();
+    list_prospect_all();
 
 });

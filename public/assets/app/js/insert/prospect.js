@@ -33,7 +33,8 @@ $(document).ready(function () {
         let prenoms = $("#prenoms");
         let datenais = $("#datenais");
         let sexe = $("#sexe");
-        let sondage = $("#sondage");
+        let obs = $("#observation");
+        let motif = $("#motif");
         let profession = $("#profession");
         let residence = $("#residence");
         let tel1 = $("#tel1");
@@ -87,14 +88,15 @@ $(document).ready(function () {
         $("body").append(preloader_ch);
 
         $.ajax({
-            url: "/api/insert_client",
+            url: "/api/insert_prospect",
             method: "GET",
             data: {
                 nom: nom.val(),
                 prenoms: prenoms.val(),
                 datenais: datenais.val(),
                 sexe: sexe.val(),
-                sondage: sondage.val(),
+                obs: obs.val() || null,
+                motif: motif.val() || null,
                 profession: profession.val(),
                 residence: residence.val(),
                 tel: tel1.val(),
@@ -112,7 +114,7 @@ $(document).ready(function () {
                 if (response.success) {
 
                     restForm();
-                    list_user_all();
+                    list_prospect_all();
                     showAlert("Succès", "Opération éffectuée", "success");
 
                 } else if (response.matricule_ass_existe) {
@@ -136,7 +138,8 @@ $(document).ready(function () {
         $("#prenoms").val(null);
         $("#datenais").val(null);
         $("#sexe").val(null).trigger('change');
-        $("#sondage").val(null).trigger('change');
+        $("#observation").val(null);
+        $("#motif").val(null);
         $("#profession").val(null);
         $("#residence").val(null);
         $("#tel1").val(null);

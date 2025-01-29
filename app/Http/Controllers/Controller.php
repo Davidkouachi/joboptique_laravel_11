@@ -19,6 +19,11 @@ class Controller
         return view('pages.client&prospect.prospect');
     }
 
+    public function prescription()
+    {
+        return view('pages.prescription');
+    }
+
     public function proforma()
     {
         return view('pages.facture.proforma');

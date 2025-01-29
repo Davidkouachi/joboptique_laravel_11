@@ -18,6 +18,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('/Clients', [Controller::class, 'client'])->name('client');
 	Route::get('/Prospects', [Controller::class, 'prospect'])->name('prospect');
 
+	Route::get('/Préscriptions', [Controller::class, 'prescription'])->name('prescription');
+
 	Route::get('/Facture Proforma', [Controller::class, 'proforma'])->name('proforma');
 
 });

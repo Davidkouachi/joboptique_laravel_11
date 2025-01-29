@@ -26,21 +26,38 @@ $(document).ready(function () {
     }
 
     window.calculAge = function (dateString) {
-
         const birthDate = new Date(dateString);
         const today = new Date();
 
-        let age = today.getFullYear() - birthDate.getFullYear();
+        let ageYears = today.getFullYear() - birthDate.getFullYear();
+        let monthDiff = today.getMonth() - birthDate.getMonth();
+        let dayDiff = today.getDate() - birthDate.getDate();
 
-        // Vérifie si l'anniversaire n'est pas encore passé cette année
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        const dayDiff = today.getDate() - birthDate.getDate();
+        // Ajustement pour les mois et jours
         if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-            age--;
+            ageYears--;
+            monthDiff += 12; // Compte les mois restants de l'année précédente
         }
 
-        return age;
-    }
+        // Ajustement des jours pour éviter des mois incomplets
+        if (dayDiff < 0) {
+            const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0); // Dernier jour du mois précédent
+            dayDiff += prevMonth.getDate();
+            monthDiff--;
+        }
+
+        // Si l'âge est inférieur à un an, retourner les mois et jours
+        if (ageYears === 0) {
+            if (monthDiff === 0) {
+                return `${dayDiff} jour${dayDiff > 1 ? 's' : ''}`; // Retourne les jours si < 1 mois
+            }
+            return `${monthDiff} mois${dayDiff > 0 ? ` et ${dayDiff} jour${dayDiff > 1 ? 's' : ''}` : ''}`;
+        }
+
+        // Retourne l'âge en années
+        return `${ageYears} an${ageYears > 1 ? 's' : ''}`;
+    };
+
 
     window.numberTel = function (id) {
         var inputElement = $(id); // Sélectionner l'élément avec son ID
@@ -77,5 +94,22 @@ $(document).ready(function () {
         });
     };
 
+    window.formatPrice = function (prix) {
+        // Remove all non-numeric characters except the comma
+        prix = prix.replace(/[^\d,]/g, '');
 
+        // Convert comma to dot for proper float conversion
+        prix = prix.replace(',', '.');
+
+        // Convert to float and round to the nearest whole number
+        let number = Math.round(parseInt(prix));
+        if (isNaN(number)) {
+            return '';
+        }
+
+        // Format the number with dot as thousands separator
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    
 });

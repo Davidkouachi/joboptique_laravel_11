@@ -121,7 +121,7 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">
-                                                                    Contact 1
+                                                                    Contact
                                                                 </label>
                                                                 <div class="form-control-wrap">
                                                                     <div class="form-icon form-icon-left">
@@ -387,13 +387,5 @@
 <script src="{{asset('assets/app/js/list/list_user_all.js')}}"></script>
 <script src="{{asset('assets/app/js/select.js')}}"></script>
 <script src="{{asset('assets/app/js/insert/client.js')}}"></script>
-
-<script>
-    $(document).ready(function () {
-        select_societe('#societe_id');
-        select_assurance('#assurance_id');
-        select_taux('#taux_id');
-    });
-</script>
 
 @endsection
