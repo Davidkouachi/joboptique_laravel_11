@@ -20,9 +20,26 @@
     <link rel="stylesheet" href="{{ asset('assets/app/css/style.css') }}">
 </head>
 
-<body class="nk-body bg-lighter npc-default has-sidebar "> 
+<body class="nk-body bg-lighter npc-default has-sidebar ">
+
     <input type="hidden" id="login" value="{{ Auth::user()->login }}">
     <input type="hidden" id="agence" value="{{ session('user_magasin') }}">
+
+    {{-- <div class="js-preloader">
+        <div class="loading-animation">
+            <img class="mt-0" src="{{ asset('assets/images/logo.jpg') }}">
+            <div class="loading-animation tri-ring mt-5" style="margin-left: -30px; font-size: 10px;"></div>
+            <div class="loading-animation duo-pulse mt-5" style="margin-left: -30px; font-size: 10px;"></div>
+        </div>
+    </div> --}}
+    {{-- <div class="js-preloader">
+        <div class="loading-animation tri-ring"></div>
+    </div>
+    <div class="js-preloader">
+        <div class="loading-animation duo-pulse"></div>
+    </div> --}}
+
+
     <div class="nk-app-root">
         <div class="nk-main ">
             <div class="nk-sidebar nk-sidebar-fixed is-light " data-content="sidebarMenu">
@@ -96,7 +113,7 @@
                                             </a>
                                         </li>
                                         <li class="nk-menu-item">
-                                            <a href="#" class="nk-menu-link">
+                                            <a href="{{ route('vente') }}" class="nk-menu-link">
                                                 <span class="nk-menu-text">Ventes</span>
                                             </a>
                                         </li>

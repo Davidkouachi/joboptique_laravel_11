@@ -28,4 +28,9 @@ class Controller
     {
         return view('pages.facture.proforma');
     }
+
+    public function vente()
+    {
+        return view('pages.facture.vente');
+    }
 }

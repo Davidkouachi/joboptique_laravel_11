@@ -21,6 +21,7 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('/Préscriptions', [Controller::class, 'prescription'])->name('prescription');
 
 	Route::get('/Facture Proforma', [Controller::class, 'proforma'])->name('proforma');
+	Route::get('/Nouvelle Vente', [Controller::class, 'vente'])->name('vente');
 
 });
 

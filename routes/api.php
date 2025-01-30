@@ -8,6 +8,7 @@ use App\Http\Controllers\ListeController;
 use App\Http\Controllers\SelectController;
 use App\Http\Controllers\InsertController;
 use App\Http\Controllers\FactureController;
+use App\Http\Controllers\RechercheController;
 
 Route::middleware(['web'])->group(function () {
 
@@ -22,6 +23,10 @@ Route::get('/select_taux', [SelectController::class, 'select_taux']);
 Route::get('/select_client', [SelectController::class, 'select_client']);
 Route::get('/select_client_prescription/{matricule}', [SelectController::class, 'select_client_prescription']);
 // Select fin
+
+// Recherche debut
+Route::get('/rech_code_proforma_vente/{code}', [RechercheController::class, 'rech_code_proforma_vente']);
+// Recherche fin
 
 // Ajouter debut
 Route::get('/insert_client', [InsertController::class, 'insert_client']);

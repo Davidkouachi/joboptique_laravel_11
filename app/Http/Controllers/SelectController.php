@@ -61,7 +61,23 @@ class SelectController extends Controller
 
     public function select_client()
     {
-        $data = DB::table('client')->select('matricule','nomprenom','cel')->orderBy('nomprenom', 'asc')->get();
+        $data = DB::table('client')->select('matricule','nomprenom','cel','tauxes')->orderBy('nomprenom', 'asc')->get();
+
+        $taux = 0;
+        foreach ($data as $value) {
+            
+            if ($value->tauxes != null) {
+                $valeur = DB::table('tauxes')
+                    ->where('id', '=', $value->tauxes)
+                    ->select('valeur')
+                    ->first();
+
+                $taux = $valeur->valeur;
+            }
+
+            $value->taux = $taux;
+
+        }
 
         return response()->json([
             'data' => $data,
