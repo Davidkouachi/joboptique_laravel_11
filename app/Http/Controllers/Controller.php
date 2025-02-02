@@ -33,4 +33,14 @@ class Controller
     {
         return view('pages.facture.vente');
     }
+
+    public function operation()
+    {
+        return view('pages.comptablite.operation');
+    }
+
+    public function encaissement()
+    {
+        return view('pages.comptablite.encaissement');
+    }
 }

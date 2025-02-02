@@ -215,6 +215,7 @@ $(document).ready(function () {
 
     window.traitement_prescription = function (id,data) 
     {
+
         const selectElement2 = $(id);
         selectElement2.empty();
         selectElement2.append($('<option>', {
@@ -222,32 +223,29 @@ $(document).ready(function () {
             text: '',
         }));
 
-        const options = [
-            {id: 1, text: "PHOTOGRAY" },
-            {id: 2, text: "ANTIREFLET" },
-            {id: 3, text: "PHOTOGRAY + ANTIREFLET" },
-            {id: 4, text: "TEINTE A" },
-            {id: 5, text: "TEINTE AB" },
-            {id: 6, text: "BLUE BAN" },
-            {id: 7, text: "TRANSITION" },
-            {id: 8, text: "BLUE CUT" },
-            {id: 9, text: "BLUE BAN + PHOTOGRAY" },
-            {id: 10, text: "BLUE BAN + TRANSITION" },
-            {id: 11, text: "BLUE BAN + UV" },
-        ];
+        $.ajax({
+            url: '/api/select_traitement',
+            method: 'GET',
+            success: function(response) {
+                const datad = response.data;
 
-        options.forEach(function(option) {
-
-            selectElement2.append($('<option>', {
-                value: option.id,
-                text: option.text,
-                selected: data != null && data != '' && data == option.id,
-            }));
+                datad.forEach(function(item) {
+                    selectElement2.append($('<option>', {
+                        value: item.id,
+                        text: item.libelle,
+                        selected: item.id != null && item.id != '' && item.id == data,
+                    }));
+                });
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
         });
     }
 
     window.type_verre_prescription = function (id,data) 
     {
+        
         const selectElement2 = $(id);
         selectElement2.empty();
         selectElement2.append($('<option>', {
@@ -255,20 +253,23 @@ $(document).ready(function () {
             text: '',
         }));
 
-        const options = [
-            {id: 1, text: "SIMPLE FOYER" },
-            {id: 2, text: "DOUBLE FOYER" },
-            {id: 3, text: "AFOCAL" },
-            {id: 4, text: "PROGRESSIF" },
-        ];
+        $.ajax({
+            url: '/api/select_type_verre',
+            method: 'GET',
+            success: function(response) {
+                const datad = response.data;
 
-        options.forEach(function(option) {
-
-            selectElement2.append($('<option>', {
-                value: option.id,
-                text: option.text,
-                selected: data != null && data != '' && data == option.id,
-            }));
+                datad.forEach(function(item) {
+                    selectElement2.append($('<option>', {
+                        value: item.id,
+                        text: item.libelle,
+                        selected: item.id != null && item.id != '' && item.id == data,
+                    }));
+                });
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
         });
     }
 
@@ -285,5 +286,66 @@ $(document).ready(function () {
             })); 
         }
     }
+
+    window.select_code_proforma_vente = function (id) 
+    {
+        const selectElement2 = $(id);
+        selectElement2.empty();
+        selectElement2.append(
+            $('<option>', {
+                value: '0',
+                text: 'Aucun',
+            })
+        );
+
+        $.ajax({
+            url: '/api/select_code_proforma_vente',
+            method: 'GET',
+            success: function(response) {
+                const data = response.data;
+
+                data.forEach(function(item) {
+                    selectElement2.append($('<option>', {
+                        value: item.code,
+                        text: item.code,
+                    }));
+                });
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
+        });
+    }
+
+    window.select_op_magasin = function (id) 
+    {
+        const selectElement2 = $(id);
+        selectElement2.empty();
+        selectElement2.append(
+            $('<option>', {
+                value: '0',
+                text: 'Tous',
+            })
+        );
+
+        $.ajax({
+            url: '/api/select_op_magasin',
+            method: 'GET',
+            success: function(response) {
+                const data = response.data;
+
+                data.forEach(function(item) {
+                    selectElement2.append($('<option>', {
+                        value: item.id,
+                        text: item.nom,
+                    }));
+                });
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
+        });
+    }
+
 
 });

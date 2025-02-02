@@ -154,13 +154,12 @@ $(document).ready(function () {
     }
 
     function updateMontantTotal(contenuDiv) {
-
         let montantTotal = 0;
         let montantPatient = 0;
 
         // Calcul du montant total
         contenuDiv.find('.contenu_enfant').each(function() {
-            let total = parseFloat($(this).find('.total').val().replace(/[^0-9]/g, '')) || 0;
+            let total = parseInt($(this).find('.total').val().replace(/[^0-9]/g, '')) || 0; // Convertir en entier
 
             if (isNaN(total)) {
                 showAlert("ALERT", 'Vérifier les prix et quantités des Produits s\'il vous plaît.', "warning");
@@ -171,19 +170,25 @@ $(document).ready(function () {
         });
 
         // Vérification de la remise
-        let remise = parseFloat($('#remise').val().replace(/[^0-9.-]/g, '')) || 0; // Remplacer tous les caractères non numériques sauf le point et le tiret
+        let remise = parseInt($('#remise').val().replace(/[^0-9.-]/g, '')) || 0; // Convertir en entier
 
         // Calcul du montant à payer en fonction de la remise
         if (!isNaN(remise) && remise !== 0) {
-            montantPatient = montantTotal - ((montantTotal * remise) / 100);  // Calcul avec la remise
+            montantPatient = Math.floor(montantTotal - ((montantTotal * remise) / 100));  // Arrondi vers le bas
         } else {
             montantPatient = montantTotal;  // Pas de remise, montant total à payer
         }
 
         // Mise à jour des champs avec les montants formatés
-        $('#mTotal').val(montantTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));  // Utiliser la fonction formatPrice pour un affichage avec des séparateurs de milliers
-        $('#netPayer').val(montantPatient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));  // Utiliser formatPrice pour le montant à payer
+        $('#mTotal').val(formatPrice(montantTotal));  
+        $('#netPayer').val(formatPrice(montantPatient));  
     }
+
+    // Fonction pour formater les nombres avec séparateur de milliers
+    function formatPrice(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
 
     $('#remise').on('change', function() {
         const contenuDiv = $('#contenu');

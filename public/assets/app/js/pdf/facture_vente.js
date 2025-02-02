@@ -1,11 +1,11 @@
 $(document).ready(function () {
 
-    window.PDF_Facture_Proforma = function (client, pres, produits, agence) 
+    window.PDF_Facture_Vente = function (client, pres, produits, agence) 
     {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
-        const pdfFilename = "Facture Proforma N° " + client[0];
+        const pdfFilename = "Facture vente N° " + client['code'];
         doc.setProperties({
             title: pdfFilename,
         });
@@ -17,7 +17,7 @@ $(document).ready(function () {
             leftMargin = 15;
             pdfWidth = doc.internal.pageSize.getWidth();
 
-            const titlea = "Proforma";
+            const titlea = "Facture";
             doc.setFontSize(100);
             doc.setTextColor(242, 242, 242); // Gray color for background effect
             doc.setFont("Helvetica", "bold");
@@ -68,35 +68,68 @@ $(document).ready(function () {
             doc.setFontSize(10);
             doc.setFont("Helvetica", "bold");
             doc.setTextColor(0, 0, 0);
-            const numDate = "FACTURE PROFORMA N° " + client[0];
+            const numDate = "FACTURE VENTE N° " + client['code'];
             const numDateWidth = doc.getTextWidth(numDate);
             doc.text(numDate, (doc.internal.pageSize.getWidth() - numDateWidth) / 2, yPos + 30); 
 
-            yPoss = yPos + 45;
+            yPoss = yPos + 40;
 
-            doc.setFontSize(12);
+            doc.setFontSize(9);
             doc.setFont("helvetica", "bold");
             doc.text("CLIENT", leftMargin + 20, yPoss);
 
-            doc.setFontSize(8);
-            doc.setFont("helvetica", "normal");
-            doc.text("NOM", leftMargin + 5, yPoss + 10);
-            doc.text(": " + client[1], leftMargin + 30, yPoss + 10);
+            const type_client = client['taux'] == 0 ? 'CLIENT NON-ASSURER' : 'CLIENT ASSURER';
 
-            doc.setFontSize(8);
-            doc.setFont("helvetica", "normal");
-            doc.text("CONTACT", leftMargin + 5, yPoss + 15);
-            doc.text(": +225 " + client[2], leftMargin + 30, yPoss + 15);
+            const clientData = [
+                ["N° dossier", client['matricule']],
+                ["Sondage", client['sondage']],
+                ["Type de client", type_client],
+                ["Nom", client['client']],
+                ["Contact", "+225 " + client['contact']],
+                ["Date de naissance", formatDate(client['datenais'])],
+                
+            ];
 
-            doc.setFontSize(12);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+
+            clientData.forEach((item, index) => {
+                doc.text(item[0], leftMargin + 5, yPoss + (index * 5) + 8);
+                doc.text(": " + item[1], leftMargin + 35, yPoss + (index * 5) + 8);
+            });
+
+            doc.setFontSize(9);
             doc.setFont("helvetica", "bold");
             doc.text("AGENCE", leftMargin + 140, yPoss);
 
-            doc.setFontSize(10);
+            doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
-            doc.text(agence, leftMargin + 130, yPoss + 10);
+            doc.text(agence, leftMargin + 130, yPoss + 8);
 
-            yPoss = yPoss + 30;
+            if (client['taux'] > 0) {
+            
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");
+                doc.text("ASSURANCE", leftMargin + 140, yPoss + 20);
+
+                const clientInfo = [
+                    ["Nom", client['assurance']],
+                    ["Matricule", client['matriculeass']],
+                    ["N° bon", "Aucun"],
+                    ["Taux", client['taux'] + "%"]
+                ];
+
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "normal");
+
+                clientInfo.forEach((item, index) => {
+                    let yOffset = yPoss + (index * 5) + 28;
+                    doc.text(item[0], leftMargin + 120, yOffset);
+                    doc.text(": " + item[1], leftMargin + 135, yOffset);
+                });
+            }
+
+            yPoss = yPoss + 50;
 
             doc.setFontSize(10);
             doc.setFont("Helvetica", "bold");
@@ -108,10 +141,10 @@ $(document).ready(function () {
             // Tableau des prescriptions
             doc.autoTable({
                 startY: yPoss + 3,
-                head: [["", "SPHERE", "CYLINDRE", "AXE (°)", "ADDITION"]],
+                head: [["", "SPHERE", "CYLINDRE", "AXE (°)", "ADDITION", "TRAITEMENT", "TYPE DE VERRE"]],
                 body: [
-                    ["OEIL DROIT", pres[0], pres[1], pres[2], pres[3]],
-                    ["OEIL GAUCHE", pres[4], pres[5], pres[6], pres[7]]
+                    ["OEIL DROIT", pres[0], pres[1], pres[2], pres[3], pres[4], pres[5]],
+                    ["OEIL GAUCHE", pres[6], pres[7], pres[8], pres[9], pres[10], pres[11]]
                 ],
                 theme: "grid",
                 headStyles: { fillColor: [1, 173, 232], textColor: [255, 255, 255] },
@@ -145,33 +178,36 @@ $(document).ready(function () {
 
             yPoss = doc.lastAutoTable.finalY + 10;
 
-            // Totaux
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            doc.text("TOTAL", leftMargin + 100, yPoss);
-            doc.text(": " + client[4].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", leftMargin + 140, yPoss);
+            const totalInfo = [
+                ["TOTAL", client['total'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 9, "normal"],
+                ["REDUCTION", client['taured'] + "%", 9, "normal"],
+                ["TAUX COUVERTURE", client['taux'] + "%", 9, "normal"],
+                ["PART ASSURANCE", client['partassurance'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 9, "normal"],
+                ["NET A PAYER", client['partclient'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
+                ["SOMME VERSER", client['payer'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
+                ["RESTE A PAYER", client['reste'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
+            ];
 
-            yPoss += 6;
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            doc.text("REDUCTION", leftMargin + 100, yPoss);
-            doc.text(": " + client[6] + "%", leftMargin + 140, yPoss);
+            totalInfo.forEach((item, index) => {
+                doc.setFontSize(item[2]);
+                doc.setFont("helvetica", item[3]);
 
-            yPoss += 6;
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "bold");
-            doc.text("NET A PAYER", leftMargin + 100, yPoss);
-            doc.text(": " + client[5].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", leftMargin + 140, yPoss);
+                let yOffset = yPoss + (index * 6);
+                doc.text(item[0], leftMargin + 100, yOffset);
+                doc.text(": " + item[1], leftMargin + 140, yOffset);
+            });
+
+            let yOffsetAfterTotal = yPoss + (totalInfo.length * 6) + 10; 
+
+            // doc.setFontSize(11);
+            // doc.setFont("Helvetica", "normal");
+            // const an2 = "Fait à Abidjan le " + formatDate(client['date']);
+            // doc.text(an2, leftMargin, yOffsetAfterTotal + 10);
 
             doc.setFontSize(11);
             doc.setFont("Helvetica", "normal");
-            const an2 = "Fait à Abidjan le " + formatDate(client[3]);
-            doc.text(an2, leftMargin, (yPoss + 15));
-
-            doc.setFontSize(11);
-            doc.setFont("Helvetica", "normal");
-            const an3 = "Le commercial";
-            doc.text(an3, leftMargin + 140, (yPoss + 15));
+            const an3 = "Signature & Cachet";
+            doc.text(an3, leftMargin + 140, yOffsetAfterTotal + 10);
 
         }
 

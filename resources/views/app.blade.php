@@ -24,12 +24,12 @@
 
     <input type="hidden" id="login" value="{{ Auth::user()->login }}">
     <input type="hidden" id="agence" value="{{ session('user_magasin') }}">
+    <input type="hidden" id="id_agence" value="{{ Auth::user()->magasin_id }}">
 
     {{-- <div class="js-preloader">
         <div class="loading-animation">
             <img class="mt-0" src="{{ asset('assets/images/logo.jpg') }}">
             <div class="loading-animation tri-ring mt-5" style="margin-left: -30px; font-size: 10px;"></div>
-            <div class="loading-animation duo-pulse mt-5" style="margin-left: -30px; font-size: 10px;"></div>
         </div>
     </div> --}}
     {{-- <div class="js-preloader">
@@ -128,28 +128,13 @@
                                     </a>
                                     <ul class="nk-menu-sub">
                                         <li class="nk-menu-item">
-                                            <a href="#" class="nk-menu-link">
+                                            <a href="{{ route('encaissement') }}" class="nk-menu-link">
                                                 <span class="nk-menu-text">Encaissements</span>
                                             </a>
                                         </li>
                                         <li class="nk-menu-item">
-                                            <a href="#" class="nk-menu-link">
+                                            <a href="{{ route('operation') }}" class="nk-menu-link">
                                                 <span class="nk-menu-text">Opérations de Caisse</span>
-                                            </a>
-                                        </li>
-                                        <li class="nk-menu-item">
-                                            <a href="#" class="nk-menu-link">
-                                                <span class="nk-menu-text">Point Journalier</span>
-                                            </a>
-                                        </li>
-                                        <li class="nk-menu-item">
-                                            <a href="#" class="nk-menu-link">
-                                                <span class="nk-menu-text">Facturations</span>
-                                            </a>
-                                        </li>
-                                        <li class="nk-menu-item">
-                                            <a href="#" class="nk-menu-link">
-                                                <span class="nk-menu-text">Bilan Assurance</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -243,7 +228,44 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/app/js/script.js') }}"></script>
+    @if(!request()->routeIs('operation') )
+    {{-- <ul class="nk-sticky-toolbar">
+        <li class="demo-thumb bg-transparent" id="cadre_ouverture_caisse" style="display: none;">
+            <a class="tipinfo bg-success text-white rounded-circle" id="btn_ouverture_caisse" title="Ouverture de caisse">
+                <em class="icon ni ni-unlock"></em>
+            </a>
+        </li>
+        <li class="demo-purchase bg-transparent" id="cadre_fermeture_caisse" style="display: none;">
+            <a class="tipinfo bg-danger text-white rounded-circle" id="btn_fermeture_caisse" title="Fermeture de Caisse">
+                <em class="icon ni ni-lock"></em>
+            </a>
+        </li>
+    </ul> --}}
+    @endif
+
+    {{-- <div class="pmo-lv pmo-dark active p-3 bg-success" style="width: 200px;">
+        <a class="">
+            <div class="pmo-text text-white">
+                Ouverture de Caisse
+            </div>
+            <p class="pmo-close">
+                <em class="ni ni-arrow-long-right"></em>
+            </p>
+        </a>
+    </div> --}}
+
+    {{-- <div class="pmo-lv pmo-dark active p-3 bg-danger" style="width: 200px;">
+        <a class="">
+            <div class="pmo-text text-white">
+                Fermeture de Caisse
+            </div>
+            <p class="pmo-close">
+                <em class="ni ni-arrow-long-right"></em>
+            </p>
+        </a>
+    </div> --}}
+
+    {{-- <script src="{{ asset('assets/app/js/script.js') }}"></script> --}}
     <script src="{{ asset('assets/js/bundlee1e3.js') }}"></script>
     <script src="{{ asset('assets/js/scriptse1e3.js') }}"></script>
     <script src="{{ asset('assets/js/demo-settingse1e3.js') }}"></script>

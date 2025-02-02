@@ -2,13 +2,32 @@ $(document).ready(function () {
 
     select_client_vente('#client');
     select_remise('#remise');
+    select_code_proforma_vente('#code_proforma');
 
     addDesignation();
 
     $('#client').on('change', function() {
         let selectedOption = $(this).find(':selected');
-        let taux = selectedOption.data('taux');
+        let taux = parseInt(selectedOption.data('taux'));
         $('#taux').val(taux);
+
+        if (taux == 0) {
+            $('#choix_assurance').val("0").trigger('change'); // Sélectionner "Non"
+            $('#choix_assurance option[value="1"]').remove(); // Supprimer "Oui"
+        } else {
+            // Ajouter l'option si elle a été supprimée auparavant
+            if ($('#choix_assurance option[value="1"]').length === 0) {
+                $('#choix_assurance').append('<option value="1">Oui</option>');
+            }
+        }
+
+        $('#contenu').empty();
+        addDesignation();
+
+        $("#netAssurance").val(0);
+        $("#remise").val(0).trigger('change');
+        $("#netPayer").val(0);
+        $("#mTotal").val(0);
 
         const matricule = $(this).val();
 
@@ -46,7 +65,12 @@ $(document).ready(function () {
                 console.error('Erreur lors de la récupération des prescriptions.');
             }
         });
+    });
 
+    $('#choix_assurance').on('change', function() {
+        
+        const contenuDiv = $('#contenu');
+        updateMontantTotal(contenuDiv);
     });
 
     $("#btn_ajouter").on("click", addDesignation);
@@ -182,36 +206,57 @@ $(document).ready(function () {
     }
 
     function updateMontantTotal(contenuDiv) {
-
         let montantTotal = 0;
         let montantPatient = 0;
+        let montantAssurance = 0;
+
+        let taux = parseInt($('#taux').val()) || 0;
+        let choix_assurance = $('#choix_assurance').val();
+
+        if (choix_assurance == 0) {
+            taux = 0;
+        }
 
         // Calcul du montant total
-        contenuDiv.find('.contenu_enfant').each(function() {
-            let total = parseFloat($(this).find('.total').val().replace(/[^0-9]/g, '')) || 0;
+        contenuDiv.find('.contenu_enfant').each(function () {
+            let total = parseInt($(this).find('.total').val().replace(/[^0-9]/g, '')) || 0;
 
             if (isNaN(total)) {
                 showAlert("ALERT", 'Vérifier les prix et quantités des Produits s\'il vous plaît.', "warning");
                 return false;  // Arrêter la boucle si une erreur est trouvée
             }
 
-            montantTotal += total;  // Ajouter au montant total
+            montantTotal += total;
         });
 
         // Vérification de la remise
-        let remise = parseFloat($('#remise').val().replace(/[^0-9.-]/g, '')) || 0; // Remplacer tous les caractères non numériques sauf le point et le tiret
+        let remise = parseInt($('#remise').val().replace(/[^0-9.-]/g, '')) || 0; 
+
+        // Calcul de la part de l'assurance et du patient
+        if (taux > 0) {
+            montantAssurance = Math.floor((montantTotal * taux) / 100);
+            montantPatient = montantTotal - montantAssurance;
+        } else {
+            montantAssurance = 0;
+            montantPatient = montantTotal;
+        }
 
         // Calcul du montant à payer en fonction de la remise
         if (!isNaN(remise) && remise !== 0) {
-            montantPatient = montantTotal - ((montantTotal * remise) / 100);  // Calcul avec la remise
-        } else {
-            montantPatient = montantTotal;  // Pas de remise, montant total à payer
+            montantPatient = Math.floor(montantPatient - ((montantPatient * remise) / 100));
         }
 
         // Mise à jour des champs avec les montants formatés
-        $('#mTotal').val(montantTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));  // Utiliser la fonction formatPrice pour un affichage avec des séparateurs de milliers
-        $('#netPayer').val(montantPatient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));  // Utiliser formatPrice pour le montant à payer
+        $('#mTotal').val(formatPrice(montantTotal));
+        $('#netAssurance').val(formatPrice(montantAssurance));
+        $('#netPayer').val(formatPrice(montantPatient));
     }
+
+    // Fonction pour formater les nombres avec séparateur de milliers
+    function formatPrice(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
 
     $('#remise').on('change', function() {
         const contenuDiv = $('#contenu');
@@ -228,42 +273,73 @@ $(document).ready(function () {
         $('#sphere_OD, #cylindre_OD, #axe_OD, #addition_OD').text('');
         $('#sphere_OG, #cylindre_OG, #axe_OG, #addition_OG').text('');
 
-        $("#code_proforma").val(null);
-        $('#statut_code_proforma').val(0);
-        $('#valeur_code_proforma').val(null);
+        $("#code_proforma").val(null).trigger('change');
         $("#netAssurance").val(0);
         $("#remise").val(0).trigger('change');
         $("#netPayer").val(0);
         $("#mTotal").val(0);
-
-        $('#btn_check').hide();
-        $('#btn_search').show();
 
         $('#contenu').empty();
 
         addDesignation();
     }
 
-    $("#btn_search").on("click", function() {
-        let code = $("#code_proforma").val().trim();
+    $("#formulaire_vente").on("submit", function (event) {
+        event.preventDefault();
 
-        if (!code) {
-           showAlert("Alert", "Veuillez saisir un code proforma Si une proforma a été délivrée", "warning");
-           return;
-        } else {
-           searchProforma(code); 
-        }  
-    });
+        if ($('#contenu').children('.contenu_enfant').length <= 0) {
+            showAlert("ALERT", 'Aucun produit n\'a été identifier.', "warning");
+            return false;
+        }
 
-    $("#code_proforma").on("input", function() {
+        const selectionsProduit = [];
 
-        $('#btn_check').hide();
-        $('#btn_search').show();
-        $('#statut_code_proforma').val(0);
-    });
+        $('#contenu').find('.contenu_enfant').each(function() {
+            let desi = $(this).find('.designation').val();
+            let prix = parseFloat($(this).find('.prix').val().replace(/[^0-9]/g, '')) || 0;
+            let qte = parseInt($(this).find('.quantite').val().replace(/[^0-9]/g, '')) || 0;
+            let total = parseFloat($(this).find('.total').val().replace(/[^0-9]/g, '')) || 0;
 
-    function searchProforma(code)
-    {
+            if (isNaN(total) || total == 0) {
+                showAlert("ALERT", 'Vérifier les prix et quantités des Produits s\'il vous plaît.', "warning");
+                return false;
+            }
+
+            if (!desi.trim()) {
+                showAlert("ALERT", 'Vérifier le nom de chaques Produits s\'il vous plaît.', "warning");
+                return false;
+            }
+
+            selectionsProduit.push({
+                nom: desi,
+                prix: prix,
+                qte: qte,
+                total: total,
+            });
+
+        });
+
+        let client = $("#client").val();
+        let taux = $("#taux").val();
+        let choix_assurance = $("#choix_assurance").val();
+        let date = $("#date").val();
+
+        let code_proforma = $("#code_proforma").val();
+        let mTotal = parseFloat($("#mTotal").val().replace(/[^0-9]/g, ''));
+        let netAssurance = parseFloat($("#netAssurance").val().replace(/[^0-9]/g, ''));
+        let remise = $("#remise").val();
+        let netPayer = parseFloat($("#netPayer").val().replace(/[^0-9]/g, ''));
+
+        if (!client|| !date) {
+            showAlert("Alert","Veuillez remplir tous les champs s'il vous plaît !!!","warning");
+            return false;
+        }
+        
+        if (isNaN(mTotal) || isNaN(netPayer) || isNaN(netAssurance) || mTotal < 0 || netPayer < 0 || netAssurance < 0 ) {
+            showAlert("ALERT", 'Vérifier les montants s\'il vous plaît.', "warning");
+            return false;
+        }
+
         // Ajouter le préchargeur
         let preloader_ch = `
             <div id="preloader_ch">
@@ -273,43 +349,49 @@ $(document).ready(function () {
         $("body").append(preloader_ch);
 
         $.ajax({
-            url: '/api/rech_code_proforma_vente/'+code,
-            method: 'GET',
-            success: function(response) {
-                const data = response.data;
+            url: "/api/insert_vente",
+            method: "GET",
+            data: {
+                selectionsProduit: selectionsProduit,
+                client: client,
+                taux: taux,
+                choix_assurance: choix_assurance,
+                date: date,
+                code_proforma:code_proforma || null,
+                total: mTotal,
+                netAssurance: netAssurance,
+                netPayer: netPayer,
+                remise: remise,
+                login: $("#login").val().trim(),
+            },
+            success: function (response) {
                 $("#preloader_ch").remove();
-
-                $('#btn_check').hide();
-                $('#btn_search').show();
 
                 if (response.success) {
-                    
-                    if (data.valide != 1) {
 
-                        $('#btn_check').show();
-                        $('#btn_search').hide();
-                        $('#statut_code_proforma').val(1);
-                        $('#valeur_code_proforma').val(data.code);
-
-                    } else if (data.valide == 1) {
-
-                        showAlert("Alert", "Cette Facture Proforma à déjà été validé", "info");
+                    if (response.fac === 0) {
+                        showAlert("Succès", "Opération éffectuée, mais une erreur est survenur lors l'affiche de la facture", "info");
+                        return false;
                     }
 
-                } else if (response.existeP) {
+                    showAlert("Succès", "Opération éffectuée", "success");
+                    restForm();
+                    list_vente_all();
+                    PDF_Facture_Vente(response.client, response.pres, response.produits,$('#agence').val());
 
-                    showAlert("Alert", "Facture Proforma introuvable", "warning");
-                } else {
-
-                    showAlert("Alert", "Echec de l'opération", "error");
+                } else if (response.json) {
+                    showAlert("Alert", "Echec de l\'opération (Format JSON)", "info");
+                } else if (response.error) {
+                    showAlert("Alert", "Echec de l\'opération", "error");
+                    console.log(response.message);
                 }
-                
             },
-            error: function() {
+            error: function () {
                 $("#preloader_ch").remove();
-                showAlert("Erreur", "Une erreur est survenue", "error");
-            }
+                showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
+                console.log(response.message);
+            },
         });
-    }
+    });
 
 });

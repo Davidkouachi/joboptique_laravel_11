@@ -175,19 +175,9 @@
                                                                                     Si une proforma a été délivrée
                                                                                 </span>
                                                                             </label>
-                                                                            <input type="hidden" id="statut_code_proforma" value="0">
-                                                                            <input type="hidden" id="valeur_code_proforma">
-                                                                            <div class="form-control-wrap d-flex">
-                                                                                <div class="form-icon form-icon-left">
-                                                                                    <em class="icon ni ni-scan"></em>
-                                                                                </div>
-                                                                                <input type="text" class="form-control me-1" id="code_proforma">
-                                                                                <a style="display: none;" id="btn_check" class="btn btn-success">
-                                                                                    <em class="ni ni-check" ></em>
-                                                                                </a>
-                                                                                <a style="display: block;" id="btn_search" class="btn btn-success">
-                                                                                    <em class="ni ni-search" ></em>
-                                                                                </a>
+                                                                            <div class="form-control-wrap">
+                                                                                <select id="code_proforma" class="form-select js-select2" data-search="on">
+                                                                                </select>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -295,7 +285,7 @@
                                                 </div>
                                                 <div class="card-bordered card-preview mt-5">
                                                     <div class="card-inner">
-                                                        <table class="datatable-init table table_proforma" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
+                                                        <table class="datatable-init table table_vente" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
                                                             <thead>
                                                                 <tr class="nk-tb-item nk-tb-head">
                                                                     <th class="nk-tb-col" >
@@ -305,13 +295,19 @@
                                                                         <span class="sub-text">Code</span>
                                                                     </th>
                                                                     <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Nom et Prénoms</span>
+                                                                        <span class="sub-text">Client</span>
                                                                     </th>
                                                                     <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Contact</span>
+                                                                        <span class="sub-text">Réglé ?</span>
                                                                     </th>
                                                                     <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Valider</span>
+                                                                        <span class="sub-text">Total</span>
+                                                                    </th>
+                                                                    <th class="nk-tb-col" >
+                                                                        <span class="sub-text">Part Assurance</span>
+                                                                    </th>
+                                                                    <th class="nk-tb-col" >
+                                                                        <span class="sub-text">Net à payer</span>
                                                                     </th>
                                                                     <th class="nk-tb-col" >
                                                                         <span class="sub-text">Date</span>
@@ -342,8 +338,8 @@
 <script src="{{asset('assets/app/jsPDF-AutoTable/dist/jspdf.plugin.autotable.min.js')}}"></script>
 <script src="{{asset('assets/app/js/Datatable/init.js')}}"></script>
 <script src="{{asset('assets/app/js/select.js')}}"></script>
-<script src="{{asset('assets/app/js/pdf/facture_proforma.js')}}"></script>
+<script src="{{asset('assets/app/js/pdf/facture_vente.js')}}"></script>
 <script src="{{asset('assets/app/js/insert/facture_vente.js')}}"></script>
-<script src="{{asset('assets/app/js/list/list_proforma_all.js')}}"></script>
+<script src="{{asset('assets/app/js/list/list_vente_all.js')}}"></script>
 
 @endsection

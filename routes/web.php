@@ -23,5 +23,8 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('/Facture Proforma', [Controller::class, 'proforma'])->name('proforma');
 	Route::get('/Nouvelle Vente', [Controller::class, 'vente'])->name('vente');
 
+	Route::get('/Opération de Caisse', [Controller::class, 'operation'])->name('operation');
+	Route::get('/Encaissements', [Controller::class, 'encaissement'])->name('encaissement');
+
 });
 

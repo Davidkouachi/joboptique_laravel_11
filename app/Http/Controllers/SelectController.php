@@ -63,26 +63,28 @@ class SelectController extends Controller
     {
         $data = DB::table('client')->select('matricule','nomprenom','cel','tauxes')->orderBy('nomprenom', 'asc')->get();
 
-        $taux = 0;
         foreach ($data as $value) {
-            
-            if ($value->tauxes != null) {
+            $taux = 0;
+
+            if (!is_null($value->tauxes)) {
                 $valeur = DB::table('tauxes')
                     ->where('id', '=', $value->tauxes)
                     ->select('valeur')
                     ->first();
 
-                $taux = $valeur->valeur;
+                if ($valeur) {
+                    $taux = $valeur->valeur;
+                }
             }
 
             $value->taux = $taux;
-
         }
 
         return response()->json([
             'data' => $data,
         ]);
     }
+
 
     public function select_client_prescription($matricule)
     {
@@ -101,6 +103,40 @@ class SelectController extends Controller
 
         return response()->json([
             'data' => $formattedData,
+        ]);
+    }
+
+    public function select_code_proforma_vente()
+    {
+        $data = DB::table('proforma')->where('valide', '=', null)->select('code')->get();
+
+        return response()->json( [ 'data' => $data]);
+    }
+
+    public function select_traitement()
+    {
+        $data = DB::table('traitement')->select('id','libelle')->get();
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
+
+    public function select_type_verre()
+    {
+        $data = DB::table('type_verre')->select('id','libelle')->get();
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
+
+    public function select_op_magasin()
+    {
+        $data = DB::table('magasin')->select('id','nom')->get();
+
+        return response()->json([
+            'data' => $data,
         ]);
     }
 }
