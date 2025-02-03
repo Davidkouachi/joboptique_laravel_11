@@ -141,6 +141,34 @@ $(document).ready(function () {
         });
     }
 
+    window.select_client_facturation = function (id) 
+    {
+        const selectElement2 = $(id);
+        selectElement2.empty();
+        selectElement2.append($('<option>', {
+            value: '',
+            text: '',
+        }));
+
+        $.ajax({
+            url: '/api/select_client',
+            method: 'GET',
+            success: function(response) {
+                const data = response.data;
+
+                data.forEach(function(item) {
+                    selectElement2.append($('<option>', {
+                        value: item.matricule,
+                        text: item.nomprenom+' - '+item.cel,
+                    }));
+                });
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
+        });
+    }
+
     window.sphere_prescription = function (id,data) 
     {
         const selectElement2 = $(id);

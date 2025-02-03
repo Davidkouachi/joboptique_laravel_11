@@ -21,46 +21,46 @@
         <div class="nk-main ">
             <div class="nk-wrap nk-wrap-nosidebar">
                 <div class="nk-content ">
-                    <div class="nk-block nk-block-middle nk-auth-body  wide-xs">
+                    <div class="nk-block nk-block-middle nk-auth-body" style="max-width: 30%;">
                         <div class="card">
                             <div class="card-inner card-inner-lg">
-                            	<div class="brand-logo pb-4 text-center">
+                            	<div class="brand-logo pb-4 text-center mb-3">
 		                        	<a class="logo-link">
 		                        		<img style="height: 600px; width: 200px; " class="logo-dark logo-img logo-img-lg" src="{{ asset('assets/images/logo.jpg') }}" srcset="{{ asset('assets/images/logo.jpg') }} 2x">
 		                        	</a>
 		                        </div>
-                                <div class="nk-block-head">
-                                    <div class="nk-block-head-content">
+                                <div class="nk-block-head mb-3">
+                                    <div class="nk-block-head-content text-center">
                                         <h4 class="nk-block-title">Bienvenue ! 👋</h4>
                                         <div class="nk-block-des">
                                             <p>Plateforme de gestion</p>
                                         </div>
                                     </div>
                                 </div>
-                                <form id="formulaire_login">
+                                <form id="formulaire_login" class="mb-3">
                                     <div class="form-group">
                                         <div class="form-label-group">
                                         	<label class="form-label">Login</label>
                                         </div>
                                         <div class="form-control-wrap">
-                                        	<input id="login" type="text" class="form-control form-control-lg" placeholder="Entrer votre Login">
+                                        	<input id="login" type="text" class="form-control form-control-md" placeholder="Entrer votre Login">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="form-label-group">
                                         	<label class="form-label">Mot de passe</label>
-                                        	<a class="link link-primary link-sm" href="">Mot de passe oublié?</a>
+                                        	{{-- <a class="link link-primary link-sm" href="">Mot de passe oublié?</a> --}}
                                         </div>
                                         <div class="form-control-wrap">
                                         	<a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
                                         		<em class="passcode-icon icon-show icon ni ni-eye"></em>
                                         		<em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                         	</a>
-                                        	<input type="password" class="form-control form-control-lg" id="password" placeholder="Entrer votre mot de passe">
+                                        	<input type="password" class="form-control form-control-md" id="password" placeholder="Entrer votre mot de passe">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                    	<button type="submit" class="btn btn-lg btn-outline-success btn-block">Se connecter</button>
+                                    	<button type="submit" class="btn btn-md btn-outline-success btn-block">Se connecter</button>
                                     </div>
                                 </form>
                             </div>

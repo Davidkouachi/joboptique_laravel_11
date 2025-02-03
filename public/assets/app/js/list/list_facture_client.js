@@ -4,11 +4,21 @@ $(document).ready(function () {
 
         let client = $('#client').val();
 
+        // Ajouter le préchargeur
+        let preloader_ch = `
+            <div id="preloader_ch">
+                <div class="spinner_preloader_ch"></div>
+            </div>
+        `;
+        $("body").append(preloader_ch);
+
         $.ajax({
             url: '/api/list_facture_client/'+client,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
+                $("#preloader_ch").remove();
+
                 const facture = data.data;
                 const donne = data.donne;
 
@@ -29,12 +39,7 @@ $(document).ready(function () {
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
                                 <td class="nk-tb-col" >
-                                    <span class="tb-product">
-                                        ${item.regle == 1 ?
-                                        `<img height="30" width="30" src="assets/images/fac_payer.jpg" class="rounded-circle thumb me-1">`
-                                        :
-                                        `<img height="30" width="30" src="assets/images/fac_impayer.jpg" class="rounded-circle thumb me-1">`
-                                        }
+                                    <span class="tb-amount">
                                         <span class="title">${item.code}</span>
                                     </span>
                                 </td>
@@ -81,6 +86,20 @@ $(document).ready(function () {
                                             <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <ul class="link-list-opt no-bdr">
+                                                        ${item.regle == null ? 
+                                                        `<li>
+                                                            <a  href="#"
+                                                                class="toggle text-success btn-plus"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#Versement"
+                                                                data-code="${item.code}"
+                                                                data-matricule="${item.matricule}"
+                                                                data-reste="${item.reste}"
+                                                            >
+                                                                <em class="icon ni ni-plus-circle"></em>
+                                                                <span>Effectuer un Versement</span>
+                                                            </a>
+                                                        </li>` : ``}
                                                         <li>
                                                             <a  href="#"
                                                                 class="text-warning btn-pdf"
@@ -132,6 +151,7 @@ $(document).ready(function () {
                 }
             },
             error: function() {
+                $("#preloader_ch").remove();
                 initializeDataTable(".table_facture_client", { responsive: { details: true } });
 
                 $('#total').text('Montant Total : 0 Fcfa');
@@ -195,7 +215,7 @@ $(document).ready(function () {
 
             let row = $(`
                 <li>
-                    <a href="#" data-id="${item.id}" class="btn btn-primary mb-2">
+                    <a href="#" data-id="${item.id}" class="btn btn-primary mb-2 btn_recu_vers">
                         <em class="icon ni ni-printer"></em>
                         <span>Versement ${index+1} (${item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa)</span>
                     </a>
@@ -205,7 +225,7 @@ $(document).ready(function () {
         })
 
         // Ajout d'un gestionnaire d'événements pour récupérer l'id du versement
-        $('#contenu_versement').on('click', 'a', function () {
+        $('#contenu_versement').off('click', '.btn_recu_vers').on('click', '.btn_recu_vers', function () {
             let versementId = $(this).data('id');
 
             var modal = bootstrap.Modal.getInstance(document.getElementById('modalLarge'));
@@ -251,6 +271,22 @@ $(document).ready(function () {
 
     });
 
-    $("#client").on("change", list_facture_client);
+    $('.table_facture_client').on('click', '.btn-plus', function () {
+        const code = $(this).data('code');
+        const matricule = $(this).data('matricule');
+        const reste = $(this).data('reste');
+
+        $('#input_code').val(code);
+        $('#input_matricule').val(matricule);
+
+        $('#montant_payer').val(reste.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+        $('#montant_verser').val(0);
+        $('#montant_restant').val(0);
+        $('#obs').val(null);
+        $('#date_livraison').val(null);
+
+    });
+
+    $("#client").on("change", list_facture_client); 
 
 });

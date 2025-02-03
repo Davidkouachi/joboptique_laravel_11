@@ -151,6 +151,106 @@
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" id="Versement">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="team">
+                        <div class="justify-content-center align-items-center text-center d-flex flex-column mb-5">
+                            <img height="100px" width="100px" class="mb-3" src="{{ asset('assets/images/list_facture.jpg') }}" alt="">
+                            <h6 class="title" >Versement</h6>
+                        </div>
+                        <input type="hidden" id="input_code">
+                        <input type="hidden" id="input_matricule">
+                        <div class="p-1">
+                            <div class="row g-gs">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label">
+                                        Montant à payer
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="form-control-wrap">
+                                            <input id="montant_payer" readonly type="tel" class="form-control">
+                                            <div class="form-icon form-icon-right">
+                                                <span>Fcfa</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label">
+                                        Montant Verser
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="form-control-wrap">
+                                            <input id="montant_verser" type="tel" class="form-control" value="0">
+                                            <div class="form-icon form-icon-right">
+                                                <span>Fcfa</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label">
+                                        Montant restant
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="form-control-wrap">
+                                            <input id="montant_restant" readonly type="tel" class="form-control" value="0">
+                                            <div class="form-icon form-icon-right">
+                                                <span>Fcfa</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label">
+                                        Observation
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="form-control-wrap">
+                                            <input id="obs" type="text" class="form-control" placeholder="Facultatif">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label">
+                                        Encaisser par 
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="form-control-wrap">
+                                            <input readonly type="text" class="form-control" value="{{ Auth::user()->login }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                                    <label class="form-label">
+                                        Date livraison
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="form-control-wrap">
+                                            <input id="date_livraison" type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="div_btn">
+                                    <div class="form-group text-center">
+                                        <button id="btn_vers" class="btn btn-lg btn-outline-success">
+                                            <span>Valider</span>
+                                            <em class="icon ni ni-check-circle"></em>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="{{asset('assets/app/jsPDF-master/dist/jspdf.umd.js')}}"></script>
 <script src="{{asset('assets/app/jsPDF-AutoTable/dist/jspdf.plugin.autotable.min.js')}}"></script>
 <script src="{{asset('assets/app/js/Datatable/init.js')}}"></script>

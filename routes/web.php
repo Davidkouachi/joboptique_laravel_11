@@ -26,5 +26,9 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('/Opération de Caisse', [Controller::class, 'operation'])->name('operation');
 	Route::get('/Encaissements', [Controller::class, 'encaissement'])->name('encaissement');
 
+	Route::get('/Facturation Assurances', [Controller::class, 'facturation_assurance'])->name('facturation_assurance');
+
+	Route::get('/Recherche Facture', [Controller::class, 'recherche_facture'])->name('recherche_facture');
+
 });
 

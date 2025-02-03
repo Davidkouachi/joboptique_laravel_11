@@ -381,6 +381,23 @@ class InsertController extends Controller
                 throw new Exception('Erreur lors de l\'insertion dans la table vente');
             }
 
+            if ($request->choix_assurance == 1) {
+    
+                $Inserted0fac = DB::table('facture_assurance')->insert([
+                    'numfacture' => $code.'-FACT',
+                    'code_vente' => $code,
+                    'date' => now(),
+                    'heure' => now(),
+                    'login' => $request->login,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                if ($Inserted0fac == 0) {
+                    throw new Exception('Erreur lors de l\'insertion dans la table facture_assurance');
+                }
+            }
+
             foreach ($selections as $value) {
 
                 $detailInsert = DB::table('vente_details')->insert([
@@ -574,6 +591,107 @@ class InsertController extends Controller
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
     }
+
+    public function insert_versement(Request $request, $code, $matricule)
+    {
+        $verf = DB::table('porte_caisses')->where('id', 1)->select('statut', 'solde')->first();
+
+        if ($verf && $verf->statut == 0) {
+            return response()->json(['caisser_fermer' => true]);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $num = $this->generateUniqueNumeroOperation();
+
+            // Récupérer les infos du client
+            $client = DB::table('client')->where('matricule', $matricule)->select('nomprenom')->first();
+
+            // Calcul du montant à verser
+            $verser = max(0, (int) $request->montant_verser);
+            $reste = max(0, (int) $request->montant_restant);
+
+            // Vérifier si la vente existe
+            $solde = DB::table('vente')->where('code', $code)->select('payer', 'partclient','date_retrait')->first();
+            if (!$solde) {
+                throw new Exception('Table vente introuvable');
+            }
+
+            // Mise à jour du montant payé et du reste à payer
+            $verser_f = (int) $solde->payer + $verser;
+            $regle = ($verser_f >= (int) $solde->partclient) ? 1 : null;
+            $date = ($verser_f >= (int) $solde->partclient) ? ($request->date_livraison ?? now()) : null;
+
+            $UpdatedV = DB::table('vente')
+                ->where('code', $code)
+                ->update([
+                    'reste' => $reste,
+                    'payer' => $verser_f,
+                    'date_retrait' => $date,
+                    'observation' => $request->obs,
+                    'regle' => $regle,
+                    'updated_at' => now(),
+                ]);
+
+            if (!$UpdatedV) {
+                throw new Exception('Erreur lors de la mise à jour de la table vente');
+            }
+
+            // Insertion du versement
+            $Inserted2 = DB::table('versement')->insert([
+                'achat' => $code,
+                'date' => now(),
+                'montant' => $verser,
+                'login' => $request->login,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if (!$Inserted2) {
+                throw new Exception('Erreur lors de l\'insertion dans la table versement');
+            }
+
+            // Mise à jour du solde dans porte_caisses
+            $nouveau_solde = (int) $verf->solde + $verser;
+            $Updated = DB::table('porte_caisses')->where('id', 1)->update([
+                'solde' => $nouveau_solde,
+                'updated_at' => now(),
+            ]);
+
+            if (!$Updated) {
+                throw new Exception('Erreur lors de la mise à jour de la table porte_caisses');
+            }
+
+            // Insertion dans la caisse
+            $Inserted = DB::table('caisse')->insert([
+                'type' => 'entree',
+                'libelle' => 'VERSEMENT POUR L\'ACHAT DE ' . $client->nomprenom . ' (' . $code . ')',
+                'montant' => $verser,  // Correction : On insère bien le montant versé
+                'magasin' => $request->agence_id,
+                'dateop' => now(),
+                'datecreat' => now(),
+                'heure_crea' => now(),
+                'login' => $request->login,
+                'code_client' => null,
+                'type_operation' => 3,
+                'num_operation' => $num,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if (!$Inserted) {
+                throw new Exception('Erreur lors de l\'insertion dans la table caisse');
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Opération effectuée']);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+
 
 
 

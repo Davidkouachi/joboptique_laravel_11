@@ -66,7 +66,7 @@
                                 <li class="nk-menu-item">
                                     <a href="{{ route('tableau_bord') }}" class="nk-menu-link">
                                         <span class="nk-menu-icon">
-                                            <em class="icon ni ni-bag"></em>
+                                            <em class="icon ni ni-chart-down"></em>
                                         </span>
                                         <span class="nk-menu-text">Tableau de Bord</span>
                                     </a>
@@ -74,7 +74,7 @@
                                 <li class="nk-menu-item has-sub">
                                     <a href="#" class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon">
-                                            <em class="icon ni ni-tile-thumb-fill"></em>
+                                            <em class="icon ni ni-users"></em>
                                         </span>
                                         <span class="nk-menu-text">Clients & Prospects</span>
                                     </a>
@@ -94,7 +94,7 @@
                                 <li class="nk-menu-item">
                                     <a href="{{ route('prescription') }}" class="nk-menu-link">
                                         <span class="nk-menu-icon">
-                                            <em class="icon ni ni-bag"></em>
+                                            <em class="icon ni ni-file-docs"></em>
                                         </span>
                                         <span class="nk-menu-text">Préscription</span>
                                     </a>
@@ -102,7 +102,7 @@
                                 <li class="nk-menu-item has-sub">
                                     <a href="#" class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon">
-                                            <em class="icon ni ni-tile-thumb-fill"></em>
+                                            <em class="icon ni ni-article"></em>
                                         </span>
                                         <span class="nk-menu-text">Factures</span>
                                     </a>
@@ -122,7 +122,7 @@
                                 <li class="nk-menu-item has-sub">
                                     <a href="#" class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon">
-                                            <em class="icon ni ni-tile-thumb-fill"></em>
+                                            <em class="icon ni ni-coins"></em>
                                         </span>
                                         <span class="nk-menu-text">Comptablités</span>
                                     </a>
@@ -138,6 +138,22 @@
                                             </a>
                                         </li>
                                     </ul>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="{{ route('facturation_assurance') }}" class="nk-menu-link">
+                                        <span class="nk-menu-icon">
+                                            <em class="icon ni ni-file-pdf"></em>
+                                        </span>
+                                        <span class="nk-menu-text">Facturation</span>
+                                    </a>
+                                </li>
+                                <li class="nk-menu-item">
+                                    <a href="{{ route('recherche_facture') }}" class="nk-menu-link">
+                                        <span class="nk-menu-icon">
+                                            <em class="icon ni ni-search"></em>
+                                        </span>
+                                        <span class="nk-menu-text">Recherche</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -165,13 +181,13 @@
                                             {{session('user_magasin')}}
                                         </span>
                                     </li>
-                                    <li class="dropdown chats-dropdown">
-                                        <a href="#" class="nk-quick-nav-icon">
+                                    {{-- <li class="dropdown chats-dropdown">
+                                        <a href="#" class="nk-quick-nav-icon" data-bs-toggle="modal" data-bs-target="#modalLargeWidth" id="show_modal_rech" >
                                             <div class="icon-status icon-status-info">
                                                 <em class="icon ni ni-search"></em>
                                             </div>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li class="dropdown user-dropdown"><a href="#" class="dropdown-toggle me-n1" data-bs-toggle="dropdown">
                                             <div class="user-toggle">
                                                 <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
@@ -265,7 +281,8 @@
         </a>
     </div> --}}
 
-    {{-- <script src="{{ asset('assets/app/js/script.js') }}"></script> --}}
+    <script src="{{ asset('assets/app/js/select.js') }}"></script>
+    <script src="{{ asset('assets/app/js/script.js') }}"></script>
     <script src="{{ asset('assets/js/bundlee1e3.js') }}"></script>
     <script src="{{ asset('assets/js/scriptse1e3.js') }}"></script>
     <script src="{{ asset('assets/js/demo-settingse1e3.js') }}"></script>

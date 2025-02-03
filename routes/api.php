@@ -31,6 +31,7 @@ Route::get('/select_op_magasin', [SelectController::class, 'select_op_magasin'])
 
 // Recherche debut
 Route::get('/caisseVerf', [RechercheController::class, 'caisseVerf']);
+Route::get('/list_rech_fac', [RechercheController::class, 'list_rech_fac']);
 // Recherche fin
 
 // Caisse debut
@@ -45,6 +46,7 @@ Route::get('/insert_prescription/{matricule}', [InsertController::class, 'insert
 Route::get('/insert_proforma', [InsertController::class, 'insert_proforma']);
 Route::get('/insert_vente', [InsertController::class, 'insert_vente']);
 Route::get('/insert_operation/{id_agence}/{login}', [InsertController::class, 'insert_operation']);
+Route::get('/insert_versement/{code}/{matricule}', [InsertController::class, 'insert_versement']);
 // Ajouter fin
 
 // Liste debut
@@ -54,6 +56,7 @@ Route::get('/list_proforma_all', [ListeController::class, 'list_proforma_all']);
 Route::get('/list_vente_all', [ListeController::class, 'list_vente_all']);
 Route::get('/list_operation_all/{date1}/{date2}/{magasin}', [ListeController::class, 'list_operation_all']);
 Route::get('/list_facture_client/{matricule}', [ListeController::class, 'list_facture_client']);
+Route::get('/list_facturation', [ListeController::class, 'list_facturation']);
 // Liste fin
 
 // Facture debut

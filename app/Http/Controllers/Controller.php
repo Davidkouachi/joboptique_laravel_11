@@ -43,4 +43,14 @@ class Controller
     {
         return view('pages.comptablite.encaissement');
     }
+
+    public function facturation_assurance()
+    {
+        return view('pages.facturation.assurance');
+    }
+
+    public function recherche_facture()
+    {
+        return view('pages.recherche_facture');
+    }
 }

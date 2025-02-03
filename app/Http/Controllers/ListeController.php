@@ -170,5 +170,49 @@ class ListeController extends Controller
         ]);
     }
 
+    public function list_facturation(Request $request)
+    {
+
+        $query = DB::table('vente')
+            ->join('client', 'client.matricule', '=', 'vente.matricule')
+            ->leftJoin('societe_assurance', 'societe_assurance.id', '=', 'client.societe_assurance')
+            ->leftJoin('assurance', 'assurance.code', '=', 'client.assurance')
+            ->join('facture_assurance', 'facture_assurance.code_vente', '=', 'vente.code')
+            ->whereBetween('facture_assurance.date', [$request->date1, $request->date2])
+            ->select(
+                'vente.code as code_vente',
+                'vente.partassurance as partassurance',
+                'client.matricule_assurance as matricule_assurance',
+                'client.nomprenom as client',
+                'societe_assurance.libelle as societe',
+                'assurance.denomination as assurance',
+                'facture_assurance.numfacture as numfacture',
+                'facture_assurance.date as datefacture',
+            );
+
+        if ($request->type == 'client') {
+            $query->where('client.matricule', '=', $request->client);
+        } elseif ($request->type == 'assurance') {
+            $query->where('client.assurance', '=', $request->assurance);
+        }
+
+        $facture = $query->get();
+
+        $total = 0;
+
+        if ($facture->isNotEmpty()) {
+            foreach ($facture as $value) {
+                $montant = (int) $value->partassurance; // Assurer que c'est un nombre
+
+                $total += $montant;
+            }
+        }
+
+        return response()->json([
+            'data' => $facture,
+            'total' => $total,
+        ]);
+    }
+
     
 }

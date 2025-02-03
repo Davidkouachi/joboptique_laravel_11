@@ -71,7 +71,7 @@ $(document).ready(function () {
                 ["Motif du Versement", "ACHAT N° "+facture.code],
                 ["Part Assurance", facture.partassurance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa"],
                 ["Somme Verser", recu.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa"],
-                ["Date Livraison", formatDate(facture.date_retrait)],  
+                ["Date Livraison", facture.date_retrait ? formatDate(facture.date_retrait) : 'Néant'],  
             ];
 
             doc.setFontSize(10);

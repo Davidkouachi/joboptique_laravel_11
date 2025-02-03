@@ -197,7 +197,7 @@ class DatabaseSeeder extends Seeder
             
             if ($value->created_at == null || $value->updated_at) {
                 
-                $date = $value->datecreat.' '.$value->heure_crea;
+                $date = date('Y-m-d', strtotime($value->datecreat)).' '.$value->heure_crea;
 
                 $updateData = [
                     'created_at' => $date,
