@@ -76,6 +76,7 @@ Route::get('/stat_table', [StatistiqueController::class, 'stat_table']);
 // Bilan debut
 Route::get('/bilan_op/{year}', [BilanController::class, 'bilan_op']);
 Route::get('/bilan_vente/{year}', [BilanController::class, 'bilan_vente']);
+Route::get('/bilan_eva_vente/{year}', [BilanController::class, 'bilan_eva_vente']);
 Route::get('/bilan_client/{year}', [BilanController::class, 'bilan_client']);
 Route::get('/bilan_detail_vente/{periode}/{magasin}', [BilanController::class, 'bilan_detail_vente']);
 // Bilan fin

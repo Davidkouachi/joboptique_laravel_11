@@ -73,13 +73,68 @@ class BilanController extends Controller
             ->select(
                 'magasin.id',
                 'magasin.nom',
-                DB::raw('COALESCE(SUM(vente.total), 0) as total_ventes'), // Remplacer NULL par 0
-                DB::raw('COALESCE(COUNT(vente.code), 0) as nombre_ventes') // Remplacer NULL par 0
+                DB::raw('IFNULL(SUM(vente.total), 0) as total_ventes'), // Remplacer NULL par 0
+                DB::raw('IFNULL(COUNT(vente.code), 0) as nombre_ventes') // Remplacer NULL par 0
             )
             ->groupBy('magasin.id', 'magasin.nom')
             ->get();
 
         return response()->json($magasin);
+    }
+
+    public function bilan_eva_vente($year)
+    {
+        $monthlyStats = [
+            'client' => array_fill_keys(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 0),
+            'assurance' => array_fill_keys(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 0),
+            'total'  => array_fill_keys(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 0),
+        ];
+
+        // Total général
+        $totalG = 0;
+        $totalP = 0;
+        $totalA = 0;
+        $total_payer = 0;
+        $total_impayer = 0;
+
+        // Une seule requête pour tout récupérer
+        $data = DB::table('vente')
+            ->whereYear('date', $year)
+            ->select(
+                DB::raw('MONTH(date) as month'),
+                DB::raw('IFNULL(SUM(vente.total), 0) as total_vente'),
+                DB::raw('IFNULL(SUM(vente.partclient), 0) as total_client'),
+                DB::raw('IFNULL(SUM(vente.partassurance), 0) as total_assurance'),
+                DB::raw('IFNULL(SUM(vente.payer), 0) as total_payer'),
+                DB::raw('IFNULL(SUM(vente.reste), 0) as total_reste')
+            )
+            ->groupBy(DB::raw('MONTH(date)'))
+            ->get();
+
+        // Traitement des résultats
+        foreach ($data as $value) {
+
+            $monthName = date('M', mktime(0, 0, 0, intval($value->month), 10));
+            // Stocker les valeurs
+            $monthlyStats['client'][$monthName] = (int) $value->total_client;
+            $monthlyStats['assurance'][$monthName] = (int) $value->total_assurance;
+            $monthlyStats['total'][$monthName] = (int) $value->total_vente;
+
+            // Totaux globaux
+            $totalG += (int) $value->total_vente;
+            $totalP += (int) $value->total_client;
+            $totalA += (int) $value->total_assurance;
+            $total_payer += (int) $value->total_payer;
+            $total_impayer += (int) $value->total_reste;
+        }
+
+        // Retourner la réponse JSON
+        return response()->json([
+            'monthlyStats' => $monthlyStats,
+            'total_client' => $totalP,
+            'total_assurance' => $totalA,
+            'total' => $totalG,
+        ]);
     }
 
     public function bilan_client($year)

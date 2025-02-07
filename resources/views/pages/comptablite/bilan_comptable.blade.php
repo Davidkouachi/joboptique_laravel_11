@@ -82,6 +82,32 @@
                             </div>
                         </div>
                         <div class="col-12">
+                            <div class="card" style="background: linear-gradient(to right, #FF4500, #FFA500);"> 
+                                <div class="nk-ecwg nk-ecwg6">
+                                    <div class="card-inner">
+                                        <div class="card-title-group mb-3">
+                                            <div class="card-title">
+                                                <h6 class="title text-white">Evaluation des Ventes</h6>
+                                            </div>
+                                            <div class="card-tools">
+                                                <select id="anne_eva_vente" class="form-select js-select2" data-search="on">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="card-title-group justify-content-center align-items-center" id="div_graph_eva_vente_message">
+                                            <div class="card-title d-flex justify-content-center align-items-center">
+                                                <div class="spinner-border text-white me-1" role="status"></div>
+                                                <h6 class="title text-white">
+                                                    Veuillez patienter s'il vous plaît ...
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div id="contenu_graph_eva_vente" ></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
                             <div class="card">
                                 <div class="nk-ecwg nk-ecwg6">
                                     <div class="card-inner">
@@ -110,12 +136,12 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="card">
+                            <div class="card" style="background: linear-gradient(to right, #4682B4, #3498DB);">
                                 <div class="nk-ecwg nk-ecwg6">
                                     <div class="card-inner">
                                         <div class="card-title-group mb-3">
                                             <div class="card-title">
-                                                <h6 class="title">Statistique des nouveaux Clients</h6>
+                                                <h6 class="title text-white">Statistique des nouveaux Clients</h6>
                                             </div>
                                             <div class="card-tools">
                                                 <select id="anne_client" class="form-select js-select2" data-search="on">
@@ -124,8 +150,8 @@
                                         </div>
                                         <div class="card-title-group justify-content-center align-items-center" id="div_client_message">
                                             <div class="card-title d-flex justify-content-center align-items-center">
-                                                <div class="spinner-border text-warning me-1" role="status"></div>
-                                                <h6 class="title text-warning">
+                                                <div class="spinner-border text-white me-1" role="status"></div>
+                                                <h6 class="title text-white">
                                                     Veuillez patienter s'il vous plaît ...
                                                 </h6>
                                             </div>

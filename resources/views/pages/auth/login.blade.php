@@ -52,7 +52,7 @@
                                         	{{-- <a class="link link-primary link-sm" href="">Mot de passe oublié?</a> --}}
                                         </div>
                                         <div class="form-control-wrap">
-                                        	<a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
+                                        	<a href="#" class="form-icon form-icon-right passcode-switch md" data-target="password">
                                         		<em class="passcode-icon icon-show icon ni ni-eye"></em>
                                         		<em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                         	</a>

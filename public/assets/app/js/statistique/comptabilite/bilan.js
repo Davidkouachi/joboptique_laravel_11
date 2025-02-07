@@ -12,15 +12,18 @@ $(document).ready(function () {
     select_annee('#anne_op');
     select_annee('#anne_vente');
     select_annee('#anne_client');
+    select_annee('#anne_eva_vente');
     // select_annee('#anne_d_vente');
     select_magasin('#magasin_d_vente');
 
     graph_op();
     graph_vente();
+    graph_eva_vente();
     graph_client();
 
     $("#anne_op").on('change', graph_op);
     $("#anne_vente").on('change', graph_vente);
+    $("#anne_eva_vente").on('change', graph_eva_vente);
     $("#anne_client").on('change', graph_client);
     $("#btn_search_vente_d").on('click', vente_detail);
 
@@ -315,6 +318,179 @@ $(document).ready(function () {
             });
     }
 
+    function graph_eva_vente() 
+    {
+        $('#div_graph_eva_vente_message').show();
+        const yearSelect = $("#anne_eva_vente").val();
+
+        const contenug = $("#contenu_graph_eva_vente");
+        contenug.empty();
+
+        const divcon = $(`
+            <div class="card-body" id="graph_eva_vente" ></div>
+            <div class="card-body mb-3" id="graphT_eva_vente" ></div>
+        `);
+
+        contenug.append(divcon);
+
+        fetch('/api/bilan_eva_vente/' + yearSelect)
+            .then(response => response.json())
+            .then(data => {
+
+                $('#div_graph_eva_vente_message').hide();
+
+                const monthlyStats = data.monthlyStats;
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
+
+                const client = generateMonthlyData(monthlyStats.client, months);
+                const assurance = generateMonthlyData(monthlyStats.assurance, months);
+                const total = generateMonthlyData(monthlyStats.total, months);
+
+                var options = {
+                    chart: {
+                        height: 300,
+                        type: "line",
+                        toolbar: {
+                            show: false,
+                        },
+                        zoom: {
+                            enabled: false
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        curve: "smooth",
+                        width: 3,
+                    },
+                    series: [{
+                            name: "Total",
+                            data: client,
+                        },
+                        // {
+                        //     name: "Part Assurance",
+                        //     data: assurance,
+                        // },
+                        // {
+                        //     name: "Total",
+                        //     data: total,
+                        // }, 
+                    ],
+                    grid: {
+                        borderColor: "#d8dee6",
+                        strokeDashArray: 5,
+                        xaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        padding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 10,
+                            left: 0,
+                        },
+                    },
+                    markers: {
+                        size: 1
+                    },
+                    xaxis: {
+                        categories: [
+                            "Janvier",
+                            "Février",
+                            "Mars",
+                            "Avril",
+                            "Mai",
+                            "Juin",
+                            "Juillet",
+                            "Aôut",
+                            "Septembre",
+                            "Octobre",
+                            "Novembre",
+                            "Decembre",
+                        ],
+                        labels: {
+                            style: {
+                                colors: "#fff"
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            show: true,
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa";
+                            },
+                            offsetX: -10,
+                            style: {
+                                colors: "#fff"
+                            }
+                        },
+                    },
+                    colors: ["#fff", "#0ebb13", "#3498db"],
+                    markers: {
+                        size: 0,
+                        opacity: 0.5,
+                        colors: ["#fff", "#0ebb13", "#3498db"],
+                        strokeColor: "#ffffff",
+                        strokeWidth: 1,
+                        hover: {
+                            size: 7,
+                        },
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+" Fcfa";
+                            },
+                        },
+                    },
+                };
+                var chart = new ApexCharts(document.querySelector("#graph_eva_vente"), options);
+                chart.render();
+
+                const stat = $(`
+                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
+                        <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <span class="fw-semibold text-white ps-1 h5">
+                                Montant Total : ${data.total_client.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa
+                            </span>
+                        </div>
+                    </div>
+                `);
+
+                // <div style="background-color: #ffa500;" class="d-flex justify-content-center align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                //             <em class="ni ni-money text-white fs-4"></em>
+                //             <span class="me-1 text-white ps-1">
+                //                 ${data.total_assurance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa
+                //             </span>
+                //             <span class="fw-semibold">Part Assurance</span>
+                //         </div>
+                //         <div style="background-color: #3498db;" class="d-flex justify-content-center align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                //             <em class="ni ni-money text-white fs-4"></em>
+                //             <span class="me-1 text-white ps-1">
+                //                 ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa
+                //             </span>
+                //             <span class="fw-semibold">Montant Total</span>
+                //         </div>
+
+                $('#graphT_eva_vente').append(stat);
+
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des données:', error);
+
+                
+
+            });
+    }
+
     function graph_client() 
     {
         $('#div_client_message').show();
@@ -403,6 +579,11 @@ $(document).ready(function () {
                             "Novembre",
                             "Decembre",
                         ],
+                        labels: {
+                            style: {
+                                colors: "#fff"
+                            }
+                        }
                     },
                     yaxis: {
                         labels: {
@@ -411,13 +592,16 @@ $(document).ready(function () {
                                 return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Format y-axis labels
                             },
                             offsetX: -10,
+                            style: {
+                                colors: "#fff"
+                            }
                         },
                     },
-                    colors: ["#0ebb13"],
+                    colors: ["#fff"],
                     markers: {
                         size: 0,
                         opacity: 0.5,
-                        colors: ["#0ebb13"],
+                        colors: ["#fff"],
                         strokeColor: "#ffffff",
                         strokeWidth: 1,
                         hover: {
@@ -437,20 +621,20 @@ $(document).ready(function () {
 
                 const stat = $(`
                     <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
-                        <div style="background-color: #0ebb13;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
-                            <em class="ni ni-users text-white fs-4"></em>
-                            <span class="me-1 text-white ps-1">+ ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
-                            <span class="fw-semibold">Nouveau Patient(s)</span>
+                        <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <span class="me-1 text-white ps-1">
+                                Nouveau Patient(s) : + ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                            </span>
                         </div>
-                        <div style="background-color: #436ccf;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
-                            <em class="ni ni-user text-white fs-4"></em>
-                            <span class="me-1 text-white ps-1">${data.homme.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
-                            <span class="fw-semibold">Homme(s)</span>
+                        <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <span class="me-1 text-white ps-1">
+                                Homme(s) : ${data.homme.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                            </span>
                         </div>
-                        <div style="background-color: #ff5a39;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
-                            <em class="ni ni-user text-white fs-4"></em>
-                            <span class="me-1 text-white ps-1">${data.femme.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
-                            <span class="fw-semibold">Femme(s)</span>
+                        <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <span class="me-1 text-white ps-1">
+                                Femme(s) : ${data.femme.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                            </span>
                         </div>
                     </div>
                 `);
@@ -562,7 +746,7 @@ $(document).ready(function () {
                         color: 'warning', 
                     },
                     { 
-                        title: 'Part Client Soldées', 
+                        title: 'Part Client Soldées',
                         count: (data.total_spartclient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
                         icon: 'money',
                         color: 'success', 
