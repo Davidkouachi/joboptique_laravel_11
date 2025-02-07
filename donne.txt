@@ -1,0 +1,4 @@
+- TEST : 
+	- Base de données : cp979676_joboptique
+	- utilisateur : cp979676_user
+	- Mot de passe user : xxh?xnaDvtPg

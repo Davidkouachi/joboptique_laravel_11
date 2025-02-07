@@ -27,4 +27,57 @@ $(document).ready(function () {
 
     }
 
+    window.historiqueBtnMenu = function () {
+
+        const btnReduc = localStorage.getItem("btn_historique");
+
+        console.log(btnReduc);
+
+        if (btnReduc == null) {
+            localStorage.setItem("btn_historique", "large");
+        } else if (btnReduc == "reduit") {
+            $("#btn_menu").click();
+        }
+
+        $("#btn_menu").on("click", function () {
+
+            const btnhistorique = localStorage.getItem("btn_historique");
+
+            if (btnhistorique == "reduit") {
+                localStorage.setItem("btn_historique", "large");
+            } else if (btnhistorique == "large") {
+                localStorage.setItem("btn_historique", "reduit");
+            }
+
+            console.log(btnhistorique);
+        });
+    }
+
+    window.historiqueBtnMenu = function () {
+        const btnReduc = localStorage.getItem("btn_historique");
+        // console.log(btnReduc);
+
+        if (btnReduc == null) {
+            localStorage.setItem("btn_historique", "large");
+            $("#div_menu").removeClass("is-compact");
+        } else if (btnReduc == "reduit") {
+            $("#div_menu").addClass("is-compact");
+        }
+
+        $("#btn_menu").on("click", function () {
+            const btnhistorique = localStorage.getItem("btn_historique");
+
+            if (btnhistorique == "reduit") {
+                localStorage.setItem("btn_historique", "large");
+                $("#div_menu").addClass("is-compact");
+            } else {
+                localStorage.setItem("btn_historique", "reduit");
+                $("#div_menu").removeClass("is-compact");
+            }
+
+            // console.log("État du menu : ", localStorage.getItem("btn_historique"));
+        });
+    }
+
+
 });

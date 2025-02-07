@@ -11,10 +11,15 @@
     <title>
         @yield('titre') | JOBOPTIQUE
     </title>
+    
     <script src="{{asset('jquery.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="{{asset('assets/app/js/alert.js')}}"></script>
     <script src="{{asset('assets/app/js/format.js')}}"></script>
     <script src="{{asset('assets/app/js/urlHis.js')}}"></script>
+    <script src="{{ asset('assets/app/js/select.js') }}"></script>
+    <script src="{{ asset('assets/app/js/script.js') }}"></script>
+    
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/style.css') }}">
@@ -26,12 +31,12 @@
     <input type="hidden" id="agence" value="{{ session('user_magasin') }}">
     <input type="hidden" id="id_agence" value="{{ Auth::user()->magasin_id }}">
 
-    {{-- <div class="js-preloader">
+    <div class="js-preloader">
         <div class="loading-animation">
             <img class="mt-0" src="{{ asset('assets/images/logo.jpg') }}">
             <div class="loading-animation tri-ring mt-5" style="margin-left: -30px; font-size: 10px;"></div>
         </div>
-    </div> --}}
+    </div>
     {{-- <div class="js-preloader">
         <div class="loading-animation tri-ring"></div>
     </div>
@@ -42,7 +47,7 @@
 
     <div class="nk-app-root">
         <div class="nk-main ">
-            <div class="nk-sidebar nk-sidebar-fixed is-light " data-content="sidebarMenu">
+            <div id="div_menu" class="nk-sidebar nk-sidebar-fixed is-light" data-content="sidebarMenu">
                 <div class="nk-sidebar-element nk-sidebar-head">
                     <div class="nk-sidebar-brand">
                         <a href="#" class="logo-link nk-sidebar-logo">
@@ -54,7 +59,7 @@
                         <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu">
                             <em class="icon ni ni-arrow-left"></em>
                         </a>
-                        <a href="#" class="nk-nav-compact nk-quick-nav-icon d-none d-xl-inline-flex" data-target="sidebarMenu">
+                        <a href="#" id="btn_menu" class="nk-nav-compact nk-quick-nav-icon d-none d-xl-inline-flex" data-target="sidebarMenu">
                             <em class="icon ni ni-menu"></em>
                         </a>
                     </div>
@@ -127,6 +132,11 @@
                                         <span class="nk-menu-text">Comptablités</span>
                                     </a>
                                     <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="{{ route('bilan_comptable') }}" class="nk-menu-link">
+                                                <span class="nk-menu-text">Bilan Comptable</span>
+                                            </a>
+                                        </li>
                                         <li class="nk-menu-item">
                                             <a href="{{ route('encaissement') }}" class="nk-menu-link">
                                                 <span class="nk-menu-text">Encaissements</span>
@@ -281,13 +291,11 @@
         </a>
     </div> --}}
 
-    <script src="{{ asset('assets/app/js/select.js') }}"></script>
-    <script src="{{ asset('assets/app/js/script.js') }}"></script>
+    
     <script src="{{ asset('assets/js/bundlee1e3.js') }}"></script>
     <script src="{{ asset('assets/js/scriptse1e3.js') }}"></script>
     <script src="{{ asset('assets/js/demo-settingse1e3.js') }}"></script>
     <script src="{{ asset('assets/js/libs/datatable-btnse1e3.js') }}"></script>
-    <script>$(document).ready(function () {urlHistorique(@json(Auth::user()->login));});</script>
 
 </body>
 

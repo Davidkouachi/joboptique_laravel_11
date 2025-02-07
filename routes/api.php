@@ -10,6 +10,8 @@ use App\Http\Controllers\InsertController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\RechercheController;
 use App\Http\Controllers\CaisseController;
+use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\BilanController;
 
 Route::middleware(['web'])->group(function () {
 
@@ -64,3 +66,16 @@ Route::get('/imp_fac_proforma/{code}', [FactureController::class, 'imp_fac_profo
 Route::get('/imp_fac_vente/{code}/{matricule}', [FactureController::class, 'imp_fac_vente']);
 Route::get('/imp_fac_recu/{code}/{matricule}/{id}', [FactureController::class, 'imp_fac_recu']);
 // Facture fin
+
+// Statistique debut
+Route::get('/stat_day', [StatistiqueController::class, 'stat_day']);
+Route::get('/stat_nbre', [StatistiqueController::class, 'stat_nbre']);
+Route::get('/stat_table', [StatistiqueController::class, 'stat_table']);
+// Statistique fin
+
+// Bilan debut
+Route::get('/bilan_op/{year}', [BilanController::class, 'bilan_op']);
+Route::get('/bilan_vente/{year}', [BilanController::class, 'bilan_vente']);
+Route::get('/bilan_client/{year}', [BilanController::class, 'bilan_client']);
+Route::get('/bilan_detail_vente/{periode}/{magasin}', [BilanController::class, 'bilan_detail_vente']);
+// Bilan fin

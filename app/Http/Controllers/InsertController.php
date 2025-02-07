@@ -277,6 +277,7 @@ class InsertController extends Controller
                 'contact' => $request->tel,
                 'email' => null,
                 'login' => $request->login,
+                'magasin' => $request->agence_id,
                 'valide' => null,
                 'relance_client' => null,
                 'created_at' => now(),
@@ -564,12 +565,15 @@ class InsertController extends Controller
                 throw new Exception('Erreur lors de l\'insertion dans la table porte_caisses');
             }
 
+            $dateop = $request->dateop.' '.date('H:i:s',time());
+
             $Inserted = DB::table('caisse')->insert([
                 'type' => $request->type,
                 'libelle' => $request->motif,
                 'montant' => (int) $request->montant,
                 'magasin' => $id_agence,
                 'dateop' => $request->dateop,
+                'dateop' => $dateop,
                 'datecreat' => now(),
                 'heure_crea' => now(),
                 'login' => $login,

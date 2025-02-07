@@ -375,5 +375,50 @@ $(document).ready(function () {
         });
     }
 
+    window.select_annee = function (id) 
+    {
+        const selectElement = $(id);
+        selectElement.empty();
+        
+        const currentYear = new Date().getFullYear();
+        const startYear = 2019;
+
+        // Ajouter les années en ordre décroissant
+        for (let year = currentYear; year >= startYear; year--) {
+            const option = $('<option>', {
+                value: year,
+                text: year,
+                selected: year === currentYear
+            });
+
+            selectElement.append(option);
+        }
+    };
+
+    window.select_magasin = function (id) 
+    {
+        const selectElement2 = $(id);
+        selectElement2.empty();;
+
+        $.ajax({
+            url: '/api/select_op_magasin',
+            method: 'GET',
+            success: function(response) {
+                const data = response.data;
+
+                data.forEach(function(item) {
+                    selectElement2.append($('<option>', {
+                        value: item.id,
+                        text: item.nom,
+                    }));
+                });
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
+        });
+    }
+
+
 
 });

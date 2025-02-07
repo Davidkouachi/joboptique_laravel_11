@@ -98,19 +98,7 @@ $(document).ready(function () {
     // $("#btn_ouverture_caisse").on("click", caisseOuvert);
     // $("#btn_fermeture_caisse").on("click", caisseFermer);
 
-    select_op_magasin('#rech_magasin');
-
-    $('#show_modal_rech').on('click', function() {
-
-        $('#rech_type').val(0).trigger('change');
-        $('#rech_magasin').val(0).trigger('change');
-        $('#rech_date1').val(null);
-        $('#rech_date2').val(null);
-
-
-        
-
-
-    })
+    urlHistorique($('#login').val().trim());
+    historiqueBtnMenu();
 
 });

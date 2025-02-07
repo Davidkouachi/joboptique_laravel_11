@@ -1,0 +1,688 @@
+$(document).ready(function () { 
+
+    $('#solde').hide();
+    $('#btn_fermer').hide();
+    $('#btn_ouvert').hide();
+    $('#chargement').hide();
+    $('#div_operation').hide();
+    $('#message').hide();
+
+    Verfication_statut();
+
+    select_annee('#anne_op');
+    select_annee('#anne_vente');
+    select_annee('#anne_client');
+    // select_annee('#anne_d_vente');
+    select_magasin('#magasin_d_vente');
+
+    graph_op();
+    graph_vente();
+    graph_client();
+
+    $("#anne_op").on('change', graph_op);
+    $("#anne_vente").on('change', graph_vente);
+    $("#anne_client").on('change', graph_client);
+    $("#btn_search_vente_d").on('click', vente_detail);
+
+    function graph_op() 
+    {
+        $('#div_graph_op_message').show();
+        const yearSelect = $("#anne_op").val();
+
+        const contenug = $("#contenu_graph_op");
+        contenug.empty();
+
+        const divcon = $(`
+            <div class="card-body" id="graph_op" ></div>
+            <div class="card-body mb-3" id="graphT_op" ></div>
+        `);
+
+        contenug.append(divcon);
+
+        fetch('/api/bilan_op/' + yearSelect)
+            .then(response => response.json())
+            .then(data => {
+
+                $('#div_graph_op_message').hide();
+
+                const monthlyStats = data.monthlyStats;
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
+
+                const entrer = generateMonthlyData(monthlyStats.entrer, months);
+                const sortie = generateMonthlyData(monthlyStats.sortie, months);
+                const total = generateMonthlyData(monthlyStats.total, months);
+
+                var options = {
+                    chart: {
+                        height: 300,
+                        type: "line",
+                        toolbar: {
+                            show: false,
+                        },
+                        zoom: {
+                            enabled: false
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        curve: "smooth",
+                        width: 3,
+                    },
+                    series: [{
+                            name: "Entrées",
+                            data: entrer,
+                        },
+                        {
+                            name: "Sorties",
+                            data: sortie,
+                        },
+                        {
+                            name: "Total",
+                            data: total,
+                        }, 
+                    ],
+                    grid: {
+                        borderColor: "#d8dee6",
+                        strokeDashArray: 5,
+                        xaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        padding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 10,
+                            left: 0,
+                        },
+                    },
+                    markers: {
+                        size: 1
+                    },
+                    xaxis: {
+                        categories: [
+                            "Janvier",
+                            "Février",
+                            "Mars",
+                            "Avril",
+                            "Mai",
+                            "Juin",
+                            "Juillet",
+                            "Aôut",
+                            "Septembre",
+                            "Octobre",
+                            "Novembre",
+                            "Decembre",
+                        ],
+                    },
+                    yaxis: {
+                        labels: {
+                            show: true,
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa";
+                            },
+                            offsetX: -10,
+                        },
+                    },
+                    colors: ["#0ebb13", "#ff5a39", "#436ccf"],
+                    markers: {
+                        size: 0,
+                        opacity: 0.5,
+                        colors: ["#0ebb13", "#ff5a39", "#436ccf"],
+                        strokeColor: "#ffffff",
+                        strokeWidth: 1,
+                        hover: {
+                            size: 7,
+                        },
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+" Fcfa";
+                            },
+                        },
+                    },
+                };
+                var chart = new ApexCharts(document.querySelector("#graph_op"), options);
+                chart.render();
+
+                const stat = $(`
+                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
+                        <div style="background-color: #0ebb13;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <em class="ni ni-money text-white fs-4"></em>
+                            <span class="me-1 text-white ps-1">+ ${data.total_entrer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa</span>
+                            <span class="fw-semibold">Entrées</span>
+                        </div>
+                        <div style="background-color: #ff5a39;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <em class="ni ni-money text-white fs-4"></em>
+                            <span class="me-1 text-white ps-1">- ${data.total_sortie.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa</span>
+                            <span class="fw-semibold">Sorties</span>
+                        </div>
+                        <div style="background-color: #436ccf;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <em class="ni ni-money text-white fs-4"></em>
+                            <span class="me-1 text-white ps-1">${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa</span>
+                            <span class="fw-semibold">Total</span>
+                        </div>
+                    </div>
+                `);
+
+                $('#graphT_op').append(stat);
+
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des données:', error);
+
+                
+
+            });
+    }
+
+    function graph_vente() 
+    {
+        $('#div_vente_message').show();
+        const yearSelect = $("#anne_vente").val();
+
+        const contenug = $("#contenu_graph_vente");
+        contenug.empty();
+
+        const divcon = $(`
+            <div class="col-xxl-6 col-sm-6" >
+                <div class="card-body" id="graph_vente_montant" ></div>    
+            </div>
+            <div class="col-xxl-6 col-sm-6" >
+                <div class="card-body" id="graph_vente_nombre" ></div>    
+            </div>
+        `);
+
+        contenug.append(divcon);
+
+        fetch('/api/bilan_vente/' + yearSelect)
+            .then(response => response.json())
+            .then(data => {
+
+                $('#div_vente_message').hide();
+
+                // Extraire les noms des magasins
+                let categories = data.map(item => item.nom);
+
+                // Extraire les montants des ventes
+                let totalVentes = data.map(item => parseFloat(item.total_ventes));
+
+                // Extraire le nombre de ventes
+                let nombreVentes = data.map(item => parseInt(item.nombre_ventes));
+
+                // Configuration du graphique en camembert pour le montant total des ventes
+
+                function generateRandomColors(count) {
+                    let colors = new Set(); // Utilisation d'un Set pour éviter les doublons
+
+                    while (colors.size < count) {
+                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+                        colors.add(color); // Ajoute uniquement si elle n'existe pas déjà
+                    }
+
+                    return Array.from(colors); // Convertit le Set en tableau
+                }
+
+                let colors1 = generateRandomColors(categories.length);
+
+                var optionsMontant = {
+                    chart: {
+                        type: "donut", // Changer le type en donut
+                        height: 350,
+                    },
+                    labels: categories, // Noms des magasins
+                    series: totalVentes, // Montant total des ventes
+                    colors: colors1, // Couleurs personnalisées
+                    legend: {
+                        position: "bottom",
+                    },
+                    title: {
+                        text: "Répartition du montant des ventes par magasin (en Fcfa)",
+                        align: "center",
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa";
+                            },
+                        },
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '60%' // Ajuste la taille du trou au centre du donut
+                            }
+                        }
+                    }
+                };
+
+
+                var chartMontant = new ApexCharts(document.querySelector("#graph_vente_montant"), optionsMontant);
+                chartMontant.render();
+
+                function generateRandomColors2(count) {
+                    let colors = new Set(); // Utilisation d'un Set pour éviter les doublons
+
+                    while (colors.size < count) {
+                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+                        colors.add(color); // Ajoute uniquement si elle n'existe pas déjà
+                    }
+
+                    return Array.from(colors); // Convertit le Set en tableau
+                }
+
+                let colors2 = generateRandomColors2(categories.length);
+
+                // Configuration du graphique en camembert pour le nombre total de ventes
+                var optionsNombre = {
+                    chart: {
+                        type: "pie",
+                        height: 350,
+                    },
+                    labels: categories, // Noms des magasins
+                    series: nombreVentes, // Nombre total de ventes
+                    colors: colors2, // Couleurs personnalisées
+                    legend: {
+                        position: "bottom",
+                    },
+                    title: {
+                        text: "Répartition du total des ventes par magasin",
+                        align: "center",
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val + " ventes";
+                            },
+                        },
+                    },
+                };
+
+                var chartNombre = new ApexCharts(document.querySelector("#graph_vente_nombre"), optionsNombre);
+                chartNombre.render();
+
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des données:', error);
+            });
+    }
+
+    function graph_client() 
+    {
+        $('#div_client_message').show();
+        const yearSelect = $("#anne_client").val();
+
+        const contenug = $("#contenu_graph_client");
+        contenug.empty();
+
+        const divcon = $(`
+            <div class="card-body" id="graph_client" ></div>
+            <div class="card-body mb-3" id="graphT_client" ></div>
+        `);
+
+        contenug.append(divcon);
+
+        fetch('/api/bilan_client/' + yearSelect)
+            .then(response => response.json())
+            .then(data => {
+
+                $('#div_client_message').hide();
+
+                const monthlyStats = data.monthlyStats;
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
+
+                const total = months.map(month => monthlyStats.new[month] || 0);
+
+                var options = {
+                    chart: {
+                        height: 300,
+                        type: "area",
+                        toolbar: {
+                            show: false,
+                        },
+                        zoom: {
+                            enabled: false
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        curve: "smooth",
+                        width: 3,
+                    },
+                    series: [
+                        {
+                            name: "Total",
+                            data: total,
+                        }, 
+                    ],
+                    grid: {
+                        borderColor: "#d8dee6",
+                        strokeDashArray: 5,
+                        xaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        padding: {
+                            top: 0,
+                            right: 0,
+                            bottom: 10,
+                            left: 0,
+                        },
+                    },
+                    markers: {
+                        size: 1
+                    },
+                    xaxis: {
+                        categories: [
+                            "Janvier",
+                            "Février",
+                            "Mars",
+                            "Avril",
+                            "Mai",
+                            "Juin",
+                            "Juillet",
+                            "Aôut",
+                            "Septembre",
+                            "Octobre",
+                            "Novembre",
+                            "Decembre",
+                        ],
+                    },
+                    yaxis: {
+                        labels: {
+                            show: true,
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Format y-axis labels
+                            },
+                            offsetX: -10,
+                        },
+                    },
+                    colors: ["#0ebb13"],
+                    markers: {
+                        size: 0,
+                        opacity: 0.5,
+                        colors: ["#0ebb13"],
+                        strokeColor: "#ffffff",
+                        strokeWidth: 1,
+                        hover: {
+                            size: 7,
+                        },
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+" patient(s)";
+                            },
+                        },
+                    },
+                };
+                var chart = new ApexCharts(document.querySelector("#graph_client"), options);
+                chart.render();
+
+                const stat = $(`
+                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
+                        <div style="background-color: #0ebb13;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <em class="ni ni-users text-white fs-4"></em>
+                            <span class="me-1 text-white ps-1">+ ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
+                            <span class="fw-semibold">Nouveau Patient(s)</span>
+                        </div>
+                        <div style="background-color: #436ccf;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <em class="ni ni-user text-white fs-4"></em>
+                            <span class="me-1 text-white ps-1">${data.homme.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
+                            <span class="fw-semibold">Homme(s)</span>
+                        </div>
+                        <div style="background-color: #ff5a39;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                            <em class="ni ni-user text-white fs-4"></em>
+                            <span class="me-1 text-white ps-1">${data.femme.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</span>
+                            <span class="fw-semibold">Femme(s)</span>
+                        </div>
+                    </div>
+                `);
+
+                $("#graphT_client").append(stat);
+
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des données:', error);
+
+            });
+    }
+
+    function vente_detail()
+    {
+        $('#div_d_vente').empty();
+
+        let periode = $('#periode').val();
+        let magasin = $('#magasin_d_vente').val();
+
+        if (!periode.trim()) {
+            showAlert("Alert", "Veuillez saisir la période s'il vous plaît", "info");
+            return false;
+        }
+
+        // Ajouter le préchargeur
+        let preloader_ch = `
+            <div id="preloader_ch">
+                <div class="spinner_preloader_ch"></div>
+            </div>
+        `;
+        $("body").append(preloader_ch);
+
+        $.ajax({
+            url: '/api/bilan_detail_vente/'+periode+'/'+magasin,
+            method: 'GET',
+            success: function(response) {
+                $("#preloader_ch").remove();
+
+                const data = response.data;
+
+                const contenuDiv = $('#div_d_vente');
+
+                const stats = [
+                    {  
+                        title: 'Total Proforma', 
+                        count: (data.nbre_proforma.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'archive',
+                        color: 'warning', 
+                    },
+                    {  
+                        title: 'Total Proforma Validé', 
+                        count: (data.nbre_proforma_valide.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'check-circle',
+                        color: 'success', 
+                    },
+                    {  
+                        title: 'Total Proforma non-validés', 
+                        count: (data.nbre_proforma_nvalide.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'cross-circle',
+                        color: 'danger', 
+                    },
+                    {  
+                        title: 'Total Ventes', 
+                        count: (data.nbre_vente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'clipboard',
+                        color: 'warning', 
+                    },
+                    { 
+                        title: 'Total Ventes non-soldées', 
+                        count: (data.nbre_vente_nsolde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'cross-circle',
+                        color: 'danger', 
+                    },
+                    { 
+                        title: 'Total Ventes soldées', 
+                        count: (data.nbre_vente_solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'check-circle',
+                        color: 'success', 
+                    },
+                    { 
+                        title: 'Montant Total', 
+                        count: (data.total_tvente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'primary', 
+                    },
+                    { 
+                        title: 'Montant Soldées', 
+                        count: (data.total_svente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'success', 
+                    },
+                    { 
+                        title: 'Montant non-soldées', 
+                        count: (data.total_nvente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'danger', 
+                    },
+                    { 
+                        title: 'Montant Part Assurance', 
+                        count: (data.total_partassurance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'warning', 
+                    },
+                    { 
+                        title: 'Montant Part Client', 
+                        count: (data.total_partclient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'warning', 
+                    },
+                    { 
+                        title: 'Part Client Soldées', 
+                        count: (data.total_spartclient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'success', 
+                    },
+                    { 
+                        title: 'Part Client non-soldées', 
+                        count: (data.total_npartclient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'danger', 
+                    },
+                ];
+
+                stats.forEach(function(stat) {
+
+                    const div = $(`
+                        <div class="col-xxl-3 col-sm-6" >
+                            <div class="card pricing text-center">
+                                <div class="pricing-body">
+                                    <ul class="nk-store-statistics">
+                                        <li class="item">
+                                            <em class="icon bg-${stat.color}-dim ni ni-${stat.icon}"></em>
+                                            <div class="info">
+                                                <div class="title">${stat.title}</div>
+                                                <div class="count text-${stat.color}">${stat.count}</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+
+                    contenuDiv.append(div);
+                });
+
+
+                const div2 = $(`
+                    <div class="col-12">
+                        <div class="card" style="background: linear-gradient(to right, #FFA500, #FF4500);">
+                            <div class="card-inner">
+                                <div class="card-title-group align-start mb-2">
+                                    <div class="card-title">
+                                        <h6 class="title text-white">Informations supplémentaires</h6>
+                                        <p class="text-white" >Par rapport aux ventes effectuées dans la période défini</p>
+                                    </div>
+                                </div>
+                                <div class="align-end gy-3 gx-5 align-items-center justify-content-center">
+                                    <div class="nk-sale-data-group flex-wrap g-5" id="info_detail_vente"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                contenuDiv.append(div2);
+
+                const stats2 = [
+                    {  
+                        title: 'Vente reglées', 
+                        donne: (data.vente_solde_pourcent ?? 0 ) + '%', 
+                    },
+                    {  
+                        title: 'Vente non-reglées', 
+                        donne: (data.vente_nsolde_pourcent ?? 0 ) + '%',  
+                    },
+                    {  
+                        title: 'Vente avec assurance', 
+                        donne: (data.vente_ass_pourcent ?? 0 ) + '%', 
+                    },
+                    {  
+                        title: 'Vente sans assurance', 
+                        donne: (data.vente_nass_pourcent ?? 0 ) + '%',  
+                    },
+                    {  
+                        title: 'Nombre de Versement', 
+                        donne: (data.vente_nbre_vers ?? 0 ),  
+                    },
+                ];
+
+                const contenuDetail = $('#info_detail_vente');
+                contenuDetail.empty();
+
+                stats2.forEach(function(stat2) {
+
+                    const div2 = $(`
+                        <div class="nk-sale-data text-center">
+                            <span class="amount text-white">${stat2.donne}</span>
+                            <span class="title h6 text-white">${stat2.title}</span>
+                        </div>
+                    `);
+
+                    contenuDetail.append(div2);
+                });
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function generateMonthlyData(stats, defaultMonths) 
+    {
+        return defaultMonths.map(month => stats[month] || 0);
+    }
+
+});

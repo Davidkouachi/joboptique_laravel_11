@@ -292,6 +292,7 @@ $(document).ready(function () {
                 axe_OG: axe_OG.val() || null,
                 addition_OG: addition_OG.val() || null,
                 login: $("#login").val().trim(),
+                agence_id: $("#id_agence").val().trim(),
             },
             success: function (response) {
                 $("#preloader_ch").remove();

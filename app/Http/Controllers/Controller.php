@@ -44,6 +44,11 @@ class Controller
         return view('pages.comptablite.encaissement');
     }
 
+    public function bilan_comptable()
+    {
+        return view('pages.comptablite.bilan_comptable');
+    }
+
     public function facturation_assurance()
     {
         return view('pages.facturation.assurance');

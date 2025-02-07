@@ -18,6 +18,12 @@ class CaisseController extends Controller
 {
     public function caisseOuvert($id_agence, $login)
     {
+        $verf = DB::table('porte_caisses')->where('id', '=', 1)->first();
+
+        if ($verf->statut == 1) {
+            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+        }
+        
         DB::beginTransaction();
 
         try {
@@ -67,6 +73,12 @@ class CaisseController extends Controller
 
     public function caisseFermer($id_agence, $login)
     {
+        $verf = DB::table('porte_caisses')->where('id', '=', 1)->first();
+
+        if ($verf->statut == 0) {
+            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+        }
+
         DB::beginTransaction();
 
         try {

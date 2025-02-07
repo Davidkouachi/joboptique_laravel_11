@@ -151,6 +151,10 @@ $(document).ready(function () {
         addFooter();
 
         doc.output('dataurlnewwindow');
+
+        // var blob = doc.output('blob');
+        // var blobURL = URL.createObjectURL(blob);
+        // window.open(blobURL);
     }
 
 });
