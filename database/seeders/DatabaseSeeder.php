@@ -192,8 +192,8 @@ class DatabaseSeeder extends Seeder
         //     }
         // }
 
-        // $caisse = DB::table('caisse')->select('caisse.*')->get();
-        // foreach ($caisse as $value) {
+        $caisse = DB::table('caisse')->select('caisse.*')->get();
+        foreach ($caisse as $value) {
             
         //     if ($value->created_at == null || $value->updated_at) {
                 
@@ -223,7 +223,25 @@ class DatabaseSeeder extends Seeder
 
         //     }
 
-        // }
+            // if ($value->mail == 0) {
+            //     DB::table('caisse')
+            //         ->where('codeop', '=', $value->codeop)
+            //         ->update([
+            //             'mail' => 1,
+            //             'updated_at' => now(),
+            //         ]);
+            // }
+
+            if ($value->type_operation == 4 ||  $value->type_operation == 5) {
+                DB::table('caisse')
+                    ->where('codeop', '=', $value->codeop)
+                    ->update([
+                        'mail' => null,
+                        'updated_at' => now(),
+                    ]);
+            }
+
+        }
 
         // $vente = DB::table('vente')->select('code', 'total', 'partassurance', 'taured')->get();
         // foreach ($vente as $value) {
@@ -303,24 +321,24 @@ class DatabaseSeeder extends Seeder
         //     }
         // }
 
-        $proforma = DB::table('proforma')->select('login', 'code')->get();
-        foreach ($proforma as $value) {
+        // $proforma = DB::table('proforma')->select('login', 'code')->get();
+        // foreach ($proforma as $value) {
 
-            $id = DB::table('utilisa')
-                ->join('magasin', 'magasin.id', '=', 'utilisa.magasin')
-                ->where('utilisa.login', '=', $value->login)
-                ->select('magasin.id as magasin_id')
-                ->first();
+        //     $id = DB::table('utilisa')
+        //         ->join('magasin', 'magasin.id', '=', 'utilisa.magasin')
+        //         ->where('utilisa.login', '=', $value->login)
+        //         ->select('magasin.id as magasin_id')
+        //         ->first();
 
-            if ($id) {
-                DB::table('proforma')
-                    ->where('code', '=', $value->code)
-                    ->update([
-                        'magasin' => $id->magasin_id,
-                        'updated_at' => now(),
-                    ]);
-            }
-        }
+        //     if ($id) {
+        //         DB::table('proforma')
+        //             ->where('code', '=', $value->code)
+        //             ->update([
+        //                 'magasin' => $id->magasin_id,
+        //                 'updated_at' => now(),
+        //             ]);
+        //     }
+        // }
 
     }
 }

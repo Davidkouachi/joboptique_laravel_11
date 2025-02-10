@@ -78,11 +78,18 @@ $(document).ready(function () {
                     $('#btn_ouvert').hide();
                     $('#btn_fermer').show();
                     $('#div_operation').show();
-                    list_operation_all();
+
+                    if ($('.table_operation').length > 0) {
+                        list_operation_all();
+                    }
+
+                    showAlert("Succès","La caisse à été ouverte","success");
+
                 } else {
                     $('#btn_ouvert').show();
                     $('#btn_fermer').hide();
                     $('#div_operation').hide();
+                    showAlert("Alert","Une erreur c'est produite lors de l'ouverture de la caisse.","info");
                 }
             
             },
@@ -92,6 +99,7 @@ $(document).ready(function () {
                 $('#btn_ouvert').show();
                 $('#div_operation').hide();
                 $('#message').show();
+                showAlert("Alert","Une erreur c'est produite.","info");
             }
         });
     }
@@ -116,10 +124,18 @@ $(document).ready(function () {
                     $('#btn_ouvert').show();
                     $('#btn_fermer').hide();
                     $('#div_operation').hide();
+
+                    if ($('.table_operation').length > 0) {
+                        list_operation_all();
+                    }
+
+                    showAlert("Succès","La caisse à été fermer","success");
+                    
                 } else {
                     $('#btn_ouvert').hide();
                     $('#btn_fermer').show();
                     $('#div_operation').show();
+                    showAlert("Alert","Une erreur c'est produite lors de la fermeture de la caisse.","info");
                 }
             
             },
@@ -129,6 +145,7 @@ $(document).ready(function () {
                 $('#btn_ouvert').hide();
                 $('#div_operation').show();
                 $('#message').show();
+                showAlert("Alert","Une erreur c'est produite.","info");
             }
         });
     }

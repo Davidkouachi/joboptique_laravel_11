@@ -580,6 +580,7 @@ class InsertController extends Controller
                 'code_client' => null,
                 'type_operation' => $typeop,
                 'num_operation' => $num,
+                'mail' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

@@ -2,3 +2,13 @@
 	- Base de données : cp979676_joboptique
 	- utilisateur : cp979676_user
 	- Mot de passe user : xxh?xnaDvtPg
+
+
+- MAIL : 
+	- email : joboptique01@gmail.com
+	- password : Optique@01.
+
+- Send_mail 
+	- name_app : Send_mail
+	- username : joboptique01@gmail.com
+	- password : aaek dgym xbjm fajj

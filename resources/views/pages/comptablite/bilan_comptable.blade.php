@@ -136,6 +136,56 @@
                             </div>
                         </div>
                         <div class="col-12">
+                            <div class="card">
+                                <div class="row g-gs" >
+                                    <div class="col-xxl-6 col-12" >
+                                        <div class="card-inner">
+                                            <div class="card-title-group mb-3">
+                                                <div class="card-title">
+                                                    <h6 class="title">Estimation des ventes de l'année en cours 
+                                                        (<script>
+                                                        document.write(new Date().getFullYear())
+                                                        </script>)
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div class="card-title-group justify-content-center align-items-center" id="div_vente_prevision_message1">
+                                                <div class="card-title d-flex justify-content-center align-items-center">
+                                                    <div class="spinner-border text-warning me-1" role="status"></div>
+                                                    <h6 class="title text-warning">
+                                                        Veuillez patienter s'il vous plaît ...
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div class="row g-gs mb-3" id="contenu_graph_vente_prevision1" ></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-6 col-12" >
+                                        <div class="card-inner">
+                                            <div class="card-title-group mb-3">
+                                                <div class="card-title">
+                                                    <h6 class="title">Rapport des ventes de l'année en cours 
+                                                        (<script>
+                                                        document.write(new Date().getFullYear())
+                                                        </script>)
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div class="card-title-group justify-content-center align-items-center" id="div_vente_prevision_message2">
+                                                <div class="card-title d-flex justify-content-center align-items-center">
+                                                    <div class="spinner-border text-warning me-1" role="status"></div>
+                                                    <h6 class="title text-warning">
+                                                        Veuillez patienter s'il vous plaît ...
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div class="row g-gs mb-3" id="contenu_graph_vente_prevision2" ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
                             <div class="card" style="background: linear-gradient(to right, #4682B4, #3498DB);">
                                 <div class="nk-ecwg nk-ecwg6">
                                     <div class="card-inner">
@@ -181,7 +231,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="month" class="form-control" id="periode" max="{{ date('Y-m', strtotime('-1 months')) }}">
+                                                    <input type="month" class="form-control" id="periode" max="{{ date('Y-m')}}">
                                                 </div>
                                             </div>
                                             <div class="form-group">

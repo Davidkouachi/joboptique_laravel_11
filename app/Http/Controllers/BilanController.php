@@ -137,6 +137,265 @@ class BilanController extends Controller
         ]);
     }
 
+    public function stat_prevision()
+    {
+        $currentYear = date('Y');
+        $lastYear = $currentYear - 1;
+        $twoYearsAgo = $currentYear - 2; // Récupérer les données des trois dernières années
+
+        // Récupérer les ventes mensuelles des trois dernières années (année en cours, année précédente et année d'avant)
+        $salesData = DB::table('vente')
+            ->select(
+                DB::raw('MONTH(date) as month'),
+                DB::raw('SUM(total) as total_vente'),
+                DB::raw('COUNT(code) as nombre_ventes'),
+                DB::raw('YEAR(date) as year')
+            )
+            ->whereYear('date', '>=', $twoYearsAgo) // Condition pour récupérer les 3 dernières années
+            ->groupBy(DB::raw('MONTH(date), YEAR(date)'))
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+
+        // Regrouper les données des trois années pour faire une moyenne
+        $monthlyData = [];
+
+        foreach ($salesData as $sale) {
+            $month = $sale->month;
+
+            if (!isset($monthlyData[$month])) {
+                $monthlyData[$month] = [
+                    'total_vente' => 0,
+                    'nombre_ventes' => 0,
+                    'count' => 0,
+                    'years' => [] // Ajouter un tableau pour chaque année
+                ];
+            }
+
+            $monthlyData[$month]['total_vente'] += $sale->total_vente;
+            $monthlyData[$month]['nombre_ventes'] += $sale->nombre_ventes;
+            $monthlyData[$month]['count'] += 1;
+            $monthlyData[$month]['years'][$sale->year] = [
+                'total_vente' => $sale->total_vente,
+                'nombre_ventes' => $sale->nombre_ventes,
+            ];
+        }
+
+        // Calculer la moyenne des ventes pour chaque mois
+        $averageSales = [];
+        foreach ($monthlyData as $month => $data) {
+            $averageSales[] = (object) [
+                'month' => $month,
+                'total_vente' => $data['count'] > 0 ? $data['total_vente'] / $data['count'] : 0,
+                'nombre_ventes' => $data['count'] > 0 ? $data['nombre_ventes'] / $data['count'] : 0,
+                'years' => $data['years'], // Ajouter les données par année
+            ];
+        }
+
+        // Passer $currentYear à la fonction de lissage exponentiel
+        function exponentialSmoothing($data, $currentYear, $alpha = 0.2)
+        {
+            $smoothedData = [];
+            $previousSmoothedTotal = null;
+            $previousSmoothedVentes = null;
+
+            foreach ($data as $sale) {
+                // Initialisation des valeurs lissées
+                if ($previousSmoothedTotal === null) {
+                    $previousSmoothedTotal = $sale->total_vente;
+                    $previousSmoothedVentes = $sale->nombre_ventes;
+                } else {
+                    // Appliquer la formule du lissage exponentiel
+                    $previousSmoothedTotal = $alpha * $sale->total_vente + (1 - $alpha) * $previousSmoothedTotal;
+                    $previousSmoothedVentes = $alpha * $sale->nombre_ventes + (1 - $alpha) * $previousSmoothedVentes;
+                }
+
+                // Ajouter les valeurs lissées au tableau
+                $smoothedData[] = [
+                    'month' => $sale->month,
+                    'current_year_total' => isset($sale->years[$currentYear]) ? $sale->years[$currentYear]['total_vente'] : 0, // Montant de l'année en cours
+                    'current_year_sales' => isset($sale->years[$currentYear]) ? $sale->years[$currentYear]['nombre_ventes'] : 0, // Nombre de ventes de l'année en cours
+                    'smoothed_vente' => (int) round($previousSmoothedTotal), // Montant total des prévisions
+                    'smoothed_nombre_ventes' => (int) round($previousSmoothedVentes), // Nombre de ventes des prévisions
+                ];
+            }
+
+            return $smoothedData;
+        }
+
+        // Appliquer le lissage exponentiel aux moyennes des ventes
+        $data = exponentialSmoothing($averageSales, $currentYear, 0.2);
+
+        return response()->json([
+            'prevision' => $data,
+        ]);
+    }
+
+    // pour 2 ans en arriere
+    // public function stat_prevision()
+    // {
+    //     $currentYear = date('Y');
+    //     $lastYear = $currentYear - 1;
+    //     $twoYearsAgo = $currentYear - 2;
+
+    //     // Récupérer les ventes mensuelles des deux dernières années
+    //     $salesData = DB::table('vente')
+    //         ->select(
+    //             DB::raw('MONTH(date) as month'),
+    //             DB::raw('SUM(total) as total_vente'),
+    //             DB::raw('COUNT(code) as nombre_ventes'),
+    //             DB::raw('YEAR(date) as year')
+    //         )
+    //         ->whereYear('date', '>=', $twoYearsAgo)
+    //         ->groupBy(DB::raw('MONTH(date), YEAR(date)'))
+    //         ->orderBy('month')
+    //         ->orderBy('year')
+    //         ->get();
+
+    //     // Regrouper les données des deux années pour faire une moyenne
+    //     $monthlyData = [];
+
+    //     foreach ($salesData as $sale) {
+    //         $month = $sale->month;
+
+    //         if (!isset($monthlyData[$month])) {
+    //             $monthlyData[$month] = ['total_vente' => 0, 'nombre_ventes' => 0, 'count' => 0];
+    //         }
+
+    //         $monthlyData[$month]['total_vente'] += $sale->total_vente;
+    //         $monthlyData[$month]['nombre_ventes'] += $sale->nombre_ventes;
+    //         $monthlyData[$month]['count'] += 1;
+    //     }
+
+    //     // Calculer la moyenne des ventes pour chaque mois
+    //     $averageSales = [];
+    //     foreach ($monthlyData as $month => $data) {
+    //         $averageSales[] = (object) [
+    //             'month' => $month,
+    //             'total_vente' => $data['count'] > 0 ? $data['total_vente'] / $data['count'] : 0,
+    //             'nombre_ventes' => $data['count'] > 0 ? $data['nombre_ventes'] / $data['count'] : 0,
+    //         ];
+    //     }
+
+    //     function exponentialSmoothing($data, $alpha = 0.2)
+    //     {
+    //         $smoothedData = [];
+    //         $previousSmoothedTotal = null;
+    //         $previousSmoothedVentes = null;
+
+    //         foreach ($data as $sale) {
+    //             // Initialisation des valeurs lissées
+    //             if ($previousSmoothedTotal === null) {
+    //                 $previousSmoothedTotal = $sale->total_vente;
+    //                 $previousSmoothedVentes = $sale->nombre_ventes;
+    //             } else {
+    //                 // Appliquer la formule du lissage exponentiel
+    //                 $previousSmoothedTotal = $alpha * $sale->total_vente + (1 - $alpha) * $previousSmoothedTotal;
+    //                 $previousSmoothedVentes = $alpha * $sale->nombre_ventes + (1 - $alpha) * $previousSmoothedVentes;
+    //             }
+
+    //             // Ajouter les valeurs lissées au tableau
+    //             $smoothedData[] = [
+    //                 'month' => $sale->month,
+    //                 'smoothed_vente' => (int) round($previousSmoothedTotal), // Montant total (int)
+    //                 'smoothed_nombre_ventes' => (int) round($previousSmoothedVentes), // Nombre de ventes (int)
+    //             ];
+    //         }
+
+    //         return $smoothedData;
+    //     }
+
+    //     // Appliquer le lissage exponentiel aux moyennes des ventes
+    //     $data = exponentialSmoothing($averageSales, 0.2);
+
+    //     return response()->json([
+    //         'prevision' => $data,
+    //     ]);
+    // }
+
+    // pour 3 ans en arriere
+    // public function stat_prevision()
+    // {
+    //     $currentYear = date('Y');
+    //     $lastYear = $currentYear - 1;
+    //     $twoYearsAgo = $currentYear - 2;
+    //     $threeYearsAgo = $currentYear - 3; // Ajout de la troisième année
+
+    //     // Récupérer les ventes mensuelles des trois dernières années
+    //     $salesData = DB::table('vente')
+    //         ->select(
+    //             DB::raw('MONTH(date) as month'),
+    //             DB::raw('SUM(total) as total_vente'),
+    //             DB::raw('COUNT(code) as nombre_ventes'),
+    //             DB::raw('YEAR(date) as year')
+    //         )
+    //         ->whereYear('date', '>=', $threeYearsAgo) // Modifier la condition pour inclure 3 ans
+    //         ->groupBy(DB::raw('MONTH(date), YEAR(date)'))
+    //         ->orderBy('year')
+    //         ->orderBy('month')
+    //         ->get();
+
+    //     // Regrouper les données des trois dernières années pour faire une moyenne
+    //     $monthlyData = [];
+
+    //     foreach ($salesData as $sale) {
+    //         $month = $sale->month;
+
+    //         if (!isset($monthlyData[$month])) {
+    //             $monthlyData[$month] = ['total_vente' => 0, 'nombre_ventes' => 0, 'count' => 0];
+    //         }
+
+    //         $monthlyData[$month]['total_vente'] += $sale->total_vente;
+    //         $monthlyData[$month]['nombre_ventes'] += $sale->nombre_ventes;
+    //         $monthlyData[$month]['count'] += 1;
+    //     }
+
+    //     // Calculer la moyenne des ventes pour chaque mois
+    //     $averageSales = [];
+    //     foreach ($monthlyData as $month => $data) {
+    //         $averageSales[] = (object) [
+    //             'month' => $month,
+    //             'total_vente' => $data['count'] > 0 ? $data['total_vente'] / $data['count'] : 0,
+    //             'nombre_ventes' => $data['count'] > 0 ? $data['nombre_ventes'] / $data['count'] : 0,
+    //         ];
+    //     }
+
+    //     function exponentialSmoothing($data, $alpha = 0.2)
+    //     {
+    //         $smoothedData = [];
+    //         $previousSmoothedTotal = null;
+    //         $previousSmoothedVentes = null;
+
+    //         foreach ($data as $sale) {
+    //             // Initialisation des valeurs lissées
+    //             if ($previousSmoothedTotal === null) {
+    //                 $previousSmoothedTotal = $sale->total_vente;
+    //                 $previousSmoothedVentes = $sale->nombre_ventes;
+    //             } else {
+    //                 // Appliquer la formule du lissage exponentiel
+    //                 $previousSmoothedTotal = $alpha * $sale->total_vente + (1 - $alpha) * $previousSmoothedTotal;
+    //                 $previousSmoothedVentes = $alpha * $sale->nombre_ventes + (1 - $alpha) * $previousSmoothedVentes;
+    //             }
+
+    //             // Ajouter les valeurs lissées au tableau
+    //             $smoothedData[] = [
+    //                 'month' => $sale->month,
+    //                 'smoothed_vente' => (int) round($previousSmoothedTotal), // Montant total (int)
+    //                 'smoothed_nombre_ventes' => (int) round($previousSmoothedVentes), // Nombre de ventes (int)
+    //             ];
+    //         }
+
+    //         return $smoothedData;
+    //     }
+
+    //     // Appliquer le lissage exponentiel aux moyennes des ventes
+    //     $data = exponentialSmoothing($averageSales, 0.2);
+
+    //     return response()->json([
+    //         'prevision' => $data,
+    //     ]);
+    // }
+
     public function bilan_client($year)
     {
         // Initialiser les statistiques mensuelles
@@ -172,8 +431,6 @@ class BilanController extends Controller
             $homme += $patient->M_count;
             $femme += $patient->F_count;
         }
-
-        Log::info($monthlyStats);
 
         // Retourner les résultats sous forme de réponse JSON
         return response()->json([

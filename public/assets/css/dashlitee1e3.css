@@ -28,7 +28,7 @@
     src: url(../fonts/DMSans-Regular.eot);
     src: local("DM Sans Regular"), local("DMSans-Regular"), url(../fonts/DMSans-Regular.eot#iefix) format("embedded-opentype"), url(../fonts/DMSans-Regular.woff2) format("woff2"), url(../fonts/DMSans-Regular.woff) format("woff"), url(../fonts/DMSans-Regular.ttf) format("truetype");
     font-weight: 400;
-    font-style: normal
+    font-style: normal nk-sticky-toolbar
 }*/
 
 
@@ -50858,28 +50858,28 @@ div.dt-container div.dt-search .dark-mode .nk-header-search input {
 
 .nk-sticky-toolbar {
     position: fixed;
-    border: 3px solid #fff;
-    top: 50%;
-    background: #fff;
+/*    border: 3px solid #fff;*/
+    top: 90%;
+/*    background: transparent;*/
     z-index: 600;
     right: 0;
-    border-radius: 6px 0 0 6px;
+    /*border-radius: 6px 0 0 6px;
     border-right: 0;
-    box-shadow: -2px 0 24px -2px rgba(43, 55, 72, .15)
+    box-shadow: -2px 0 24px -2px rgba(43, 55, 72, .15)*/
 }
 
 .nk-sticky-toolbar li:not(:last-child) {
-    border-bottom: 2px solid #fff
+/*    border-bottom: 2px solid #fff*/
 }
 
 .nk-sticky-toolbar li a {
     display: flex;
-    height: 36px;
-    width: 36px;
+    height: 56px;
+    width: 56px;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    color: inherit
+    font-size: 25px;
+/*    color: inherit*/
 }
 
 .demo-layout {
@@ -50904,7 +50904,7 @@ div.dt-container div.dt-search .dark-mode .nk-header-search input {
 
 @media (min-width:576px) {
     .nk-sticky-toolbar {
-        top: 30%
+        top: 90%
     }
 
     .nk-sticky-toolbar li a {

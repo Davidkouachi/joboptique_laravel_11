@@ -13,12 +13,12 @@ $(document).ready(function () {
     select_annee('#anne_vente');
     select_annee('#anne_client');
     select_annee('#anne_eva_vente');
-    // select_annee('#anne_d_vente');
     select_magasin('#magasin_d_vente');
 
     graph_op();
     graph_vente();
     graph_eva_vente();
+    graph_vente_prevision();
     graph_client();
 
     $("#anne_op").on('change', graph_op);
@@ -349,7 +349,7 @@ $(document).ready(function () {
                 var options = {
                     chart: {
                         height: 300,
-                        type: "line",
+                        type: "area",
                         toolbar: {
                             show: false,
                         },
@@ -364,18 +364,19 @@ $(document).ready(function () {
                         curve: "smooth",
                         width: 3,
                     },
-                    series: [{
-                            name: "Total",
-                            data: client,
-                        },
+                    series: [
+                        // {
+                        //     name: "Client",
+                        //     data: client,
+                        // },
                         // {
                         //     name: "Part Assurance",
                         //     data: assurance,
                         // },
-                        // {
-                        //     name: "Total",
-                        //     data: total,
-                        // }, 
+                        {
+                            name: "Total",
+                            data: total,
+                        }, 
                     ],
                     grid: {
                         borderColor: "#d8dee6",
@@ -488,6 +489,188 @@ $(document).ready(function () {
 
                 
 
+            });
+    }
+
+    function graph_vente_prevision() {
+        $('#div_vente_prevision_message1').show();
+        $('#div_vente_prevision_message2').show();
+
+        const contenug1 = $("#contenu_graph_vente_prevision1");
+        const contenug2 = $("#contenu_graph_vente_prevision2");
+        contenug1.empty();
+        contenug2.empty();
+
+        fetch('/api/stat_prevision')
+            .then(response => response.json())
+            .then(data => {
+                $('#div_vente_prevision_message1').hide();
+                $('#div_vente_prevision_message2').hide();
+
+                const months = [
+                    "Janv", "Fév", "Mar", "Avr", "Mai", "Jui", 
+                    "Juil", "Août", "Sept", "Oct", "Nov", "Déce"
+                ];
+
+                // Initialisation des tableaux pour 12 mois
+                const smoothedVente = new Array(12).fill(0);
+                const smoothedNombreVentes = new Array(12).fill(0);
+
+                const currentYearVente = new Array(12).fill(0);
+                const currentYearNombreVentes = new Array(12).fill(0);
+
+                // Remplissage des données
+                data.prevision.forEach(item => {
+                    const monthIndex = item.month - 1;
+                    smoothedVente[monthIndex] = item.smoothed_vente;
+                    smoothedNombreVentes[monthIndex] = item.smoothed_nombre_ventes;
+                    currentYearVente[monthIndex] = item.current_year_total;
+                    currentYearNombreVentes[monthIndex] = item.current_year_sales;
+                });
+
+                var options = {
+                    chart: {
+                        height: 350,
+                        type: "line",
+                        stacked: false,
+                        toolbar: { show: false },
+                        zoom: { enabled: false }
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: {
+                        width: [2, 0], // Ligne pour les ventes, colonne pour le nombre
+                        curve: "smooth"
+                    },
+                    series: [
+                        {
+                            name: "Montant Total (Fcfa)",
+                            type: "line",
+                            data: smoothedVente,
+                            yaxisIndex: 0 // Associé à l'axe Y gauche (prix)
+                        },
+                        {
+                            name: "Nombre de Ventes",
+                            type: "column",
+                            data: smoothedNombreVentes,
+                            yaxisIndex: 1 // Associé à l'axe Y droit (nombre de ventes)
+                        }
+                    ],
+                    xaxis: {
+                        categories: months,
+                        labels: { 
+                            style: { colors: "#000" }, // Texte en noir
+                        }
+                    },
+                    yaxis: [
+                        {
+                            labels: {
+                                formatter: function(val) {
+                                    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa";
+                                },
+                                style: { colors: "#0ebb13" } // Vert pour les prix
+                            }
+                        },
+                        {
+                            opposite: true,
+                            labels: {
+                                style: { colors: "#3498db" } // Bleu pour les ventes
+                            }
+                        }
+                    ],
+                    colors: ["#0ebb13", "#3498db"], // Vert pour le prix, Bleu pour les ventes
+                    markers: {
+                        size: 4,
+                        colors: ["#0ebb13", "#3498db"],
+                        strokeColor: "#ffffff",
+                        strokeWidth: 2
+                    },
+                    tooltip: {
+                        shared: true,
+                        intersect: false,
+                        y: {
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                            }
+                        }
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#contenu_graph_vente_prevision1"), options);
+                chart.render();
+
+                var options2 = {
+                    chart: {
+                        height: 350,
+                        type: "line",
+                        stacked: false,
+                        toolbar: { show: false },
+                        zoom: { enabled: false }
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: {
+                        width: [2, 0], // Ligne pour les ventes, colonne pour le nombre
+                        curve: "smooth"
+                    },
+                    series: [
+                        {
+                            name: "Montant Total (Fcfa)",
+                            type: "line",
+                            data: currentYearVente,
+                            yaxisIndex: 0 // Associé à l'axe Y gauche (prix)
+                        },
+                        {
+                            name: "Nombre de Ventes",
+                            type: "column",
+                            data: currentYearNombreVentes,
+                            yaxisIndex: 1 // Associé à l'axe Y droit (nombre de ventes)
+                        }
+                    ],
+                    xaxis: {
+                        categories: months,
+                        labels: { 
+                            style: { colors: "#000" }, // Texte en noir
+                        }
+                    },
+                    yaxis: [
+                        {
+                            labels: {
+                                formatter: function(val) {
+                                    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa";
+                                },
+                                style: { colors: "#3498db" } // Vert pour les prix
+                            }
+                        },
+                        {
+                            opposite: true,
+                            labels: {
+                                style: { colors: "#0ebb13" } // Bleu pour les ventes
+                            }
+                        }
+                    ],
+                    colors: ["#3498db", "#0ebb13"], // Vert pour le prix, Bleu pour les ventes
+                    markers: {
+                        size: 4,
+                        colors: ["#3498db", "#0ebb13"],
+                        strokeColor: "#ffffff",
+                        strokeWidth: 2
+                    },
+                    tooltip: {
+                        shared: true,
+                        intersect: false,
+                        y: {
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                            }
+                        }
+                    }
+                };
+
+                var chart2 = new ApexCharts(document.querySelector("#contenu_graph_vente_prevision2"), options2);
+                chart2.render();
+
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des données:', error);
             });
     }
 
@@ -727,12 +910,12 @@ $(document).ready(function () {
                         icon: 'money',
                         color: 'success', 
                     },
-                    { 
-                        title: 'Montant non-soldées', 
-                        count: (data.total_nvente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
-                        icon: 'money',
-                        color: 'danger', 
-                    },
+                    // { 
+                    //     title: 'Montant non-soldées', 
+                    //     count: (data.total_nvente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                    //     icon: 'money',
+                    //     color: 'danger', 
+                    // },
                     { 
                         title: 'Montant Part Assurance', 
                         count: (data.total_partassurance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',

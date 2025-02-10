@@ -246,7 +246,7 @@
                 <div class="nk-footer">
                     <div class="container-fluid">
                         <div class="nk-footer-wrap text-center">
-                            <div class="nk-footer-copyright"> &copy; 2024 JOBOPTIQUE.</div>
+                            <div class="nk-footer-copyright"> &copy; 2024 JOBOPTIQUE. Copyright ©</div>
                         </div>
                     </div>
                 </div>
@@ -254,8 +254,8 @@
         </div>
     </div>
 
-    @if(!request()->routeIs('operation') )
-    {{-- <ul class="nk-sticky-toolbar">
+    @if(!request()->routeIs('operation','bilan_comptable','encaissement') )
+    <ul class="nk-sticky-toolbar">
         <li class="demo-thumb bg-transparent" id="cadre_ouverture_caisse" style="display: none;">
             <a class="tipinfo bg-success text-white rounded-circle" id="btn_ouverture_caisse" title="Ouverture de caisse">
                 <em class="icon ni ni-unlock"></em>
@@ -266,7 +266,7 @@
                 <em class="icon ni ni-lock"></em>
             </a>
         </li>
-    </ul> --}}
+    </ul>
     @endif
 
     {{-- <div class="pmo-lv pmo-dark active p-3 bg-success" style="width: 200px;">
