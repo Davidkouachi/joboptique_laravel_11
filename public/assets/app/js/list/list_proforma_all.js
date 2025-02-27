@@ -96,7 +96,7 @@ $(document).ready(function () {
             }
         });
 
-        $('.table_proforma').on('click', '.btn-pdf', function () {
+        $('.table_proforma').off('click', '.btn-pdf').on('click', '.btn-pdf', function () {
             const code = $(this).data('code');
 
             // Ajouter le préchargeur

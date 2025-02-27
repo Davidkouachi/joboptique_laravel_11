@@ -24,7 +24,7 @@ class CaisseController extends Controller
         $verf = DB::table('porte_caisses')->where('id', '=', 1)->first();
 
         if ($verf->statut == 1) {
-            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+            return response()->json(['success_deja' => true, 'message' => 'Opération éffectuée']);
         }
 
         $mail = new PHPMailer(true);
@@ -113,7 +113,7 @@ class CaisseController extends Controller
         $verf = DB::table('porte_caisses')->where('id', '=', 1)->first();
 
         if ($verf->statut == 0) {
-            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+            return response()->json(['success_deja' => true, 'message' => 'Opération éffectuée']);
         }
 
         $mail = new PHPMailer(true);

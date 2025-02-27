@@ -22,9 +22,6 @@ $(document).ready(function () {
                 const facture = data.data;
                 const donne = data.donne;
 
-                $('#donnee').show();
-                $('#donnee2').show();
-
                 const table = $('.table_facture_client');
                 if ($.fn.DataTable.isDataTable(table)) {
                     table.DataTable().destroy();
@@ -89,6 +86,20 @@ $(document).ready(function () {
                                             <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <ul class="link-list-opt no-bdr">
+                                                        ${item.regle == null ? 
+                                                        `<li>
+                                                            <a  href="#"
+                                                                class="toggle text-success btn-plus"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#Versement"
+                                                                data-code="${item.code}"
+                                                                data-matricule="${item.matricule}"
+                                                                data-reste="${item.reste}"
+                                                            >
+                                                                <em class="icon ni ni-plus-circle"></em>
+                                                                <span>Effectuer un Versement</span>
+                                                            </a>
+                                                        </li>` : ``}
                                                         <li>
                                                             <a  href="#"
                                                                 class="text-warning btn-pdf"
@@ -261,9 +272,22 @@ $(document).ready(function () {
 
     });
 
-    $("#client").on("change", function(){
+    $('.table_facture_client').on('click', '.btn-plus', function () {
+        const code = $(this).data('code');
+        const matricule = $(this).data('matricule');
+        const reste = $(this).data('reste');
 
-        list_facture_client();
-    }); 
+        $('#input_code').val(code);
+        $('#input_matricule').val(matricule);
+
+        $('#montant_payer').val(reste.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+        $('#montant_verser').val(0);
+        $('#montant_restant').val(0);
+        $('#obs').val(null);
+        $('#date_livraison').val(null);
+
+    });
+
+    $("#client").on("change", list_facture_client); 
 
 });

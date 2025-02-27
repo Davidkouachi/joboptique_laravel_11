@@ -34,6 +34,11 @@ class Controller
         return view('pages.facture.vente');
     }
 
+    public function his_facture()
+    {
+        return view('pages.facture.his_facture');
+    }
+
     public function operation()
     {
         return view('pages.comptablite.operation');
@@ -49,6 +54,11 @@ class Controller
         return view('pages.comptablite.bilan_comptable');
     }
 
+    public function bilan_generale_comptable()
+    {
+        return view('pages.comptablite.bilan_generale_comptable');
+    }
+
     public function facturation_assurance()
     {
         return view('pages.facturation.assurance');
@@ -57,5 +67,10 @@ class Controller
     public function recherche_facture()
     {
         return view('pages.recherche_facture');
+    }
+
+    public function notification()
+    {
+        return view('pages.notification');
     }
 }

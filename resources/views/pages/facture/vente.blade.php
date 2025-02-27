@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('titre', 'Facture Proforma')
+@section('titre', 'Facture Vente')
 
 @section('content')
 
@@ -89,10 +89,10 @@
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
-                                                                        Date
+                                                                        Date de la facture
                                                                     </label>
                                                                     <div class="form-control-wrap">
-                                                                        <input type="date" class="form-control" id="date" max="{{ date('Y-m-d') }}" >
+                                                                        <input type="date" class="form-control" id="date" max="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" >
                                                                     </div>
                                                                 </div>
                                                             </div>

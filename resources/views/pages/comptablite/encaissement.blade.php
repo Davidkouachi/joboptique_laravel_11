@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('titre', 'Préscription')
+@section('titre', 'Encaissements')
 
 @section('content')
 
@@ -259,6 +259,6 @@
 <script src="{{asset('assets/app/js/pdf/recu_paiement.js')}}"></script>
 <script src="{{asset('assets/app/js/operation.js')}}"></script>
 <script src="{{asset('assets/app/js/enciassement.js')}}"></script>
-<script src="{{asset('assets/app/js/list/list_facture_client.js')}}"></script>
+<script src="{{asset('assets/app/js/list/list_encaisement_client.js')}}"></script>
 
 @endsection

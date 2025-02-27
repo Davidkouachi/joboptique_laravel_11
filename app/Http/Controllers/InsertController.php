@@ -117,6 +117,7 @@ class InsertController extends Controller
                 'login' => $request->login,
                 'assurance' => $request->assurance_id,
                 'tauxes' => $request->taux_id,
+                'magasin' => $request->magasin,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -374,6 +375,7 @@ class InsertController extends Controller
                 'date_livraison' => null,
                 'heure_livraison' => null,
                 'login_livraison' => null,
+                'magasin' => $request->id_agence,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -681,6 +683,7 @@ class InsertController extends Controller
                 'code_client' => null,
                 'type_operation' => 3,
                 'num_operation' => $num,
+                'mail' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

@@ -1,10 +1,12 @@
 $(document).ready(function () {
 
-    window.list_operation_all = function () {
+    select_op_magasin('#magasin_id');
+
+    function list_operation() {
 
         let date1 = $('#Date1').val();
         let date2 = $('#Date2').val();
-        let magasin = $('#id_agence').val();
+        let magasin = $('#magasin_id').val();
 
         $.ajax({
             url: '/api/list_operation_all/'+date1+'/'+date2+'/'+magasin,
@@ -184,7 +186,7 @@ $(document).ready(function () {
 
         });
 
-    list_operation_all();
-    $("#btn_search").on("click", list_operation_all);
+    list_operation();
+    $("#btn_search").on("click", list_operation);
 
 });

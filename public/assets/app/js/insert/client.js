@@ -47,7 +47,7 @@ $(document).ready(function () {
         let taux_id = $("#taux_id");
         let matricule = $("#matricule");
 
-        if (!nom.val().trim() || !prenoms.val().trim() || !datenais.val().trim() || !sexe.val().trim() || !residence.val().trim() || !profession.val().trim() || !tel1.val().trim() || !assurer.val().trim() ) {
+        if (!nom.val().trim() || !prenoms.val().trim() || !datenais.val().trim() || !sexe.val().trim() || !tel1.val().trim() || !assurer.val().trim() ) {
             showAlert("Alert","Veuillez remplir tous les champs s'il vous plaît !!!","warning");
             return false;
         }
@@ -95,8 +95,8 @@ $(document).ready(function () {
                 datenais: datenais.val(),
                 sexe: sexe.val(),
                 sondage: sondage.val(),
-                profession: profession.val(),
-                residence: residence.val(),
+                profession: profession.val() || null,
+                residence: residence.val() || null,
                 tel: tel1.val(),
                 // tel2: tel2.val() || null,
                 email: email.val() || null,
@@ -105,6 +105,7 @@ $(document).ready(function () {
                 taux_id: taux_id.val() || null,
                 matricule_ass: matricule.val() || null,
                 login: $("#login").val().trim(),
+                magasin: $('#id_agence').val(),
             },
             success: function (response) {
                 $("#preloader_ch").remove();

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('statut');
             $table->string('solde');
+            $table->string('magasin');
             $table->timestamps();
         });
     }

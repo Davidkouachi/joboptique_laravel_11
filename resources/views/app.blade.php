@@ -30,6 +30,10 @@
     <input type="hidden" id="login" value="{{ Auth::user()->login }}">
     <input type="hidden" id="agence" value="{{ session('user_magasin') }}">
     <input type="hidden" id="id_agence" value="{{ Auth::user()->magasin_id }}">
+    <input type="hidden" id="API_SMS_USERNANME" value="{{ env('API_SMS_USERNANME') }}">
+    <input type="hidden" id="API_SMS_PASSWORD" value="{{ env('API_SMS_PASSWORD') }}">
+    <input type="hidden" id="API_SMS_SERVICEID" value="{{ env('API_SMS_SERVICEID') }}">
+    <input type="hidden" id="API_SMS_SENDER" value="{{ env('API_SMS_SENDER') }}">
 
     <div class="js-preloader">
         <div class="loading-animation">
@@ -122,6 +126,11 @@
                                                 <span class="nk-menu-text">Ventes</span>
                                             </a>
                                         </li>
+                                        <li class="nk-menu-item">
+                                            <a href="{{ route('his_facture') }}" class="nk-menu-link">
+                                                <span class="nk-menu-text">Historique des factures</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="nk-menu-item has-sub">
@@ -132,6 +141,11 @@
                                         <span class="nk-menu-text">Comptablités</span>
                                     </a>
                                     <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="{{ route('bilan_generale_comptable') }}" class="nk-menu-link">
+                                                <span class="nk-menu-text">Bilan Générale</span>
+                                            </a>
+                                        </li>
                                         <li class="nk-menu-item">
                                             <a href="{{ route('bilan_comptable') }}" class="nk-menu-link">
                                                 <span class="nk-menu-text">Bilan Comptable</span>
@@ -165,6 +179,14 @@
                                         <span class="nk-menu-text">Recherche</span>
                                     </a>
                                 </li>
+                                <li class="nk-menu-item">
+                                    <a href="{{ route('notification') }}" class="nk-menu-link">
+                                        <span class="nk-menu-icon">
+                                            <em class="icon ni ni-chat"></em>
+                                        </span>
+                                        <span class="nk-menu-text">Envoi d'sms</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -184,6 +206,10 @@
                                     <img class="logo-dark logo-img" src="{{ asset('assets/images/logo.jpg') }}" srcset="{{ asset('assets/images/logo.jpg') }} 2x">
                                 </a>
                             </div>
+                            <marquee>
+                                <span class="fw-bold text-info" style="font-size: 20px;" >JOB</span>
+                                <span class="fw-bold text-orange" style="font-size: 20px;" >OPTIQUE</span>
+                            </marquee>
                             <div class="nk-header-tools">
                                 <ul class="nk-quick-nav">
                                     <li class="dropdown chats-dropdown">
@@ -200,7 +226,9 @@
                                     </li> --}}
                                     <li class="dropdown user-dropdown"><a href="#" class="dropdown-toggle me-n1" data-bs-toggle="dropdown">
                                             <div class="user-toggle">
-                                                <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
+                                                <div class="user-avatar sm bg-primary">
+                                                    <em class="icon ni ni-user-alt"></em>
+                                                </div>
                                                 <div class="user-info d-none d-xl-block">
                                                     <div class="user-status user-status-unverified">
                                                         {{session('user_service')}}
@@ -254,7 +282,7 @@
         </div>
     </div>
 
-    @if(!request()->routeIs('operation','bilan_comptable','encaissement') )
+    @if(!request()->routeIs('operation','bilan_comptable','encaissement','bilan_generale_comptable') )
     <ul class="nk-sticky-toolbar">
         <li class="demo-thumb bg-transparent" id="cadre_ouverture_caisse" style="display: none;">
             <a class="tipinfo bg-success text-white rounded-circle" id="btn_ouverture_caisse" title="Ouverture de caisse">

@@ -30,7 +30,6 @@ $(document).ready(function () {
         $('#montant_restant').val(calcul.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
     });
 
-
     $("#btn_vers").on("click", function (event) {
         event.preventDefault();
 

@@ -68,7 +68,7 @@
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
-                                                                        Date
+                                                                        Date de la facture
                                                                     </label>
                                                                     <div class="form-control-wrap">
                                                                         <input type="date" class="form-control" id="date" max="{{ date('Y-m-d') }}" >

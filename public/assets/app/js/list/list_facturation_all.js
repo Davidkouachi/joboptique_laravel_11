@@ -188,7 +188,7 @@ $(document).ready(function () {
         
     }
 
-    $('.table_facturation').on('click', '.btn-pdf', function () {
+    $('.table_facturation').off('click', '.btn-pdf').on('click', '.btn-pdf', function () {
 
         const data = {
             code_vente: $(this).data('code_vente'),

@@ -75,13 +75,13 @@ class StatistiqueController extends Controller
         ]);
     }
 
-    public function stat_nbre()
+    public function stat_nbre($magasin)
     {
 
         $nbre_assurance = DB::table('assurance')->count();
         $nbre_client = DB::table('client')->count();
         $nbre_agence = DB::table('magasin')->count();
-        $solde = DB::table('porte_caisses')->where('id', '=', 1)->select('solde')->first();
+        $solde = DB::table('porte_caisses')->where('magasin', $magasin)->select('solde')->first();
         $solde_caisse = $solde->solde;
 
         return response()->json([

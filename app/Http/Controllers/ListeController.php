@@ -28,13 +28,57 @@ class ListeController extends Controller
                 'tauxes.valeur as taux',
                 'assurance.denomination as assurance_lib',
             )
-            ->orderBy('client.dateenregistre','desc')
+            ->orderBy('client.nomprenom','asc')
             ->get();
 
         return response()->json([
             'data' => $clients,
         ]);
     }
+
+    public function list_client_rech($month, $year)
+    {
+        $clients = DB::table('client')
+            ->leftJoin('societe_assurance', 'societe_assurance.id', '=', 'client.societe_assurance')
+            ->leftJoin('assurance', 'assurance.code', '=', 'client.assurance')
+            ->leftJoin('tauxes', 'tauxes.id', '=', 'client.tauxes')
+            ->select(
+                'client.*',
+                'societe_assurance.libelle as societe',
+                'tauxes.valeur as taux',
+                'assurance.denomination as assurance_lib',
+            )
+            ->whereMonth('client.dateenregistre', $month)  // Filtrer par mois
+            ->whereYear('client.dateenregistre', $year)    // Filtrer par année
+            ->orderBy('client.nomprenom', 'asc')
+            ->get();
+
+        return response()->json([
+            'data' => $clients,
+        ]);
+    }
+
+    public function list_client_se()
+    {
+        $clients = DB::table('client')
+            ->leftJoin('societe_assurance', 'societe_assurance.id', '=', 'client.societe_assurance')
+            ->leftJoin('assurance', 'assurance.code', '=', 'client.assurance')
+            ->leftJoin('tauxes', 'tauxes.id', '=', 'client.tauxes')
+            ->select(
+                'client.*',
+                'societe_assurance.libelle as societe',
+                'tauxes.valeur as taux',
+                'assurance.denomination as assurance_lib',
+            )
+            ->orderBy('client.created_at', 'desc') // Trier par la colonne 'created_at' (ou une autre colonne)
+            ->limit(15) // Limiter à 15 enregistrements
+            ->get();
+
+        return response()->json([
+            'data' => $clients,
+        ]);
+    }
+
 
     public function list_prospect_all()
     {

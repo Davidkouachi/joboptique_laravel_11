@@ -14,10 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class BilanController extends Controller
+class BilanGeneraleController extends Controller
 {
-
-    public function bilan_op($year, $magasin)
+    public function bilan_op($year)
     {
 
         $monthlyStats = [
@@ -34,7 +33,6 @@ class BilanController extends Controller
         // Une seule requête pour tout récupérer
         $data = DB::table('caisse')
             ->whereYear('dateop', $year)
-            ->where('magasin', $magasin)
             ->groupBy(DB::raw('MONTH(dateop)'))
             ->select(
                 DB::raw('MONTH(dateop) as month'),
@@ -67,7 +65,24 @@ class BilanController extends Controller
         ]);
     }
 
-    public function bilan_eva_vente($year, $magasin)
+    public function bilan_vente($year)
+    {
+        $magasin = DB::table('magasin')
+            ->leftJoin('vente', 'vente.magasin', '=', 'magasin.id') // LEFT JOIN pour inclure tous les magasins
+            ->whereYear('vente.date', $year)
+            ->select(
+                'magasin.id',
+                'magasin.nom',
+                DB::raw('IFNULL(SUM(vente.total), 0) as total_ventes'), // Remplacer NULL par 0
+                DB::raw('IFNULL(COUNT(vente.code), 0) as nombre_ventes') // Remplacer NULL par 0
+            )
+            ->groupBy('magasin.id', 'magasin.nom')
+            ->get();
+
+        return response()->json($magasin);
+    }
+
+    public function bilan_eva_vente($year)
     {
         $monthlyStats = [
             'client' => array_fill_keys(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 0),
@@ -85,7 +100,6 @@ class BilanController extends Controller
         // Une seule requête pour tout récupérer
         $data = DB::table('vente')
             ->whereYear('date', $year)
-            ->where('magasin', $magasin)
             ->select(
                 DB::raw('MONTH(date) as month'),
                 DB::raw('IFNULL(SUM(vente.total), 0) as total_vente'),
@@ -218,7 +232,7 @@ class BilanController extends Controller
         ]);
     }
 
-    public function bilan_client($year, $magasin)
+    public function bilan_client($year)
     {
         // Initialiser les statistiques mensuelles
         $monthlyStats = [
@@ -240,7 +254,6 @@ class BilanController extends Controller
                 DB::raw('COUNT(CASE WHEN sexe = "M" THEN 1 END) as M_count'),
                 DB::raw('COUNT(CASE WHEN sexe = "F" THEN 1 END) as F_count')
             )
-            ->where('magasin', $magasin)
             ->whereYear('dateenregistre', $year)
             ->groupBy(DB::raw('MONTH(dateenregistre)'))
             ->get();
@@ -264,4 +277,92 @@ class BilanController extends Controller
         ]);
     }
 
+    public function bilan_detail_vente($periode, $magasin)
+    {
+
+        list($annee, $mois) = explode('-', $periode);
+
+        $year = $annee;
+        $month = $mois;
+        // Première date du mois
+        $date1 = Carbon::createFromDate($annee, $mois, 1)->format('Y-m-d');
+        // Dernière date du mois
+        $date2 = Carbon::createFromDate($annee, $mois, 1)->endOfMonth()->format('Y-m-d');
+
+
+        $nbre_proforma = DB::table('proforma')->whereBetween(DB::raw("DATE(proforma.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->count() ?? 0;
+        $nbre_proforma_valide = DB::table('proforma')->whereBetween(DB::raw("DATE(proforma.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->where('valide', '=', 1)->count() ?? 0;
+        $nbre_proforma_nvalide = DB::table('proforma')->whereBetween(DB::raw("DATE(proforma.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->whereNull('valide')->count() ?? 0;
+
+        $nbre_vente = DB::table('vente')->whereBetween(DB::raw("DATE(vente.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->count() ?? 0;
+        $nbre_vente_solde = DB::table('vente')->whereBetween(DB::raw("DATE(vente.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->where('regle', '=', 1)->count() ?? 0;
+        $nbre_vente_nsolde = DB::table('vente')->whereBetween(DB::raw("DATE(vente.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->whereNull('regle')->count() ?? 0;
+
+        $vente_nsolde = 0;
+        $vente_solde = 0;
+        $vente_tsolde = 0;
+
+        $vente_partassurance = 0;
+        $vente_partclient = 0;
+
+        $vente_spartclient = 0;
+        $vente_npartclient = 0;
+
+        $vente_nbre_vers = 0;
+
+        $data = DB::table('vente')
+            ->whereBetween(DB::raw("DATE(vente.date)"), [$date1, $date2])
+            ->where('magasin', '=', $magasin)->get();
+
+        foreach ($data as $value) {
+        
+            $vente_tsolde += (int) $value->total;
+
+            if ($value->regle == 1) {
+                $vente_solde += (int) $value->total;
+            } else {
+                $vente_nsolde += (int) $value->total;
+            }
+
+            $vente_partassurance += (int) $value->partassurance;
+            $vente_partclient += (int) $value->partclient;
+
+            $vente_spartclient += (int) $value->payer;
+            $vente_npartclient += (int) $value->reste;
+
+            $nbre = DB::table('versement')->where('achat', '=', $value->code)->count() ?? 0;
+            $vente_nbre_vers += $nbre;
+        }
+
+        $vente_solde_pourcent = ($nbre_vente > 0) ? round(($nbre_vente_solde / $nbre_vente) * 100, 2) : 0;
+        $vente_nsolde_pourcent = ($nbre_vente > 0) ? round(($nbre_vente_nsolde / $nbre_vente) * 100, 2) : 0;
+
+        $nbre_ass = DB::table('vente')->whereBetween(DB::raw("DATE(vente.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->where('partassurance', '!=', null)->count() ?? 0;
+        $nbre_nass = DB::table('vente')->whereBetween(DB::raw("DATE(vente.date)"), [$date1, $date2])->where('magasin', '=', $magasin)->whereNull('partassurance')->count() ?? 0;
+        $vente_ass_pourcent = ($nbre_vente > 0) ? round(($nbre_ass / $nbre_vente) * 100, 2) : 0;
+        $vente_nass_pourcent = ($nbre_vente > 0) ? round(($nbre_nass / $nbre_vente) * 100, 2) : 0;
+
+        return response()->json([
+            'data' => [
+                'nbre_proforma' => $nbre_proforma,
+                'nbre_proforma_valide' => $nbre_proforma_valide,
+                'nbre_proforma_nvalide' => $nbre_proforma_nvalide,
+                'nbre_vente' => $nbre_vente,
+                'nbre_vente_solde' => $nbre_vente_solde,
+                'nbre_vente_nsolde' => $nbre_vente_nsolde,
+                'total_tvente' => $vente_tsolde,
+                'total_nvente' => $vente_nsolde,
+                'total_svente' => $vente_solde,
+                'total_partassurance' => $vente_partassurance,
+                'total_partclient' => $vente_partclient,
+                'total_spartclient' => $vente_spartclient,
+                'total_npartclient' => $vente_npartclient,
+                'vente_solde_pourcent' => $vente_solde_pourcent,
+                'vente_nsolde_pourcent' => $vente_nsolde_pourcent,
+                'vente_ass_pourcent' => $vente_ass_pourcent,
+                'vente_nass_pourcent' => $vente_nass_pourcent,
+                'vente_nbre_vers' => $vente_nbre_vers
+            ]
+        ]);
+    }
 }

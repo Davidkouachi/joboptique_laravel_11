@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('titre', 'Préscription')
+@section('titre', 'Opérations de Caisse')
 
 @section('content')
 
@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="tab-pane" id="liste">
                                                 <div class="row g-gs mb-3">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">
                                                                 Du
@@ -151,24 +151,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">
                                                                 au
                                                             </label>
                                                             <div class="form-control-wrap">
                                                                 <input type="date" id="Date2" class="form-control me-1" value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-label">
-                                                                Magasin
-                                                            </label>
-                                                            <div class="form-control-wrap">
-                                                                <select id="magasin_id" class="form-select js-select2">
-                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>

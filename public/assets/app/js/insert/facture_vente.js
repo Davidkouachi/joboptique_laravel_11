@@ -18,6 +18,7 @@ $(document).ready(function () {
             // Ajouter l'option si elle a été supprimée auparavant
             if ($('#choix_assurance option[value="1"]').length === 0) {
                 $('#choix_assurance').append('<option value="1">Oui</option>');
+                $('#choix_assurance').val("1").trigger('change');
             }
         }
 
@@ -268,7 +269,7 @@ $(document).ready(function () {
         $("#client").val(null);
         $("#taux").val(null);
         $("#choix_assurance").val(0).trigger('change');
-        $("#date").val(null);
+        $("#date").val(new Date().toISOString().slice(0, 10));
 
         $('#sphere_OD, #cylindre_OD, #axe_OD, #addition_OD').text('');
         $('#sphere_OG, #cylindre_OG, #axe_OG, #addition_OG').text('');
@@ -363,6 +364,7 @@ $(document).ready(function () {
                 netPayer: netPayer,
                 remise: remise,
                 login: $("#login").val().trim(),
+                id_agence: $("#id_agence").val().trim(),
             },
             success: function (response) {
                 $("#preloader_ch").remove();

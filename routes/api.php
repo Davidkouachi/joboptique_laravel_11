@@ -12,6 +12,7 @@ use App\Http\Controllers\RechercheController;
 use App\Http\Controllers\CaisseController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\BilanController;
+use App\Http\Controllers\BilanGeneraleController;
 
 Route::middleware(['web'])->group(function () {
 
@@ -32,7 +33,8 @@ Route::get('/select_op_magasin', [SelectController::class, 'select_op_magasin'])
 // Select fin
 
 // Recherche debut
-Route::get('/caisseVerf', [RechercheController::class, 'caisseVerf']);
+Route::get('/caisseVerf/{magasin}', [RechercheController::class, 'caisseVerf']);
+Route::get('/caisseVerfG', [RechercheController::class, 'caisseVerfG']);
 Route::get('/list_rech_fac', [RechercheController::class, 'list_rech_fac']);
 // Recherche fin
 
@@ -69,15 +71,27 @@ Route::get('/imp_fac_recu/{code}/{matricule}/{id}', [FactureController::class, '
 
 // Statistique debut
 Route::get('/stat_day', [StatistiqueController::class, 'stat_day']);
-Route::get('/stat_nbre', [StatistiqueController::class, 'stat_nbre']);
+Route::get('/stat_nbre/{magasin}', [StatistiqueController::class, 'stat_nbre']);
 Route::get('/stat_table', [StatistiqueController::class, 'stat_table']);
 // Statistique fin
 
 // Bilan debut
-Route::get('/bilan_op/{year}', [BilanController::class, 'bilan_op']);
-Route::get('/bilan_vente/{year}', [BilanController::class, 'bilan_vente']);
-Route::get('/bilan_eva_vente/{year}', [BilanController::class, 'bilan_eva_vente']);
-Route::get('/bilan_client/{year}', [BilanController::class, 'bilan_client']);
+Route::get('/bilan_op/{year}/{magasin}', [BilanController::class, 'bilan_op']);
+Route::get('/bilan_eva_vente/{year}/{magasin}', [BilanController::class, 'bilan_eva_vente']);
+Route::get('/bilan_client/{year}/{magasin}', [BilanController::class, 'bilan_client']);
 Route::get('/bilan_detail_vente/{periode}/{magasin}', [BilanController::class, 'bilan_detail_vente']);
-Route::get('/stat_prevision', [BilanController::class, 'stat_prevision']);
+Route::get('/stat_prevision/{magasin}', [BilanController::class, 'stat_prevision']);
 // Bilan fin
+
+// Bilan Generale debut
+Route::get('/G_bilan_op/{year}', [BilanGeneraleController::class, 'bilan_op']);
+Route::get('/G_bilan_vente/{year}', [BilanGeneraleController::class, 'bilan_vente']);
+Route::get('/G_bilan_eva_vente/{year}', [BilanGeneraleController::class, 'bilan_eva_vente']);
+Route::get('/G_bilan_client/{year}', [BilanGeneraleController::class, 'bilan_client']);
+Route::get('/G_bilan_detail_vente/{periode}/{magasin}', [BilanGeneraleController::class, 'bilan_detail_vente']);
+Route::get('/G_stat_prevision/{magasin}', [BilanGeneraleController::class, 'stat_prevision']);
+// Bilan Generale fin
+
+// Api test
+Route::get('/list_client_rech/{month}/{year}', [ListeController::class, 'list_client_rech']);
+Route::get('/list_client_se', [ListeController::class, 'list_client_se']);

@@ -58,6 +58,29 @@ $(document).ready(function () {
         return `${ageYears} an${ageYears > 1 ? 's' : ''}`;
     };
 
+    window.timeAgo = function (date) {
+        const now = new Date();
+        const past = new Date(date);
+        const diffInSeconds = Math.floor((now - past) / 1000);
+
+        const intervals = [
+            { label: "an", seconds: 31536000 },
+            { label: "mois", seconds: 2592000 },
+            { label: "semaine", seconds: 604800 },
+            { label: "jour", seconds: 86400 },
+            { label: "heure", seconds: 3600 },
+            { label: "minute", seconds: 60 },
+            { label: "seconde", seconds: 1 }
+        ];
+
+        for (const interval of intervals) {
+            const count = Math.floor(diffInSeconds / interval.seconds);
+            if (count >= 1) {
+                return `Il y a ${count} ${interval.label}${count > 1 ? "" : ""}`;
+            }
+        }
+        return "À l'instant";
+    }
 
     window.numberTel = function (id) {
         var inputElement = $(id); // Sélectionner l'élément avec son ID

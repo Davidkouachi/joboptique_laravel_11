@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('titre', 'Tableau de Bord')
+@section('titre', 'Bilan Comptable')
 
 @section('content')
 
@@ -8,16 +8,6 @@
     <div class="container-fluid">
         <div class="nk-content-inner">
             <div class="nk-content-body">
-                {{-- <div class="nk-block-head nk-block-head-sm">
-                    <div class="nk-block-between d-flex flex-column mb-3 justify-content-center align-items-center">
-                        <div class="nk-block-head-content">
-                            <img height="100" width="auto" src="{{ asset('assets/images/bilan-comptable2.jpg') }}">
-                        </div>
-                        <div class="nk-block-head-content">
-                            <h3 class="nk-block-title page-title">Tableau de bord</h3>
-                        </div>
-                    </div>
-                </div> --}}
 
                 <div class="nk-block">
                     <div class="card" style="background: linear-gradient(to right, #87CEEB, #4682B4);">
@@ -109,34 +99,6 @@
                         </div>
                         <div class="col-12">
                             <div class="card">
-                                <div class="nk-ecwg nk-ecwg6">
-                                    <div class="card-inner">
-                                        <div class="card-title-group mb-3">
-                                            <div class="card-title">
-                                                <h6 class="title">Tendances des ventes</h6>
-                                            </div>
-                                            <div class="card-tools">
-                                                <select id="anne_vente" class="form-select js-select2" data-search="on">
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="card-title-group justify-content-center align-items-center" id="div_vente_message">
-                                            <div class="card-title d-flex justify-content-center align-items-center">
-                                                <div class="spinner-border text-warning me-1" role="status"></div>
-                                                <h6 class="title text-warning">
-                                                    Veuillez patienter s'il vous plaît ...
-                                                </h6>
-                                            </div>
-                                        </div>
-                                        <div class="row g-gs" id="contenu_graph_vente" >
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="card">
                                 <div class="row g-gs" >
                                     <div class="col-xxl-6 col-12" >
                                         <div class="card-inner">
@@ -212,40 +174,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row g-gs mb-5" >
-                        <div class="col-12" >
-                            <div class="card card-full">
-                                <div class="nk-ecwg nk-ecwg8">
-                                    <div class="card-inner">
-                                        <div class="card-title-group justify-content-center align-items-center">
-                                            <div class="card-title">
-                                                <h6 class="title">Détails par périodes</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-inner">
-                                        <div class="card-title-group d-flex flex-column justify-content-center align-items-center">
-                                            <div class="d-flex mb-1">
-                                                <div class="form-group me-3">
-                                                    <select id="magasin_d_vente" class="form-select js-select2" data-search="on">
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="month" class="form-control" id="periode" max="{{ date('Y-m')}}">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <a class="btn btn-dim btn-outline-warning" id="btn_search_vente_d">
-                                                    <em class="icon ni ni-search" ></em>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-gs mb-5" id="div_d_vente"></div>
                 </div>
             </div>
         </div>

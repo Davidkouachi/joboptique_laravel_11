@@ -105,7 +105,7 @@ $(document).ready(function () {
         $('#div_nbre_message').show();
 
         $.ajax({
-            url: '/api/stat_nbre',
+            url: '/api/stat_nbre/' + $('#id_agence').val(),
             method: 'GET',
             success: function(response) {
                 const data = response.data;

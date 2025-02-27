@@ -27,17 +27,72 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // $solde = 0;
         // $caisse = DB::table('caisse')->select('caisse.*')->get();
         // foreach ($caisse as $value) {
-        //     if ($value->type == 'entree' && $value->type_operation != 4 && $value->type_operation != 5 ) {
-        //         $solde += $value->montant;
-        //     } else if ($value->type == 'sortie' && $value->type_operation != 4 && $value->type_operation != 5 ) {
-        //         $solde -= $value->montant;
+            
+        //     if ($value->created_at == null || $value->updated_at == null) {
+                
+        //         $date = date('Y-m-d', strtotime($value->datecreat)).' '.$value->heure_crea;
+
+        //         $updateData = [
+        //             'created_at' => $date,
+        //             'updated_at' => $date,
+        //         ];
+
+        //         $Updated = DB::table('caisse')
+        //             ->where('codeop', '=', $value->codeop)
+        //             ->update($updateData);
+
+        //     }
+
+        //     if ($value->mail == 0 || $value->mail == null) {
+        //         DB::table('caisse')
+        //             ->where('codeop', '=', $value->codeop)
+        //             ->update([
+        //                 'mail' => 1,
+        //                 'updated_at' => now(),
+        //             ]);
+        //     }
+
+        //     if ($value->type_operation == 4 || $value->type_operation == 5) {
+                
+        //         $updateData1 = [
+        //             'type' => null,
+        //             'mail' => null,
+        //             'updated_at' => now(),
+        //         ];
+
+        //         $Updated1 = DB::table('caisse')
+        //             ->where('codeop', '=', $value->codeop)
+        //             ->update($updateData1);
+
         //     }
         // }
 
-        // DB::table('porte_caisses')->insert(['solde' => $solde,'statut' => 0,'created_at' => now(),'updated_at' => now()]);
+        $masagins = DB::table('magasin')->get();
+        foreach ($masagins as $value) {
+            
+            $solde = 0;
+            $caisse = DB::table('caisse')->where('magasin', $value->id)->select('caisse.*')->get();
+            foreach ($caisse as $valuee) {
+                if ($valuee->type == 'entree' && $valuee->type_operation == 3 ) {
+                    $solde += $valuee->montant;
+                } else if ($valuee->type == 'sortie' ) {
+                    $solde -= $valuee->montant;
+                }
+            }
+
+            DB::table('porte_caisses')->insert([
+                'solde' => $solde,
+                'statut' => 0,
+                'magasin' => $value->id, 
+                'created_at' => now(),
+                'updated_at' => now()
+            ]); 
+
+        }
+
+        // DB::table('porte_caisses')->insert(['solde' => '166050','statut' => 0,'created_at' => now(),'updated_at' => now()]);
 
         // DB::table('users')->insert([
         //     [
@@ -141,20 +196,32 @@ class DatabaseSeeder extends Seeder
         // $clients = DB::table('client')
         //     ->leftJoin('societe_assurance', 'societe_assurance.id', '=', 'client.societe_assurance')
         //     ->leftJoin('assurance', 'assurance.code', '=', 'societe_assurance.code_assurance')
+        //     ->Join('utilisa', 'utilisa.login', '=', 'client.login')
         //     ->select(
         //         'client.societe_assurance as client_societe',
         //         'client.matricule as client_matricule',
         //         'societe_assurance.taux_couverture as taux',
         //         'assurance.code as assurance_code',
+        //         'utilisa.magasin as magasin_id',
         //     )
         //     ->get();
         // foreach ($clients as $value) {
+
+        //     $updateD =[
+        //         'magasin' => $value->magasin_id,
+        //         'updated_at' => now(),
+        //     ];
+
+        //     $UpdateM = DB::table('client')
+        //         ->where('matricule', '=', $value->client_matricule)
+        //         ->update($updateD);
             
         //     if ($value->client_societe != null) {
                 
         //         $updateData =[
         //             'assurance' => $value->assurance_code,
         //             'tauxes' => 16,
+        //             'magasin' => $value->magasin_id,
         //             'updated_at' => now(),
         //         ];
 
@@ -191,57 +258,6 @@ class DatabaseSeeder extends Seeder
 
         //     }
         // }
-
-        $caisse = DB::table('caisse')->select('caisse.*')->get();
-        foreach ($caisse as $value) {
-            
-        //     if ($value->created_at == null || $value->updated_at) {
-                
-        //         $date = date('Y-m-d', strtotime($value->datecreat)).' '.$value->heure_crea;
-
-        //         $updateData = [
-        //             'created_at' => $date,
-        //             'updated_at' => $date,
-        //         ];
-
-        //         $Updated = DB::table('caisse')
-        //             ->where('codeop', '=', $value->codeop)
-        //             ->update($updateData);
-
-        //     }
-
-        //     if ($value->type_operation == 4 || $value->type_operation == 5) {
-                
-        //         $updateData1 = [
-        //             'type' => null,
-        //             'updated_at' => now(),
-        //         ];
-
-        //         $Updated1 = DB::table('caisse')
-        //             ->where('codeop', '=', $value->codeop)
-        //             ->update($updateData1);
-
-        //     }
-
-            // if ($value->mail == 0) {
-            //     DB::table('caisse')
-            //         ->where('codeop', '=', $value->codeop)
-            //         ->update([
-            //             'mail' => 1,
-            //             'updated_at' => now(),
-            //         ]);
-            // }
-
-            if ($value->type_operation == 4 ||  $value->type_operation == 5) {
-                DB::table('caisse')
-                    ->where('codeop', '=', $value->codeop)
-                    ->update([
-                        'mail' => null,
-                        'updated_at' => now(),
-                    ]);
-            }
-
-        }
 
         // $vente = DB::table('vente')->select('code', 'total', 'partassurance', 'taured')->get();
         // foreach ($vente as $value) {

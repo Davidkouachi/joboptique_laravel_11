@@ -101,7 +101,7 @@
                                                                     <div class="form-icon form-icon-left">
                                                                         <em class="icon ni ni-article"></em>
                                                                     </div>
-                                                                    <input type="text" class="form-control" id="profession" placeholder="Saisie Obligatoire">
+                                                                    <input type="text" class="form-control" id="profession" placeholder="Facultatif">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -114,7 +114,7 @@
                                                                     <div class="form-icon form-icon-left">
                                                                         <em class="icon ni ni-home"></em>
                                                                     </div>
-                                                                    <input type="text" class="form-control" id="residence" placeholder="Saisie Obligatoire">
+                                                                    <input type="text" class="form-control" id="residence" placeholder="Facultatif">
                                                                 </div>
                                                             </div>
                                                         </div>

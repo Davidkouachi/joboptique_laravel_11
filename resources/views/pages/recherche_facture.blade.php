@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('titre', 'Recherche')
+@section('titre', 'Recherche Facture')
 
 @section('content')
 
@@ -9,19 +9,22 @@
         <div class="nk-content-inner">
             <div class="nk-content-body">
                 <div class="components-preview">
+
                     <div class="nk-block">
-                        <div class="card">
+                        <div class="card" style="background: linear-gradient(to right, #FF4500, #FF8C00);">
                             <div class="card-inner">
-                                <div class="team">
-                                    <div class="user-card user-card-s2">
-                                        <div class="lg justify-content-center align-items-center d-flex flex-column">
-                                            <img height="60px" width="60px" class="rounded-circle border border-1 mb-3" src="{{ asset('assets/images/depot_fac.jpg') }}">
-                                            <h3 class="title" >Recherche</h3>
-                                        </div>
+                                <div class="card-title-group justify-content-center align-items-center">
+                                    <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
+                                        <img class="rounded-circle border border-2 mb-2" height="130" width="130" src="{{ asset('assets/images/list_facture.jpg') }}">
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-inner mb-2">
+                        </div>
+                    </div>
+
+                    <div class="nk-block">
+                        <div class="card">
+                            <div class="card-inner mb-0">
                                 <div class="card-bordered card-preview">
                                     <div class="card-inner">
                                         <div class="row g-gs">
@@ -89,7 +92,7 @@
                             </div>
                             <div class="card-inner">
                                 <div class="card-bordered card-preview">
-                                    <div class="row g-gs justify-content-center align-items-center text-center mt-3" id="donnee">
+                                    <div class="row g-gs justify-content-center align-items-center text-center mt-0" id="donnee">
                                         <div class="col-md-4">
                                             <span class="badge badge-md bg-warning" id="total"></span>
                                         </div>

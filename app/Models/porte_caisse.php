@@ -9,5 +9,6 @@ class porte_caisse extends Model
     protected $fillable = [
         'statut',
         'solde',
+        'magasin',
     ];
 }

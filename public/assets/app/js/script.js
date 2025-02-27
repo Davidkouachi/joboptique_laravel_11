@@ -6,7 +6,7 @@ $(document).ready(function () {
     function caisseVerf() {
 
         $.ajax({
-            url: '/api/caisseVerf',
+            url: '/api/caisseVerf/' + $('#id_agence').val(),
             method: 'GET',
             success: function(response) {
                 const data = response.data;

@@ -381,7 +381,7 @@ $(document).ready(function () {
         selectElement.empty();
         
         const currentYear = new Date().getFullYear();
-        const startYear = 2019;
+        const startYear = 2022;
 
         // Ajouter les années en ordre décroissant
         for (let year = currentYear; year >= startYear; year--) {

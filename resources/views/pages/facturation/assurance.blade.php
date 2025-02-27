@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('titre', 'Clients')
+@section('titre', 'Facturation')
 
 @section('content')
 
@@ -9,15 +9,29 @@
         <div class="nk-content-inner">
             <div class="nk-content-body">
                 <div class="components-preview">
+
+                    <div class="nk-block">
+                        <div class="card" style="background: linear-gradient(to right, #4682B4, #87CEEB);">
+                            <div class="card-inner">
+                                <div class="card-title-group justify-content-center align-items-center">
+                                    <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
+                                        <img class=" mb-1 p-0" height="130" width="130" src="{{ asset('assets/images/pdf2.png') }}">
+                                        {{-- <h3 class="title text-white">Facturation</h3> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="nk-block">
                         <div class="card">
                             <div class="card-inner">
-                                <div class="card-title-group justify-content-center align-items-center mb-5">
+                                {{-- <div class="card-title-group justify-content-center align-items-center mb-5">
                                     <div class="card-title d-flex flex-column justify-content-center align-items-center text-center">
                                         <img class="mb-2" height="130" width="130" src="{{ asset('assets/images/pdf2.png') }}">
                                         <h3 class="title">Facturation</h3>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="card-inner card-bordered">
                                     <div class="row g-gs">
                                         <div class="col-md-6">

@@ -107,7 +107,7 @@ $(document).ready(function () {
             }
         });
 
-        $('.table_vente').on('click', '.btn-pdf', function () {
+        $('.table_vente').off('click', '.btn-pdf').on('click', '.btn-pdf', function () {
             const code = $(this).data('code');
             const matricule = $(this).data('matricule');
 

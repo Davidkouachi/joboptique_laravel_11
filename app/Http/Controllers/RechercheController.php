@@ -17,9 +17,19 @@ use Illuminate\Support\Facades\Log;
 class RechercheController extends Controller
 {
 
-    public function caisseVerf()
+    public function caisseVerf($magasin)
     {
-        $data = DB::table('porte_caisses')->where('id', '=', 1)->select('statut','solde')->first();
+        $data = DB::table('porte_caisses')->where('magasin', $magasin)->select('statut','solde')->first();
+
+        return response()->json( [ 'data' => $data]);
+    }
+
+    public function caisseVerfG()
+    {
+        $data = DB::table('porte_caisses')
+            ->select(
+                DB::raw('IFNULL(SUM(porte_caisses.solde), 0) as solde')
+            )->first();
 
         return response()->json( [ 'data' => $data]);
     }
