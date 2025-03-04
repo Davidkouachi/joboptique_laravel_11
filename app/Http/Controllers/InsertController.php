@@ -700,6 +700,32 @@ class InsertController extends Controller
         }
     }
 
+    public function insert_type_message(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        try {
+
+            $Inserted = DB::table('type_messages')->insert([
+                'type' => $request->type,
+                'message' => $request->message,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if ($Inserted == 0) {
+                throw new Exception('Erreur lors de l\'insertion dans la table type_messages');
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+
 
 
 

@@ -134,13 +134,14 @@
                                                     <h6 class="title">Estimation & Rapport des ventes</h6>
                                                 </div>
                                                 <div class="card-tools">
-                                                    <select id="magasin_estimation_vente" class="form-select js-select2" data-search="on">
+                                                    <select id="magasin_estimation_vente" class="form-select js-select2" data-search="on" data-placeholder="Agence">
+                                                        
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-6 col-12" >
+                                    <div class="col-lg-6 col-12" >
                                         <div class="card-inner">
                                             <div class="card-title-group mb-3">
                                                 <div class="card-title">
@@ -162,7 +163,7 @@
                                             <div class="row g-gs mb-3" id="contenu_graph_vente_prevision1" ></div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-6 col-12" >
+                                    <div class="col-lg-6 col-12" >
                                         <div class="card-inner">
                                             <div class="card-title-group mb-3">
                                                 <div class="card-title">
@@ -355,6 +356,40 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modalLarge">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            {{-- <div class="modal-body"> --}}
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="team">
+                            <div class="user-card user-card-s2">
+                                <div class="user-avatar lg">
+                                    <img height="80px" width="80px" class="rounded-pill border border-1" src="{{ asset('assets/images/factures.jpg') }}" alt="">
+                                </div>
+                                <div class="user-info">
+                                    <h6 id="d_creer_par" ></h6> 
+                                    <span class="sub-text" id="d_datecreat"></span>
+                                </div>
+                            </div>
+                            <div class="p-2" style="max-height: 400px;" data-simplebar >
+                                <ul class="team-info">
+                                    <li><span>Numéro d'opération</span><span id="d_num" ></span></li>
+                                    <li><span>Type</span><span id="d_type" ></span></li>
+                                    <li><span>Motif</span><span id="d_motif"></span></li>
+                                    <li><span>Montant</span><span id="d_montant" ></span></li>
+                                    <li><span>Magasin</span><span id="d_magasin" ></span></li>
+                                    <li><span>Date d'opération</span><span id="d_dateop" ></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{-- </div> --}}
         </div>
     </div>
 </div>

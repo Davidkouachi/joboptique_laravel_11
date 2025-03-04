@@ -25,135 +25,154 @@
                     <div class="nk-block">
                         <div class="card">
                             <div class="card-inner">
-                                <div class="d-flex flex-column " >
-                                    <p id="selectionStatus" style="display:none;">
-                                        Éléments sélectionnés : 
-                                        <span id="selectedCount">0</span> / <span id="totalCount">0</span>
-                                    </p>
-                                    <div id="selectionStatusCheckbox" class="custom-control custom-control-sm custom-checkbox mb-3" style="display:none;">
-                                        <input type="checkbox" class="custom-control-input" id="pid-all">
-                                        <label class="custom-control-label" for="pid-all">
-                                            Tout selectionnés
-                                        </label>
+                                <ul class="nav nav-tabs nav-tabs-s2 mt-n3">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#new">
+                                            <em class="icon ni ni-file"></em>
+                                            <span>Nouveau type d'sms</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#liste">
+                                            <em class="icon ni ni-list"></em>
+                                            <span>Envoi d'sms</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="new">
+                                        <form id="formulaire_type_message" class="mt-5 m-5">
+                                            <div class="row g-gs">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">
+                                                            Type
+                                                        </label>
+                                                        <div class="form-control-wrap">
+                                                            <div class="form-icon form-icon-left">
+                                                                <em class="icon ni ni-file"></em>
+                                                            </div>
+                                                            <input type="text" class="form-control" id="type_nom" placeholder="Saisie Obligatoire">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Message</label>
+                                                        <div class="form-control-wrap">
+                                                            <textarea class="form-control" id="type_message" maxlength="100"></textarea>
+                                                        </div>
+                                                        <small id="char_count_type">0/100</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-gs mt-1">
+                                                <div class="col-md-12">
+                                                    <div class="form-group text-center">
+                                                        <button type="submit" class="btn btn-md btn-outline-success">
+                                                            <span>Validé</span>
+                                                            <em class="icon ni ni-check"></em>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <a id="btn_sendSMSmultiple" class="btn btn-dim btn-sm btn-outline-warning mb-3 w-20" style="display:none;" data-bs-toggle="modal" data-bs-target="#sendSMSmultipleModal">
-                                        <span>Envoyer un message</span>
-                                        <em class="icon ni ni-send" ></em>
-                                    </a>
+                                    <div class="tab-pane" id="liste">
+                                        <div class="card-bordered card-preview mt-5">
+                                            <div class="card-inner">
+                                                <div class="d-flex flex-column " >
+                                                    <p id="selectionStatus" style="display:none;">
+                                                        Éléments sélectionnés : 
+                                                        <span id="selectedCount">0</span> / <span id="totalCount">0</span>
+                                                    </p>
+                                                    <div id="selectionStatusCheckbox" class="custom-control custom-control-sm custom-checkbox mb-3" style="display:none;">
+                                                        <input type="checkbox" class="custom-control-input" id="pid-all">
+                                                        <label class="custom-control-label" for="pid-all">
+                                                            Tout selectionnés
+                                                        </label>
+                                                    </div>
+                                                    <a id="btn_sendSMSmultiple" class="btn btn-dim btn-sm btn-outline-warning mb-3 w-20" style="display:none;">
+                                                        <span>Envoyer un message</span>
+                                                        <em class="icon ni ni-send" ></em>
+                                                    </a>
+                                                </div>
+                                                <table class="datatable-init table table_client" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
+                                                    <thead>
+                                                        <tr class="nk-tb-item nk-tb-head">
+                                                            <th class="nk-tb-col" >
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text"></span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Matricule</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Nom et Prénoms</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Contact</span>
+                                                            </th><th class="nk-tb-col" >
+                                                                <span class="sub-text">Date d'enregistrement</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Membre depuis</span>
+                                                            </th>
+                                                            <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <table class="datatable-init table table_client" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
-                                    <thead>
-                                        <tr class="nk-tb-item nk-tb-head">
-                                            <th class="nk-tb-col" >
-                                            </th>
-                                            <th class="nk-tb-col" >
-                                                <span class="sub-text"></span>
-                                            </th>
-                                            <th class="nk-tb-col" >
-                                                <span class="sub-text">Matricule</span>
-                                            </th>
-                                            <th class="nk-tb-col" >
-                                                <span class="sub-text">Nom et Prénoms</span>
-                                            </th>
-                                            <th class="nk-tb-col" >
-                                                <span class="sub-text">Contact</span>
-                                            </th><th class="nk-tb-col" >
-                                                <span class="sub-text">Date d'enregistrement</span>
-                                            </th>
-                                            <th class="nk-tb-col" >
-                                                <span class="sub-text">Membre depuis</span>
-                                            </th>
-                                            <th class="nk-tb-col nk-tb-col-tools text-end"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal fade" id="sendSMS" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content bg-white">
-            {{-- <div class="modal-header">
-                <h5 class="modal-title">Message</h5>
-                <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <em class="icon ni ni-cross"></em>
-                </a>
-            </div> --}}
-            <div class="modal-body">
-                <div class="form-validate is-alter">
-                    <div class="form-group">
-                        <label class="form-label">Nom et Prénoms</label>
-                        <div class="form-control-wrap">
-                            <input readonly type="text" class="form-control" id="ss_np">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Contact</label>
-                        <div class="form-control-wrap">
-                            <input type="tel" class="form-control" id="ss_tel">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Message</label>
-                        <div class="form-control-wrap">
-                            <textarea class="form-control" id="ss_message" maxlength="100"></textarea>
-                        </div>
-                        <small id="char_count">0/100</small>
-                    </div>
-                    <div class="form-group text-center">
-                        <a id="btn_sendSMS" class="btn btn-dim btn-lg btn-outline-warning">
-                            <span>Envoyer</span>
-                            <em class="icon ni ni-send" ></em>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {{-- <div class="modal-footer bg-light"><span class="sub-text">Envoie d'sms</span></div> --}}
-        </div>
-    </div>
-</div>
+                    <div class="nk-block mt-5">
+                        <div class="row g-gs mb-2">
+                            <div class="col-12">
+                                <div class="nk-block-head nk-block-head-sm">
+                                    <div class="nk-block-between">
+                                        <div class="nk-block-head-content">
+                                            <h5 class="nk-block-title">Listes des types de message</h5>
+                                        </div>
+                                        <div class="nk-block-head-content">
+                                            <div class="toggle-wrap nk-block-tools-toggle"><a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                <div class="toggle-expand-content" data-content="pageMenu">
+                                                    <ul class="nk-block-tools g-3">
+                                                        <li class="nk-block-tools-opt">
+                                                            <a id="reloader_liste_type" class="btn btn-warning">
+                                                                <em class="icon ni ni-reload"></em>
+                                                                <span>actualiser</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-<div class="modal fade" id="sendSMSmultipleModal" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content bg-white">
-            {{-- <div class="modal-header">
-                <h5 class="modal-title">Message</h5>
-                <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <em class="icon ni ni-cross"></em>
-                </a>
-            </div> --}}
-            <div class="modal-body">
-                <div class="form-validate is-alter">
-                    <div class="form-group">
-                        <label class="form-label">Message</label>
-                        <div class="form-control-wrap">
-                            <textarea class="form-control" id="sm_message" maxlength="100"></textarea>
+                            </div>
                         </div>
-                        <small id="char_count_muktiple">0/100</small>
+                        <div class="row g-gs" id="div_contenu_message"></div>
                     </div>
-                    <div class="form-group text-center">
-                        <a id="btn_sendSMSMULTIPLE" class="btn btn-dim btn-lg btn-outline-warning">
-                            <span>Envoyer</span>
-                            <em class="icon ni ni-send" ></em>
-                        </a>
-                    </div>
+
                 </div>
             </div>
-            {{-- <div class="modal-footer bg-light"><span class="sub-text">Envoie d'sms</span></div> --}}
         </div>
     </div>
 </div>
 
 <script src="{{asset('assets/app/js/Datatable/init.js')}}"></script>
 <script src="{{asset('assets/app/js/list/list_user_sms.js')}}"></script>
+<script src="{{asset('assets/app/js/insert/type_message.js')}}"></script>
+<script src="{{asset('assets/app/js/list/type_message.js')}}"></script>
 
 @endsection

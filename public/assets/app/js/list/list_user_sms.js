@@ -3,7 +3,13 @@ $(document).ready(function () {
     list_user_sms();
     numberTel("#ss_tel");
     numberTelLimit("#ss_tel");
-    $('#btn_sendSMS').on('click', sendSMS);
+
+    // $('#sendSMS').on('shown.bs.modal', function () {
+    //     select_type_message("#ss_type");
+    // });
+    // $('#sendSMSmultipleModal').on('shown.bs.modal', function () {
+    //     select_type_message("#sm_type");
+    // });
 
     let selectedItems = new Set();
 
@@ -67,8 +73,6 @@ $(document).ready(function () {
                                                     <ul class="link-list-opt no-bdr">
                                                         <li>
                                                             <a  href="#" 
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#sendSMS" 
                                                                 class="text-warning btn-sendsms"
                                                                 data-matricule="${item.matricule}" 
                                                                 data-np="${item.nomprenom}"
@@ -103,7 +107,74 @@ $(document).ready(function () {
             }
         });
 
-        $('.table_client').off('click', '.btn-sendsms').on('click', '.btn-sendsms', function () {
+        $('.table_client').off('click', '.btn-sendsms').on('click', '.btn-sendsms', function (event) {
+            event.preventDefault();
+
+            $('#sendSMS').remove();
+
+            $('body').append(`
+                <div class="modal fade" id="sendSMS" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content bg-white">
+                            <div class="modal-body">
+                                <form class="form-validate is-alter">
+                                    <div class="form-group">
+                                        <label class="form-label">Nom et Prénoms</label>
+                                        <div class="form-control-wrap">
+                                            <input readonly type="text" class="form-control" id="ss_np">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Contact</label>
+                                        <div class="form-control-wrap">
+                                            <input type="tel" class="form-control" id="ss_tel">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Type message
+                                        </label>
+                                        <div class="form-control-wrap">
+                                            <select id="ss_type" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez un type">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Message</label>
+                                        <div class="form-control-wrap">
+                                            <textarea class="form-control no-resize" id="ss_message" maxlength="100"></textarea>
+                                        </div>
+                                        <small id="char_count">0/100</small>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <a id="btn_sendSMS" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dim btn-md btn-outline-warning">
+                                            <span>Envoyer</span>
+                                            <em class="icon ni ni-send" ></em>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+            // Affichage du modal
+            $('#sendSMS').modal('show');
+
+            select_type_message("#ss_type");
+
+            $('#ss_type').on('change', function() {
+
+                const selectedOption = $(this).find(':selected');
+                const message = selectedOption.data('message');
+
+                if (message) {
+                    $('#ss_message').val(message).trigger('input');
+                } else {
+                    $('#ss_message').val('').trigger('input');
+                }
+            });
 
             const matricule = $(this).data('matricule');
             const np = $(this).data('np');
@@ -113,6 +184,8 @@ $(document).ready(function () {
             $('#ss_np').val(np);
             $('#ss_tel').val(contact);
             $('#ss_message').val(null);
+
+            $('#btn_sendSMS').on('click', sendSMS);
  
         });  
     }
@@ -126,10 +199,10 @@ $(document).ready(function () {
 
         // Afficher ou masquer la balise <p> en fonction de la sélection
         if (total > 0) {
-            $("p#selectionStatus").show();
+            $("#selectionStatus").show();
             $('#selectionStatusCheckbox').show();
         } else {
-            $("p#selectionStatus").hide();
+            $("#selectionStatus").hide();
             $('#selectionStatusCheckbox').hide();
         }
 
@@ -184,6 +257,61 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#btn_sendSMSmultiple', function () {
+
+        $('#sendSMSmultipleModal').remove();
+
+        $('body').append(`
+            <div class="modal fade" id="sendSMSmultipleModal" tabindex="-1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content bg-white">
+                        <div class="modal-body">
+                            <form class="">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Type message
+                                    </label>
+                                    <div class="form-control-wrap">
+                                        <select id="sm_type" class="form-select js-select2" data-search="on" data-placeholder="Selectionnez un type">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Message</label>
+                                    <div class="form-control-wrap">
+                                        <textarea class="form-control no-resize" id="sm_message" maxlength="100"></textarea>
+                                    </div>
+                                    <small id="char_count_muktiple">0/100</small>
+                                </div>
+                                <div class="form-group text-center">
+                                    <a data-bs-dismiss="modal" aria-label="Close" id="btn_sendSMSMULTIPLE" class="btn btn-dim btn-md btn-outline-warning">
+                                        <span>Envoyer</span>
+                                        <em class="icon ni ni-send" ></em>
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        // Affichage du modal
+        $('#sendSMSmultipleModal').modal('show');
+
+        select_type_message("#sm_type");
+
+        $('#sm_type').on('change', function() {
+
+            const selectedOption = $(this).find(':selected');
+            const message = selectedOption.data('message');
+
+            if (message) {
+                $('#sm_message').val(message).trigger('input');
+            } else {
+                $('#sm_message').val('').trigger('input');
+            }
+        });
+
         // Récupérer toutes les cases à cocher sélectionnées
         const selectedCheckboxes = $(".table_client tbody input[type='checkbox']:checked");
 
@@ -200,13 +328,6 @@ $(document).ready(function () {
             selectedClients.push({ nom, tel });
         });
 
-        // Vérifier si des éléments ont été sélectionnés
-        // if (selectedClients.length > 0) {
-            
-        // } else {
-        //     alert('Aucun client sélectionné');
-        // }
-
         $(document).on('click', '#btn_sendSMSMULTIPLE', function () {
             event.preventDefault();
 
@@ -216,9 +337,6 @@ $(document).ready(function () {
                 showAlert("Alert", "Veuillez saisir le message s'il vous plaît.", "info");
                 return false;
             }
-
-            var modal = bootstrap.Modal.getInstance(document.getElementById('sendSMSmultipleModal'));
-            modal.hide();
 
             smsSenderMultipleAsync(selectedClients, message);
         });
@@ -261,6 +379,19 @@ $(document).ready(function () {
         }
     });
 
+    $('#type_message').on('input', function() {
+        var currentLength = $(this).val().length;
+        var remaining = maxLength - currentLength;
+        
+        // Met à jour le décompte des caractères
+        $('#char_count_type').text(currentLength + '/' + maxLength);
+        
+        // Optionnel : Désactive l'écriture si le nombre de caractères est atteint
+        if (remaining <= 0) {
+            $(this).val($(this).val().substring(0, maxLength)); // Empêche l'ajout de plus de caractères
+        }
+    });
+
     function sendSMS()
     {
         event.preventDefault();
@@ -285,9 +416,6 @@ $(document).ready(function () {
             nom: nom,
             tel: contact,
         });
-
-        var modal = bootstrap.Modal.getInstance(document.getElementById('sendSMS'));
-        modal.hide();
 
         smsSenderMultipleAsync(contacts, message);
     }    

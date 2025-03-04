@@ -13,10 +13,17 @@ use App\Http\Controllers\CaisseController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\BilanController;
 use App\Http\Controllers\BilanGeneraleController;
+use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\UpdateController;
 
 Route::middleware(['web'])->group(function () {
 
     Route::post('/traitement_login', [AuthController::class, 'trait_login']);
+
+
+    // Mise à jour debut
+    Route::post('/update_type_message/{id}', [UpdateController::class, 'update_type_message']);
+    // Mise à jour fin
 
 });
 
@@ -30,6 +37,7 @@ Route::get('/select_code_proforma_vente', [SelectController::class, 'select_code
 Route::get('/select_traitement', [SelectController::class, 'select_traitement']);
 Route::get('/select_type_verre', [SelectController::class, 'select_type_verre']);
 Route::get('/select_op_magasin', [SelectController::class, 'select_op_magasin']);
+Route::get('/select_type_message', [SelectController::class, 'select_type_message']);
 // Select fin
 
 // Recherche debut
@@ -51,6 +59,7 @@ Route::get('/insert_proforma', [InsertController::class, 'insert_proforma']);
 Route::get('/insert_vente', [InsertController::class, 'insert_vente']);
 Route::get('/insert_operation/{id_agence}/{login}', [InsertController::class, 'insert_operation']);
 Route::get('/insert_versement/{code}/{matricule}', [InsertController::class, 'insert_versement']);
+Route::get('/insert_type_message', [InsertController::class, 'insert_type_message']);
 // Ajouter fin
 
 // Liste debut
@@ -61,7 +70,12 @@ Route::get('/list_vente_all', [ListeController::class, 'list_vente_all']);
 Route::get('/list_operation_all/{date1}/{date2}/{magasin}', [ListeController::class, 'list_operation_all']);
 Route::get('/list_facture_client/{matricule}', [ListeController::class, 'list_facture_client']);
 Route::get('/list_facturation', [ListeController::class, 'list_facturation']);
+Route::get('/list_message_all', [ListeController::class, 'list_message_all']);
 // Liste fin
+
+// Supprimer debut
+Route::get('/delete_type_message/{id}', [DeleteController::class, 'delete_type_message']);
+// Supprimer fin
 
 // Facture debut
 Route::get('/imp_fac_proforma/{code}', [FactureController::class, 'imp_fac_proforma']);

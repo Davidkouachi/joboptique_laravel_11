@@ -8,14 +8,18 @@
     <div class="container-fluid">
         <div class="nk-content-inner">
             <div class="nk-content-body">
-                {{-- <div class="nk-block-head nk-block-head-sm">
-                    <div class="nk-block-between justify-content-center align-items-center">
-                        <div class="nk-block-head-content">
-                            <h3 class="nk-block-title page-title">Tableau de bord</h3>
+                <div class="nk-block">
+                    <div class="row g-gs mb-2">
+                        <div class="col-12">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between justify-content-center align-items-center">
+                                    <div class="nk-block-head-content">
+                                        <h5 class="nk-block-title" style="color: #FF4500;">Statistique journalière</h5>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div> --}}
-                <div class="nk-block">
                     <div class="row g-gs mb-5" id="div_day">
                         <div class="col-12" id="div_day_message">
                             <div class="card">
@@ -29,6 +33,17 @@
                                                 </h6>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-gs mb-2">
+                        <div class="col-12">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between justify-content-center align-items-center">
+                                    <div class="nk-block-head-content">
+                                        <h5 class="nk-block-title" style="color: #4682B4;">Statistique globale</h5>
                                     </div>
                                 </div>
                             </div>
@@ -52,16 +67,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row g-gs mb-2">
+                        <div class="col-12">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between justify-content-center align-items-center">
+                                    <div class="nk-block-head-content">
+                                        <h5 class="nk-block-title">Vente récentes (10 dernières)</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row g-gs mb-5">
                         <div class="col-12">
                             <div class="card card-full">
-                                <div class="card-inner mb-1">
-                                    <div class="card-title-group p-2 justify-content-center align-items-center rounded-5" style="background: linear-gradient(to right, #006400, #32CD32);">
-                                        <div class="card-title">
-                                            <h6 class="title text-white">Vente récentes (10 dernières)</h6>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="card-inner mb-3" id="div_table_message">
                                     <div class="card-title-group justify-content-center align-items-center">
                                         <div class="card-title d-flex justify-content-center align-items-center">
@@ -72,7 +91,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="nk-tb-list mt-n2" id="div_table" style="display: none;">
+                                <div class="nk-tb-list mt-2" id="div_table" style="display: none;">
                                     <div class="nk-tb-item nk-tb-head">
                                         <div class="nk-tb-col">
                                             <span>Code vente</span>

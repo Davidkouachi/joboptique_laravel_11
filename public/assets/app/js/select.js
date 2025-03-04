@@ -395,10 +395,10 @@ $(document).ready(function () {
         }
     };
 
-    window.select_magasin = function (id) 
+    window.select_magasin = function (id, callback) 
     {
         const selectElement2 = $(id);
-        selectElement2.empty();;
+        selectElement2.empty();
 
         $.ajax({
             url: '/api/select_op_magasin',
@@ -412,13 +412,53 @@ $(document).ready(function () {
                         text: item.nom,
                     }));
                 });
+
+                // Appelez le callback une fois que tout est terminé
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            },
+            error: function() {
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+
+                if (typeof callback === 'function') {
+                    callback(); // Appelez le callback même en cas d'erreur
+                }
+            }
+        });
+    }
+
+    window.select_type_message = function (id) 
+    {
+        const selectElement2 = $(id);
+        selectElement2.empty();
+        selectElement2.append($('<option>', {
+            value: '',
+            text: '',
+            'data-message': '',
+        }));
+
+        $.ajax({
+            url: '/api/select_type_message',
+            method: 'GET',
+            success: function(response) {
+                const data = response.data;
+
+                data.forEach(function(item) {
+                    selectElement2.append($('<option>', {
+                        value: item.id,
+                        text: item.type,
+                        'data-message': item.message,
+                    }));
+                });
+
+                // Recharger Select2 après la mise à jour des options
+                selectElement2.select2();
             },
             error: function() {
                 // showAlert('danger', 'Impossible de generer le code automatiquement');
             }
         });
     }
-
-
 
 });

@@ -139,4 +139,13 @@ class SelectController extends Controller
             'data' => $data,
         ]);
     }
+
+    public function select_type_message()
+    {
+        $data = DB::table('type_messages')->select('id','type','message')->get();
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
 }

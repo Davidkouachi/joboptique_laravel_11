@@ -205,12 +205,12 @@ $(document).ready(function () {
                         <div class="nk-tb-item">
                             <div class="nk-tb-col">
                                 <span class="tb-lead">
-                                    <a href="#">${item.code}</a>
+                                    <a href="#" style="color: #FF4500;">${item.code}</a>
                                 </span>
                             </div>
                             <div class="nk-tb-col tb-col-md">
                                 <div class="user-card">
-                                    <div class="user-avatar sm bg-purple-dim">
+                                    <div class="user-avatar sm bg-info">
                                         <em class="ni ni-user"></em>
                                     </div>
                                     <div class="user-name">

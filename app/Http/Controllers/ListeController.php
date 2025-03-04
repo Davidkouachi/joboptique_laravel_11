@@ -79,7 +79,6 @@ class ListeController extends Controller
         ]);
     }
 
-
     public function list_prospect_all()
     {
         $prospect = DB::table('prospect')
@@ -258,5 +257,14 @@ class ListeController extends Controller
         ]);
     }
 
+    public function list_message_all(Request $request)
+    {
+
+        $data = DB::table('type_messages')->get();
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
     
 }

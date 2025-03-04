@@ -30,12 +30,14 @@ $(document).ready(function () {
     select_annee('#anne_client');
     select_annee('#anne_eva_vente');
     select_magasin('#magasin_d_vente');
-    select_magasin('#magasin_estimation_vente');
+    select_magasin('#magasin_estimation_vente', function() {
+        graph_vente_prevision();
+    });
+
 
     graph_op();
     graph_vente();
     graph_eva_vente();
-    graph_vente_prevision();
     graph_client();
 
     $("#anne_op").on('change', graph_op);
@@ -510,7 +512,8 @@ $(document).ready(function () {
             });
     }
 
-    function graph_vente_prevision() {
+    function graph_vente_prevision() 
+    {
         $('#div_vente_prevision_message1').show();
         $('#div_vente_prevision_message2').show();
 
