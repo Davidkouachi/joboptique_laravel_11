@@ -15,7 +15,7 @@
                             <div class="card-inner">
                                 <div class="card-title-group justify-content-center align-items-center">
                                     <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
-                                        <img class="rounded-circle border border-2 mb-2" height="130" width="130" src="{{ asset('assets/images/caisse.jpg') }}">
+                                        <img class="rounded-circle border border-2 mb-2" height="100" width="100" src="{{ asset('assets/images/caisse.jpg') }}">
                                         <h5 class="fw-bold mb-2 text-white" id="solde" style="display: none;" ></h5>
                                         <a class="btn btn-danger mb-2" id="btn_fermer" style="display: none;">
                                             <span>Fermer la Caisse</span>
@@ -63,12 +63,6 @@
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="new">
-                                                <div class="card-title-group justify-content-center align-items-center mt-5">
-                                                    <div class="card-title d-flex-column justify-content-center align-items-center text-center">
-                                                        {{-- <img height="80px" width="80px" class="rounded-pill border border-1" src="{{ asset('assets/images/user8.png') }}" alt=""> --}}
-                                                        <h4 class="title fw-normal">Nouvelle Opération</h4>
-                                                    </div>
-                                                </div>
                                                 <form id="formulaire_operation" class="mt-5">
                                                     <div class="row g-gs">
                                                         <div class="col-md-12">

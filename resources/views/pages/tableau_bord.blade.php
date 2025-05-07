@@ -12,9 +12,9 @@
                     <div class="row g-gs mb-2">
                         <div class="col-12">
                             <div class="nk-block-head nk-block-head-sm">
-                                <div class="nk-block-between justify-content-center align-items-center">
+                                <div class="nk-block-between justify-content-center align-items-center border-bottom pb-2">
                                     <div class="nk-block-head-content">
-                                        <h5 class="nk-block-title" style="color: #FF4500;">Statistique journalière</h5>
+                                        <h5 class="nk-block-title">Statistique journalière</h5>
                                     </div>
                                 </div>
                             </div>
@@ -41,9 +41,9 @@
                     <div class="row g-gs mb-2">
                         <div class="col-12">
                             <div class="nk-block-head nk-block-head-sm">
-                                <div class="nk-block-between justify-content-center align-items-center">
+                                <div class="nk-block-between justify-content-center align-items-center border-bottom pb-2">
                                     <div class="nk-block-head-content">
-                                        <h5 class="nk-block-title" style="color: #4682B4;">Statistique globale</h5>
+                                        <h5 class="nk-block-title">Statistique globale</h5>
                                     </div>
                                 </div>
                             </div>
@@ -70,9 +70,9 @@
                     <div class="row g-gs mb-2">
                         <div class="col-12">
                             <div class="nk-block-head nk-block-head-sm">
-                                <div class="nk-block-between justify-content-center align-items-center">
+                                <div class="nk-block-between justify-content-center align-items-center border-bottom pb-2">
                                     <div class="nk-block-head-content">
-                                        <h5 class="nk-block-title">Vente récentes (10 dernières)</h5>
+                                        <h5 class="nk-block-title">Ventes récentes (10 dernières)</h5>
                                     </div>
                                 </div>
                             </div>

@@ -4,7 +4,7 @@
 * Author: Softnio
 * Author URI: http://themeforest.net/user/softnio
 * Version: 3.2.4
-* Updated: 11.01.2024 nk-menu-item pmo-lv
+* Updated: 11.01.2024 nk-menu-item pmo-lv nk-auth-body
 **/
 
 /*@font-face {
@@ -40925,7 +40925,7 @@ span+.icon {
     width: 100%;
     max-width: 420px;
     margin-left: auto;
-    margin-right: auto
+    margin-right: 150px;
 }
 
 .nk-auth-footer {

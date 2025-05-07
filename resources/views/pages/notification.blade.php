@@ -15,7 +15,8 @@
                             <div class="card-inner">
                                 <div class="card-title-group justify-content-center align-items-center">
                                     <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
-                                        <img class="rounded-circle border border-2 mb-2" height="130" width="130" src="{{ asset('assets/images/sms.svg') }}">
+                                        <img class="rounded-circle border border-2 mb-2" height="50" width="50" src="{{ asset('assets/images/sms.svg') }}">
+                                        <h5 class="nk-block-title text-white">Envoi d'sms</h5>
                                     </div>
                                 </div>
                             </div>

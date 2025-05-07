@@ -13,7 +13,8 @@
     </title>
     
     <script src="{{asset('jquery.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{{ asset('assets/app/apexcharts/dist/apexcharts.min.js') }}"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
     <script src="{{asset('assets/app/js/alert.js')}}"></script>
     <script src="{{asset('assets/app/js/format.js')}}"></script>
     <script src="{{asset('assets/app/js/urlHis.js')}}"></script>
@@ -206,7 +207,7 @@
                                     <img class="logo-dark logo-img" src="{{ asset('assets/images/logo.jpg') }}" srcset="{{ asset('assets/images/logo.jpg') }} 2x">
                                 </a>
                             </div>
-                            <marquee>
+                            <marquee class="d-none d-xl-block" >
                                 <span class="fw-bold text-info" style="font-size: 20px;" >JOB</span>
                                 <span class="fw-bold text-orange" style="font-size: 20px;" >OPTIQUE</span>
                             </marquee>

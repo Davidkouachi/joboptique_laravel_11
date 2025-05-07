@@ -47,15 +47,15 @@ $(document).ready(function () {
                 if (response.success) {
                     $('#cadre_ouverture_caisse').hide();
                     $('#cadre_fermeture_caisse').show();
-                    showAlert("Succès", "Caisse Ouverte", "success");
+                    showAlert2("Succès", "Caisse Ouverte", "success");
                 } else {
-                    showAlert("Alert", "Un erreur est survenue lors de l'ouverture de la caisse", "error");
+                    showAlert2("Alert", "Un erreur est survenue lors de l'ouverture de la caisse", "error");
                 }
             
             },
             error: function() {
                 $("#preloader_ch").remove();
-                showAlert("Erreur", "Un erreur est survenue", "error");
+                showAlert2("Erreur", "Un erreur est survenue", "error");
             }
         });
     }
@@ -81,15 +81,15 @@ $(document).ready(function () {
                 if (response.success) {
                     $('#cadre_ouverture_caisse').show();
                     $('#cadre_fermeture_caisse').hide();
-                    showAlert("Succès", "Caisse Fermer", "success");
+                    showAlert2("Succès", "Caisse Fermer", "success");
                 } else {
-                    showAlert("Alert", "Un erreur est survenue lors de la fermeture de la caisse", "error");
+                    showAlert2("Alert", "Un erreur est survenue lors de la fermeture de la caisse", "error");
                 }
             
             },
             error: function() {
                 $("#preloader_ch").remove();
-                showAlert("Erreur", "Un erreur est survenue", "error");
+                showAlert2("Erreur", "Un erreur est survenue", "error");
             }
         });
     }

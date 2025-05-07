@@ -37,8 +37,15 @@
                                                     </div>
                                                 </div>
                                                 <form id="formulaire_proforma" class="mt-5">
-                                                    <div class="card-inner border border-1 rounded mb-5">
+                                                    <div class="card-inner mb-5">
                                                         <div class="row g-gs">
+                                                            <div class="col-12" >
+                                                                <div class="card-title-group">
+                                                                    <div class="card-title">
+                                                                        <h4 class="title fw-normal">Informations Client</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-7">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
@@ -77,8 +84,15 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-inner border border-1 rounded mb-5">
+                                                    <div class="card-inner mb-5">
                                                         <div class="row g-gs">
+                                                            <div class="col-12" >
+                                                                <div class="card-title-group">
+                                                                    <div class="card-title">
+                                                                        <h4 class="title fw-normal">Préscriptions</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
@@ -169,14 +183,21 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-inner border border-1 rounded mb-5">
+                                                    <div class="card-inner mb-0">
                                                         <div class="row g-gs">
-                                                            <div class="col-12">
-                                                                <div class="form-group text-center">
-                                                                    <a class="btn btn-md btn-outline-info" id="btn_ajouter">
-                                                                        <span>Ajouter</span>
-                                                                        <em class="icon ni ni-plus-circle"></em>
-                                                                    </a>
+                                                            <div class="col-12" >
+                                                                <div class="nk-block-between">
+                                                                    <div class="nk-block-head-content">
+                                                                        <div class="card-title">
+                                                                            <h4 class="title fw-normal">Produit(s)</h4>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="nk-block-head-content">
+                                                                        <a class="btn btn-md btn-outline-primary" id="btn_ajouter">
+                                                                            <span>Ajouter</span>
+                                                                            <em class="icon ni ni-plus-circle"></em>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div id="contenu">
@@ -184,7 +205,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-inner mb-5">
+                                                    <div class="card-inner mb-2">
                                                         <div class="row g-gs ">
                                                             <div class="col-12 ">
                                                                 <div class="row d-flex flex-row-reverse" >
@@ -246,7 +267,7 @@
                                                             </div>
                                                             <div class="col-md-12" id="div_btn" style="display: none;">
                                                                 <div class="form-group text-center">
-                                                                    <button type="submit" class="btn btn-lg btn-outline-success">
+                                                                    <button type="submit" class="btn btn-md btn-outline-success">
                                                                         <span>Validé</span>
                                                                         <em class="icon ni ni-printer"></em>
                                                                     </button>

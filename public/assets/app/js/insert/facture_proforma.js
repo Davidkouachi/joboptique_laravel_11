@@ -34,8 +34,10 @@ $(document).ready(function () {
 
         const div = $(`
             <div class="contenu_enfant card-inner border border-1 rounded mb-5">
-                <div class="card-header">
-                    <h5 class="card-title text-center Title_produit">Produit ${index}</h5>
+                <div class="card-header" style="background: linear-gradient(to right, #FFA500, #FF4500);">
+                    <h5 class="card-title text-center text-white Title_produit">
+                        Produit ${index}
+                    </h5>
                 </div>
                 <div class="row g-gs mt-1">
                     <div class="col-md-7">
@@ -198,6 +200,34 @@ $(document).ready(function () {
     $("#formulaire_proforma").on("submit", function (event) {
         event.preventDefault();
 
+        let nom = $("#nom");
+        let tel = $("#tel");
+        let date = $("#date");
+
+        let sphere_OD = $("#Sphere_OD");
+        let cylindre_OD = $("#Cylindre_OD");
+        let axe_OD = $("#Axe_OD");
+        let addition_OD = $("#Addition_OD");
+
+        let sphere_OG = $("#Sphere_OG");
+        let cylindre_OG = $("#Cylindre_OG");
+        let axe_OG = $("#Axe_OG");
+        let addition_OG = $("#Addition_OG");
+
+        let mTotal = parseFloat($("#mTotal").val().replace(/[^0-9]/g, ''));
+        let remise = $("#remise").val();
+        let netPayer = parseFloat($("#netPayer").val().replace(/[^0-9]/g, ''));
+
+        if (!nom.val().trim() || !tel.val().trim() || !date.val().trim() ) {
+            showAlert("Alert","Veuillez remplir tous les champs obligatoire s'il vous plaît !!!","warning");
+            return false;
+        }
+
+        if (tel.val().length !== 10 ) {
+            showAlert("Alert", "Contact incomplet.", "info");
+            return false;
+        }
+
         if ($('#contenu').children('.contenu_enfant').length <= 0) {
             showAlert("ALERT", 'Aucun produit n\'a été identifier.', "warning");
             return false;
@@ -229,34 +259,6 @@ $(document).ready(function () {
             });
 
         });
-
-        let nom = $("#nom");
-        let tel = $("#tel");
-        let date = $("#date");
-
-        let sphere_OD = $("#Sphere_OD");
-        let cylindre_OD = $("#Cylindre_OD");
-        let axe_OD = $("#Axe_OD");
-        let addition_OD = $("#Addition_OD");
-
-        let sphere_OG = $("#Sphere_OG");
-        let cylindre_OG = $("#Cylindre_OG");
-        let axe_OG = $("#Axe_OG");
-        let addition_OG = $("#Addition_OG");
-
-        let mTotal = parseFloat($("#mTotal").val().replace(/[^0-9]/g, ''));
-        let remise = $("#remise").val();
-        let netPayer = parseFloat($("#netPayer").val().replace(/[^0-9]/g, ''));
-
-        if (!nom.val().trim() || !tel.val().trim() || !date.val().trim() ) {
-            showAlert("Alert","Veuillez remplir tous les champs s'il vous plaît !!!","warning");
-            return false;
-        }
-
-        if (tel.val().length !== 10 ) {
-            showAlert("Alert", "Contact incomplet.", "info");
-            return false;
-        }
         
         if (isNaN(mTotal) || isNaN(netPayer) || mTotal < 0 || netPayer < 0 ) {
             showAlert("ALERT", 'Vérifier les montants s\'il vous plaît.', "warning");

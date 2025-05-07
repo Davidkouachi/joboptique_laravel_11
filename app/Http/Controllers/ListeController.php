@@ -34,7 +34,7 @@ class ListeController extends Controller
         return response()->json([
             'data' => $clients,
         ]);
-    }
+    } 
 
     public function list_client_rech($month, $year)
     {

@@ -87,8 +87,10 @@ $(document).ready(function () {
 
         const div = $(`
             <div class="contenu_enfant card-inner border border-1 rounded mb-5">
-                <div class="card-header">
-                    <h5 class="card-title text-center Title_produit">Produit ${index}</h5>
+                <div class="card-header" style="background: linear-gradient(to right, #FFA500, #FF4500);">
+                    <h5 class="card-title text-center text-white Title_produit">
+                        Produit ${index}
+                    </h5>
                 </div>
                 <div class="row g-gs mt-1">
                     <div class="col-md-7">
@@ -288,6 +290,22 @@ $(document).ready(function () {
     $("#formulaire_vente").on("submit", function (event) {
         event.preventDefault();
 
+        let client = $("#client").val();
+        let taux = $("#taux").val();
+        let choix_assurance = $("#choix_assurance").val();
+        let date = $("#date").val();
+
+        let code_proforma = $("#code_proforma").val();
+        let mTotal = parseFloat($("#mTotal").val().replace(/[^0-9]/g, ''));
+        let netAssurance = parseFloat($("#netAssurance").val().replace(/[^0-9]/g, ''));
+        let remise = $("#remise").val();
+        let netPayer = parseFloat($("#netPayer").val().replace(/[^0-9]/g, ''));
+
+        if (!client|| !date) {
+            showAlert("Alert","Veuillez remplir tous les champs obligatoire s'il vous plaît !!!","warning");
+            return false;
+        }
+
         if ($('#contenu').children('.contenu_enfant').length <= 0) {
             showAlert("ALERT", 'Aucun produit n\'a été identifier.', "warning");
             return false;
@@ -319,22 +337,6 @@ $(document).ready(function () {
             });
 
         });
-
-        let client = $("#client").val();
-        let taux = $("#taux").val();
-        let choix_assurance = $("#choix_assurance").val();
-        let date = $("#date").val();
-
-        let code_proforma = $("#code_proforma").val();
-        let mTotal = parseFloat($("#mTotal").val().replace(/[^0-9]/g, ''));
-        let netAssurance = parseFloat($("#netAssurance").val().replace(/[^0-9]/g, ''));
-        let remise = $("#remise").val();
-        let netPayer = parseFloat($("#netPayer").val().replace(/[^0-9]/g, ''));
-
-        if (!client|| !date) {
-            showAlert("Alert","Veuillez remplir tous les champs s'il vous plaît !!!","warning");
-            return false;
-        }
         
         if (isNaN(mTotal) || isNaN(netPayer) || isNaN(netAssurance) || mTotal < 0 || netPayer < 0 || netAssurance < 0 ) {
             showAlert("ALERT", 'Vérifier les montants s\'il vous plaît.', "warning");

@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+    $('#contenu').hide();
+
     select_client_prescription('#client');
 
     $('#client').on('change', function() {
@@ -11,8 +14,12 @@ $(document).ready(function () {
             success: function(response) {
                 const data = response.data;
 
+                $('#contenu').stop(true, true).slideDown();
+
                 if (data.length > 0) {
-                    const prescription = data[0]; // Prendre la première prescription si plusieurs sont possibles
+                    const prescription = data[0];
+
+                    // $('#contenu').stop(true, true).slideDown();
 
                     // Remplir les champs OD
                     sphere_prescription('#Sphere_OD', prescription.OD.sphere);
@@ -31,6 +38,9 @@ $(document).ready(function () {
                     type_verre_prescription('#Type_verre_OG', prescription.OG.type_verre);
 
                 } else {
+
+                    // $('#contenu').stop(true, true).slideUp();
+                    showAlert2("Alert", "Aucune préscription n'à été trouvées", "info");
 
                     sphere_prescription('#Sphere_OD',null);
                     cylindre_prescription('#Cylindre_OD',null);
@@ -55,8 +65,42 @@ $(document).ready(function () {
 
     });
 
+    function SelectElement() {
+
+        const $selects = $('.select_rech');
+
+        let formIsValid = true;
+
+        $selects.each(function() {
+            const $select = $(this);
+            const selectedOption = $select.find(':selected');
+            const value = selectedOption.val();
+
+            if (!value) {
+                formIsValid = false;
+                return false;
+            }
+        });
+
+        if (!formIsValid) {
+            return false;
+        }
+
+        return true;
+    }
+
     $("#formulaire_prescription").on("submit", function (event) {
         event.preventDefault();
+
+        try {
+            const verif = SelectElement();
+            if (!verif) {
+                return false;
+            }
+        } catch (error) {
+            showAlert("ALert", "Sélectionner au moins 1 élement", "info");
+            return false;
+        }
 
         let matricule = $("#client").val().trim();
 

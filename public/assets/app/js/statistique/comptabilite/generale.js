@@ -976,7 +976,7 @@ $(document).ready(function () {
                 stats.forEach(function(stat) {
 
                     const div = $(`
-                        <div class="col-xxl-3 col-sm-6" >
+                        <div class="col-xxl-3 col-lg-4 col-sm-6" >
                             <div class="card pricing text-center">
                                 <div class="pricing-body">
                                     <ul class="nk-store-statistics">

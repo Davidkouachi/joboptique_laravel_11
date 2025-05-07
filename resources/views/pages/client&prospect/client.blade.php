@@ -270,7 +270,7 @@
                                                     <div class="row g-gs mt-1">
                                                         <div class="col-md-12">
                                                             <div class="form-group text-center">
-                                                                <button type="submit" class="btn btn-lg btn-outline-success">
+                                                                <button type="submit" class="btn btn-md btn-outline-success">
                                                                     <span>Validé</span>
                                                                     <em class="icon ni ni-check"></em>
                                                                 </button>

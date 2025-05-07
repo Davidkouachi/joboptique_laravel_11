@@ -20,8 +20,8 @@
     <div class="nk-app-root">
         <div class="nk-main ">
             <div class="nk-wrap nk-wrap-nosidebar">
-                <div class="nk-content ">
-                    <div class="nk-block nk-block-middle nk-auth-body wide-xxl">
+                <div class="nk-content " style="background: rgba(0, 0, 0, 0.5);">
+                    <div class="nk-block nk-block-middle nk-auth-body wide-xxl ">
                         <div class="card">
                             <div class="card-inner card-inner-lg">
                             	<div class="brand-logo pb-4 text-center mb-3">

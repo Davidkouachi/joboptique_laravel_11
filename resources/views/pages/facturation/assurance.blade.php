@@ -15,8 +15,8 @@
                             <div class="card-inner">
                                 <div class="card-title-group justify-content-center align-items-center">
                                     <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
-                                        <img class=" mb-1 p-0" height="130" width="130" src="{{ asset('assets/images/pdf2.png') }}">
-                                        {{-- <h3 class="title text-white">Facturation</h3> --}}
+                                        <img class=" mb-1 p-0" height="50" width="50" src="{{ asset('assets/images/pdf2.png') }}">
+                                        <h5 class="nk-block-title text-white">Facturation</h5>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                                 </div> --}}
                                 <div class="card-inner card-bordered">
                                     <div class="row g-gs">
-                                        <div class="col-md-6">
+                                        <div class="col-lg-3 col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">
                                                     Facturation par
@@ -47,7 +47,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" id="div_assurance">
+                                        <div class="col-lg-3 col-md-6" id="div_assurance">
                                             <div class="form-group">
                                                 <label class="form-label">
                                                     Assurance
@@ -58,7 +58,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" id="div_client" style="display: none;">
+                                        <div class="col-lg-3 col-md-6" id="div_client" style="display: none;">
                                             <div class="form-group">
                                                 <label class="form-label">
                                                     Client
@@ -69,7 +69,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-lg-3 col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">
                                                     Du
@@ -79,7 +79,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-lg-3 col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">
                                                     Au

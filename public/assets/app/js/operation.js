@@ -83,7 +83,7 @@ $(document).ready(function () {
                         list_operation_all();
                     }
 
-                    showAlert("Succès","La caisse à été ouverte","success");
+                    showAlert2("Succès","La caisse à été ouverte","success");
 
                 } else if (response.success_deja) {
                     $('#btn_ouvert').hide();
@@ -94,13 +94,13 @@ $(document).ready(function () {
                         list_operation_all();
                     }
 
-                    showAlert("Succès","La caisse été déjà ouverte","success");
+                    showAlert2("Succès","La caisse été déjà ouverte","success");
                     
                 } else {
                     $('#btn_ouvert').show();
                     $('#btn_fermer').hide();
                     $('#div_operation').hide();
-                    showAlert("Alert","Une erreur c'est produite lors de l'ouverture de la caisse.","info");
+                    showAlert2("Alert","Une erreur c'est produite lors de l'ouverture de la caisse.","info");
                 }
             
             },
@@ -110,7 +110,7 @@ $(document).ready(function () {
                 $('#btn_ouvert').show();
                 $('#div_operation').hide();
                 $('#message').show();
-                showAlert("Alert","Une erreur c'est produite.","info");
+                showAlert2("Alert","Une erreur c'est produite.","info");
             }
         });
     }
@@ -136,20 +136,20 @@ $(document).ready(function () {
                     $('#btn_fermer').hide();
                     $('#div_operation').hide();
 
-                    showAlert("Succès","La caisse à été fermer","success");
+                    showAlert2("Succès","La caisse à été fermer","success");
                     
                 } else if (response.success_deja) {
                     $('#btn_ouvert').show();
                     $('#btn_fermer').hide();
                     $('#div_operation').hide();
 
-                    showAlert("Succès","La caisse été déjà fermer","success");
+                    showAlert2("Succès","La caisse été déjà fermer","success");
                     
                 } else {
                     $('#btn_ouvert').hide();
                     $('#btn_fermer').show();
                     $('#div_operation').show();
-                    showAlert("Alert","Une erreur c'est produite lors de la fermeture de la caisse.","info");
+                    showAlert2("Alert","Une erreur c'est produite lors de la fermeture de la caisse.","info");
                 }
             
             },
@@ -159,7 +159,7 @@ $(document).ready(function () {
                 $('#btn_ouvert').hide();
                 $('#div_operation').show();
                 $('#message').show();
-                showAlert("Alert","Une erreur c'est produite.","info");
+                showAlert2("Alert","Une erreur c'est produite.","info");
             }
         });
     }

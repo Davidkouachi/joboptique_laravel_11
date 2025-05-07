@@ -15,7 +15,7 @@
                             <div class="card-inner">
                                 <div class="card-title-group justify-content-center align-items-center">
                                     <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
-                                        <img class="rounded-circle border border-2 mb-2" height="130" width="130" src="{{ asset('assets/images/caisse.jpg') }}">
+                                        <img class="rounded-circle border border-2 mb-2" height="100" width="100" src="{{ asset('assets/images/caisse.jpg') }}">
                                         <h5 class="fw-bold mb-2 text-white" id="solde" style="display: none;" ></h5>
                                         <a class="btn btn-danger mb-2" id="btn_fermer" style="display: none;">
                                             <span>Fermer la Caisse</span>
@@ -43,15 +43,16 @@
                     </div>
 
                     <div class="nk-block" id="div_operation" style="display: none;">
+                        <div class="card" style="background: transparent; border: none;">
+                            <div class="card-inner mt-n4">
+                                <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
+                                    <h5 class="nk-block-title ">Encaissements</h5>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="card-inner">
-                                <div class="card-title-group justify-content-center align-items-center">
-                                    <div class="card-title d-flex justify-content-center align-items-center text-center">
-                                        <em class="icon ni ni-money h3 me-2"></em>
-                                        <h4 class="title fw-normal">Encaissement</h4>
-                                    </div>
-                                </div>
-                                <div class="row g-gs mb-5">
+                                <div class="row g-gs mb-2">
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="form-label">
@@ -64,7 +65,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row g-gs justify-content-center align-items-center text-center" id="donnee">
+                                <div class="row g-gs justify-content-center align-items-center text-center mb-2" id="donnee">
                                     <div class="col-md-4">
                                         <span class="badge badge-md bg-warning" id="total"></span>
                                     </div>
@@ -75,8 +76,8 @@
                                         <span class="badge badge-md bg-danger" id="non_payer"></span>
                                     </div>
                                 </div>
-                                <div class="card-preview mt-5">
-                                    <div class="card-inner">
+                                <div class="card-preview mt-0">
+                                    <div class="card-inner card-bordered">
                                         <table class="datatable-init table table_facture_client" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
                                             <thead>
                                                 <tr class="nk-tb-item nk-tb-head">

@@ -15,7 +15,8 @@
                             <div class="card-inner">
                                 <div class="card-title-group justify-content-center align-items-center">
                                     <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
-                                        <img class="rounded-circle mb-1 p-0" height="130" width="130" src="{{ asset('assets/images/list_facture.jpg') }}">
+                                        <img class="rounded-circle mb-1 p-0" height="50" width="50" src="{{ asset('assets/images/list_facture.jpg') }}">
+                                        <h5 class="nk-block-title text-white">Historiques des factures</h5>
                                     </div>
                                 </div>
                             </div>

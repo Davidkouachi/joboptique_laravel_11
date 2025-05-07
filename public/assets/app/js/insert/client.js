@@ -48,7 +48,7 @@ $(document).ready(function () {
         let matricule = $("#matricule");
 
         if (!nom.val().trim() || !prenoms.val().trim() || !datenais.val().trim() || !sexe.val().trim() || !tel1.val().trim() || !assurer.val().trim() ) {
-            showAlert("Alert","Veuillez remplir tous les champs s'il vous plaît !!!","warning");
+            showAlert("Alert","Veuillez remplir tous les champs obligatoire s'il vous plaît !!!","warning");
             return false;
         }
 
