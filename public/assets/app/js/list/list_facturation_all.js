@@ -42,6 +42,8 @@ $(document).ready(function () {
 
     function list_facturation () {
 
+        $('#donnee').hide();
+
         let type = $('#type').val();
         let assurance = $('#assurance').val();
         let client = $('#client').val();
@@ -64,12 +66,7 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: '/api/list_facturation',
@@ -83,7 +80,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function(data) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 const facture = data.data;
                 const total = data.total;
@@ -97,10 +94,12 @@ $(document).ready(function () {
 
                 if (facture.length > 0) {
 
+                    $('#donnee').show();
+
                     $.each(facture, function(index, item) {
 
                         const row = $(`
-                            <tr>
+                            <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
@@ -136,29 +135,21 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <ul class="nk-tb-actions gx-1">
-                                        <li>
-                                            <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li>
-                                                            <a  href="#"
-                                                                class="text-primary btn-pdf"
-                                                                data-code_vente="${item.code_vente}"
-                                                                data-partassurance="${item.partassurance}"
-                                                                data-matricule_assurance="${item.matricule_assurance}"
-                                                                data-client="${item.client}"
-                                                                data-societe="${item.societe}"
-                                                                data-assurance="${item.assurance}"
-                                                                data-numfacture="${item.numfacture}"
-                                                                data-datefacture="${item.datefacture}"
-                                                            >
-                                                                <em class="icon ni ni-printer"></em>
-                                                                <span>Facture</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                        <li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-pdf text-warning"
+                                                title="Facture"
+                                                data-code_vente="${item.code_vente}"
+                                                data-partassurance="${item.partassurance}"
+                                                data-matricule_assurance="${item.matricule_assurance}"
+                                                data-client="${item.client}"
+                                                data-societe="${item.societe}"
+                                                data-assurance="${item.assurance}"
+                                                data-numfacture="${item.numfacture}"
+                                                data-datefacture="${item.datefacture}"
+                                            >
+                                                <em class="icon ni ni-printer"></em>
+                                            </a>
                                         </li>
                                     </ul>
                                 </td>
@@ -172,17 +163,24 @@ $(document).ready(function () {
 
                     initializeDataTable(".table_facturation", { responsive: { details: true } });
                 } else {
-                    initializeDataTable(".table_facturation", { responsive: { details: true } });
+                    showAlert("Alert","Aucune données n'été trouver","info");
 
-                    $('#total').text('Montant Total : 0 Fcfa');
+                    $('#donnee').hide();
+
+                    // initializeDataTable(".table_facturation", { responsive: { details: true } });
+
+                    // $('#total').text('Montant Total : 0 Fcfa');
+
+                    return false;
 
                 }
             },
             error: function() {
-                $("#preloader_ch").remove();
-                initializeDataTable(".table_facturation", { responsive: { details: true } });
+                $('#donnee').hide();
+                preloader('end');
+                // initializeDataTable(".table_facturation", { responsive: { details: true } });
 
-                $('#total').text('Montant Total : 0 Fcfa');
+                // $('#total').text('Montant Total : 0 Fcfa');
             }
         });
         
@@ -200,8 +198,6 @@ $(document).ready(function () {
             numfacture: $(this).data('numfacture'),
             datefacture: $(this).data('datefacture')
         };
-
-
 
         PDF_Facturation(data);
 

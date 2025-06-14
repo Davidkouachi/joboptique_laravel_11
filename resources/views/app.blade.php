@@ -20,6 +20,7 @@
     <script src="{{asset('assets/app/js/urlHis.js')}}"></script>
     <script src="{{ asset('assets/app/js/select.js') }}"></script>
     <script src="{{ asset('assets/app/js/script.js') }}"></script>
+    <script src="{{ asset('assets/app/js/cookies.js') }}"></script>
     
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css') }}">
@@ -48,8 +49,6 @@
     <div class="js-preloader">
         <div class="loading-animation duo-pulse"></div>
     </div> --}}
-
-
     <div class="nk-app-root">
         <div class="nk-main ">
             <div id="div_menu" class="nk-sidebar nk-sidebar-fixed is-light" data-content="sidebarMenu">
@@ -142,14 +141,16 @@
                                         <span class="nk-menu-text">Comptablités</span>
                                     </a>
                                     <ul class="nk-menu-sub">
-                                        <li class="nk-menu-item">
-                                            <a href="{{ route('bilan_generale_comptable') }}" class="nk-menu-link">
-                                                <span class="nk-menu-text">Bilan Générale</span>
-                                            </a>
-                                        </li>
+                                        @if (session('user_magasin_id') === 1)
+                                            <li class="nk-menu-item">
+                                                <a href="{{ route('bilan_generale_comptable') }}" class="nk-menu-link">
+                                                    <span class="nk-menu-text">Bilan Générale</span>
+                                                </a>
+                                            </li>
+                                        @endif
                                         <li class="nk-menu-item">
                                             <a href="{{ route('bilan_comptable') }}" class="nk-menu-link">
-                                                <span class="nk-menu-text">Bilan Comptable</span>
+                                                <span class="nk-menu-text">Rapport Magasin</span>
                                             </a>
                                         </li>
                                         <li class="nk-menu-item">

@@ -38,7 +38,7 @@ $(document).ready(function () {
                     $.each(clients, function(index, item) {
 
                         const row = $(`
-                            <tr>
+                            <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <div class="custom-control custom-control-sm custom-checkbox notext">
                                         <input type="checkbox" value="${item.cel}" class="custom-control-input" id="pid-${index + 1}">
@@ -67,24 +67,16 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <ul class="nk-tb-actions gx-1">
-                                        <li>
-                                            <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li>
-                                                            <a  href="#" 
-                                                                class="text-warning btn-sendsms"
-                                                                data-matricule="${item.matricule}" 
-                                                                data-np="${item.nomprenom}"
-                                                                data-tel="${item.cel}" 
-                                                            >
-                                                                <em class="icon ni ni-send"></em>
-                                                                <span>Envoi d'sms</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                        <li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-sendsms text-warning"
+                                                title="Envoi d'sms"
+                                                data-matricule="${item.matricule}" 
+                                                data-np="${item.nomprenom}"
+                                                data-tel="${item.cel}" 
+                                            >
+                                                <em class="icon ni ni-send"></em>
+                                            </a>
                                         </li>
                                     </ul>
                                 </td>
@@ -427,11 +419,7 @@ $(document).ready(function () {
         }
 
         // Affichage du préloader
-        $("body").append(`
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `);
+        preloader('start');
 
         // Paramètres API (récupérés via Laravel)
         const params = {
@@ -470,7 +458,7 @@ $(document).ready(function () {
         // Exécution des requêtes en parallèle
         Promise.all(contacts.map(sendSMS))
             .then(results => {
-                $('#preloader_ch').remove(); // Supprimer le préloader
+                preloader('end'); // Supprimer le préloader
                 deselectAll();
 
                 // Regroupement des résultats
@@ -493,7 +481,7 @@ $(document).ready(function () {
             })
             .catch(error => {
                 console.error("Erreur réseau:", error);
-                $('#preloader_ch').remove();
+                preloader('end');
                 showAlert('Alerte', `Une erreur est survenue lors de l'envoi des SMS.`, 'danger');
             });
     }

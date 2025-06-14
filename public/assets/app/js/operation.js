@@ -20,12 +20,12 @@ $(document).ready(function () {
                     $('#btn_fermer').hide();
                     $('#btn_ouvert').show();
                     $('#div_operation').hide();
-                    $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'Fcfa');
+                    $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Fcfa');
                 } else {
                     $('#btn_fermer').show();
                     $('#btn_ouvert').hide();
                     $('#div_operation').show();
-                    $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'Fcfa');
+                    $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Fcfa');
                 }
             
             },
@@ -49,7 +49,7 @@ $(document).ready(function () {
                 const data = response.data;
 
                 $('#solde').show();
-                $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'Fcfa');
+                $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Fcfa');
             
             },
             error: function() {

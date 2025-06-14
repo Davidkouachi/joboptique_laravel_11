@@ -5,19 +5,14 @@ $(document).ready(function () {
         let client = $('#client').val();
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: '/api/list_facture_client/'+client,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 const facture = data.data;
                 const donne = data.donne;
@@ -37,7 +32,7 @@ $(document).ready(function () {
                     $.each(facture, function(index, item) {
 
                         const row = $(`
-                            <tr>
+                            <tr class="nk-tb-item" >
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
@@ -85,38 +80,30 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <ul class="nk-tb-actions gx-1">
-                                        <li>
-                                            <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li>
-                                                            <a  href="#"
-                                                                class="text-warning btn-pdf"
-                                                                data-code="${item.code}"
-                                                                data-matricule="${item.matricule}"
-                                                            >
-                                                                <em class="icon ni ni-printer"></em>
-                                                                <span>Facture</span>
-                                                            </a>
-                                                        </li>
-                                                        ${item.versement.length > 0 ? 
-                                                        `<li>
-                                                            <a  href="#"
-                                                                class="text-primary btn-recu"
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#modalLarge" 
-                                                                data-code="${item.code}"
-                                                                data-matricule="${item.matricule}"
-                                                                data-versement='${JSON.stringify(item.versement)}'
-                                                            >
-                                                                <em class="icon ni ni-list"></em>
-                                                                <span>Recu Paiement</span>
-                                                            </a>
-                                                        </li>` : ``}
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                        <li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-pdf text-warning"
+                                                title="Facture"
+                                                data-code="${item.code}"
+                                                data-matricule="${item.matricule}"
+                                            >
+                                                <em class="icon ni ni-printer"></em>
+                                            </a>
                                         </li>
+                                        ${item.versement.length > 0 ?   
+                                        `<li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-recu text-primary"
+                                                title="Recu de paiement"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modalLarge" 
+                                                data-code="${item.code}"
+                                                data-matricule="${item.matricule}"
+                                                data-versement='${JSON.stringify(item.versement)}'
+                                            >
+                                                <em class="icon ni ni-list"></em>
+                                            </a>
+                                        </li>` : ``}
                                     </ul>
                                 </td>
                             </tr>
@@ -140,7 +127,7 @@ $(document).ready(function () {
                 }
             },
             error: function() {
-                $("#preloader_ch").remove();
+                preloader('end');
                 initializeDataTable(".table_facture_client", { responsive: { details: true } });
 
                 $('#total').text('Montant Total : 0 Fcfa');
@@ -151,27 +138,24 @@ $(document).ready(function () {
         
     }
 
-    $('.table_facture_client').off('click', '.btn-pdf').on('click', '.btn-pdf', function () {
+    $('.table_facture_client').off('click', '.btn-pdf').on('click', '.btn-pdf', function (event) {
+        event.preventDefault();
+
         const code = $(this).data('code');
         const matricule = $(this).data('matricule');
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: '/api/imp_fac_vente/'+code+'/'+matricule,
             method: 'GET',
             success: function(response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 if (response.success) {
 
-                    PDF_Facture_Vente(response.client, response.pres, response.produits,$('#agence').val());
+                    PDF_Facture_Vente(response.client, response.pres, response.produits,$('#agence').val(), reste_payer = 1);
 
                 } else if (response.error) {
 
@@ -186,14 +170,48 @@ $(document).ready(function () {
 
             },
             error: function() {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Alert", "Une erreur est survenue ", "error");
             }
         });
 
     });
 
-    $('.table_facture_client').on('click', '.btn-recu', function () {
+    $('.table_facture_client').on('click', '.btn-recu', function (event) {
+        event.preventDefault();
+
+        const modalBody = `
+            <div class="modal fade" tabindex="-1" id="modalLarge">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="card">
+                            <div class="card-inner">
+                                <div class="team">
+                                    <div class="user-card user-card-s2">
+                                        <div class="user-avatar lg">
+                                            <img height="80px" width="80px" class="rounded-pill border border-1" src="assets/images/depot_fac.jpg">
+                                        </div>
+                                        <div class="user-info">
+                                            <h6>Historique des Versements</h6>
+                                        </div>
+                                    </div>
+                                    <div class="p-2" style="max-height: 400px;" data-simplebar >
+                                        <ul class="text-center" id="contenu_versement">
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $('body').append(modalBody);
+
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalLarge'));
+        modal.show();
         
         let code = $(this).data('code');
         let matricule = $(this).data('matricule');
@@ -215,11 +233,14 @@ $(document).ready(function () {
         })
 
         // Ajout d'un gestionnaire d'événements pour récupérer l'id du versement
-        $('#contenu_versement').off('click', '.btn_recu_vers').on('click', '.btn_recu_vers', function () {
+        $('#contenu_versement').off('click', '.btn_recu_vers').on('click', '.btn_recu_vers', function (event) {
+            event.preventDefault();
+            
             let versementId = $(this).data('id');
 
             var modal = bootstrap.Modal.getInstance(document.getElementById('modalLarge'));
             modal.hide();
+            $('#modalLarge').remove();
 
             // Ajouter le préchargeur
             let preloader_ch = `
@@ -233,7 +254,7 @@ $(document).ready(function () {
                 url: '/api/imp_fac_recu/'+code+'/'+matricule+'/'+versementId,
                 method: 'GET',
                 success: function(response) {
-                    $("#preloader_ch").remove();
+                    preloader('end');
 
                     if (response.success) {
 
@@ -252,7 +273,7 @@ $(document).ready(function () {
 
                 },
                 error: function() {
-                    $("#preloader_ch").remove();
+                    preloader('end');
                     showAlert("Alert", "Une erreur est survenue ", "error");
                 }
             });
@@ -261,8 +282,9 @@ $(document).ready(function () {
 
     });
 
-    $("#client").on("change", function(){
-
+    $("#client").on("change", function(event){
+        event.preventDefault();
+        
         list_facture_client();
     }); 
 

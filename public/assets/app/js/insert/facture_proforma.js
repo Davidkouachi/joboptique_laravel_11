@@ -228,26 +228,40 @@ $(document).ready(function () {
             return false;
         }
 
+        // Vérifier qu'au moins un champ a une valeur
+        const hasOneValue = [
+            sphere_OD.val(), cylindre_OD.val(), axe_OD.val(), addition_OD.val(),
+            sphere_OG.val(), cylindre_OG.val(), axe_OG.val(), addition_OG.val()
+        ].some(value => value && value.trim() !== '');
+
+        if (!hasOneValue) {
+            showAlert("Attention", "Veuillez remplir au moins un champ de prescription", "info");
+            return false;
+        }
+
         if ($('#contenu').children('.contenu_enfant').length <= 0) {
             showAlert("ALERT", 'Aucun produit n\'a été identifier.', "warning");
             return false;
         }
 
         const selectionsProduit = [];
+        let formIsValid = true;
 
-        $('#contenu').find('.contenu_enfant').each(function() {
+        $('#contenu').find('.contenu_enfant').each(function () {
             let desi = $(this).find('.designation').val();
             let prix = parseFloat($(this).find('.prix').val().replace(/[^0-9]/g, '')) || 0;
             let qte = parseInt($(this).find('.quantite').val().replace(/[^0-9]/g, '')) || 0;
             let total = parseFloat($(this).find('.total').val().replace(/[^0-9]/g, '')) || 0;
 
-            if (isNaN(total) || total == 0) {
-                showAlert("ALERT", 'Vérifier les prix et quantités des Produits s\'il vous plaît.', "warning");
+            if (!desi.trim()) {
+                showAlert("ALERT", "Vérifier le nom de chaque Produit s'il vous plaît.", "warning");
+                formIsValid = false;
                 return false;
             }
 
-            if (!desi.trim()) {
-                showAlert("ALERT", 'Vérifier le nom de chaques Produits s\'il vous plaît.', "warning");
+            if (isNaN(total) || total === 0) {
+                showAlert("ALERT", "Vérifier les prix et quantités des Produits s'il vous plaît.", "warning");
+                formIsValid = false;
                 return false;
             }
 
@@ -257,8 +271,12 @@ $(document).ready(function () {
                 qte: qte,
                 total: total,
             });
-
         });
+
+        // Si un problème a été trouvé, on stoppe le traitement
+        if (!formIsValid) {
+            return false;
+        }
         
         if (isNaN(mTotal) || isNaN(netPayer) || mTotal < 0 || netPayer < 0 ) {
             showAlert("ALERT", 'Vérifier les montants s\'il vous plaît.', "warning");
@@ -266,12 +284,7 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: "/api/insert_proforma",
@@ -297,7 +310,7 @@ $(document).ready(function () {
                 agence_id: $("#id_agence").val().trim(),
             },
             success: function (response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 if (response.success) {
 
@@ -314,7 +327,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
                 console.log(response.message);
             },
@@ -325,7 +338,10 @@ $(document).ready(function () {
     {
         $("#nom").val(null);
         $("#tel").val(null);
-        $("#date").val(null);
+
+        // ➕ Mettre la date du jour automatiquement
+        const today = new Date().toISOString().split('T')[0];
+        $('#date').val(today);
 
         $("#Sphere_OD").val(null).trigger('change');
         $("#Cylindre_OD").val(null).trigger('change');

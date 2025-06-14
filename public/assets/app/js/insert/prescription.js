@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    let data_client = 0;
+
     $('#contenu').hide();
 
     select_client_prescription('#client');
@@ -17,6 +19,7 @@ $(document).ready(function () {
                 $('#contenu').stop(true, true).slideDown();
 
                 if (data.length > 0) {
+                    data_client = 1;
                     const prescription = data[0];
 
                     // $('#contenu').stop(true, true).slideDown();
@@ -38,6 +41,7 @@ $(document).ready(function () {
                     type_verre_prescription('#Type_verre_OG', prescription.OG.type_verre);
 
                 } else {
+                    data_client = 0;
 
                     // $('#contenu').stop(true, true).slideUp();
                     showAlert2("Alert", "Aucune préscription n'à été trouvées", "info");
@@ -66,23 +70,21 @@ $(document).ready(function () {
     });
 
     function SelectElement() {
-
         const $selects = $('.select_rech');
+        let formIsValid = false;
 
-        let formIsValid = true;
-
-        $selects.each(function() {
+        $selects.each(function () {
             const $select = $(this);
-            const selectedOption = $select.find(':selected');
-            const value = selectedOption.val();
+            const value = $select.find(':selected').val();
 
-            if (!value) {
-                formIsValid = false;
-                return false;
+            if (value) {
+                formIsValid = true; // Au moins un élément est sélectionné
+                return false; // Sort de la boucle, on a ce qu'on veut
             }
         });
 
         if (!formIsValid) {
+            showAlert("Attention", "Veuillez sélectionner au moins un élément dans les champs requis.", "info");
             return false;
         }
 
@@ -92,15 +94,19 @@ $(document).ready(function () {
     $("#formulaire_prescription").on("submit", function (event) {
         event.preventDefault();
 
-        try {
-            const verif = SelectElement();
-            if (!verif) {
-                return false;
-            }
-        } catch (error) {
-            showAlert("ALert", "Sélectionner au moins 1 élement", "info");
-            return false;
-        }
+        // try {
+        //     console.log(SelectElement())
+        //     const verif = SelectElement();
+        //     if (!verif) {
+        //         return false;
+        //     }
+        // } catch (error) {
+        //     showAlert("ALert", "Sélectionner au moins 1 élement", "info");
+        //     return false;
+        // }
+
+        const verif = SelectElement();
+        if (!verif) return false;
 
         let matricule = $("#client").val().trim();
 
@@ -119,12 +125,7 @@ $(document).ready(function () {
         let type_verre_OG = $("#Type_verre_OG");
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: "/api/insert_prescription/"+matricule,
@@ -147,7 +148,7 @@ $(document).ready(function () {
                 login: $("#login").val().trim(),
             },
             success: function (response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 if (response.success) {
 
@@ -159,7 +160,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
                 console.log(response.message);
             },

@@ -357,6 +357,12 @@ class InsertController extends Controller
 
         try {
 
+            $payer = null;
+
+            if ($request->netPayer == 0) {
+                $payer = 1;
+            }
+
             $Inserted0 = DB::table('vente')->insert([
                 'code' => $code,
                 'matricule' => $request->client,
@@ -368,7 +374,7 @@ class InsertController extends Controller
                 'taured' => $request->remise,
                 'date' => now(),
                 'login' => $request->login,
-                'regle' => null,
+                'regle' => $payer,
                 'date_retrait' => null,
                 'observation' => null,
                 'livre' => null,

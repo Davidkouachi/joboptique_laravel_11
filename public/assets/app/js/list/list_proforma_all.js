@@ -1,11 +1,17 @@
 $(document).ready(function () {
 
     window.list_proforma_all = function () {
+
+        let date1 = $('#Date1').val();
+        let date2 = $('#Date2').val();
+
         $.ajax({
-            url: '/api/list_proforma_all',
+            url: '/api/list_proforma_all/'+date1+'/'+date2,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
+                preloader('end');
+
                 const proforma = data.data;
 
                 // Détruire l'instance DataTable existante (si elle existe)
@@ -25,7 +31,7 @@ $(document).ready(function () {
                     $.each(proforma, function(index, item) {
 
                         const row = $(`
-                            <tr>
+                            <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
@@ -52,24 +58,28 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <ul class="nk-tb-actions gx-1">
-                                        <li>
-                                            <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li>
-                                                            <a  href="#"
-                                                                class="text-primary btn-pdf"
-                                                                data-code="${item.code}"
-                                                            >
-                                                                <em class="icon ni ni-printer"></em>
-                                                                <span>Facture</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                        <li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-pdf text-warning"
+                                                title="Facture"
+                                                data-code="${item.code}"
+                                            >
+                                                <em class="icon ni ni-printer"></em>
+                                            </a>
                                         </li>
-                                    </ul>
+                                        ${item.valide === null ?  
+                                        `<li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-delete text-danger"
+                                                title="Supprimer"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modalLarge" 
+                                                data-code="${item.code}"
+                                            >
+                                                <em class="icon ni ni-trash"></em>
+                                            </a>
+                                        </li>` : ``}
+                                    </ul>           
                                 </td>
                             </tr>
                         `);
@@ -92,26 +102,23 @@ $(document).ready(function () {
                 }
             },
             error: function() {
+                preloader('end');
                 initializeDataTable(".table_proforma", { responsive: { details: true } });
             }
         });
 
-        $('.table_proforma').off('click', '.btn-pdf').on('click', '.btn-pdf', function () {
+        $('.table_proforma').off('click', '.btn-pdf').on('click', '.btn-pdf', function (event) {
+            event.preventDefault();
+            
             const code = $(this).data('code');
 
-            // Ajouter le préchargeur
-            let preloader_ch = `
-                <div id="preloader_ch">
-                    <div class="spinner_preloader_ch"></div>
-                </div>
-            `;
-            $("body").append(preloader_ch);
+            preloader('start');
 
             $.ajax({
                 url: '/api/imp_fac_proforma/'+code,
                 method: 'GET',
                 success: function(response) {
-                    $("#preloader_ch").remove();
+                    preloader('end');
 
                     if (response.success) {
 
@@ -130,15 +137,58 @@ $(document).ready(function () {
 
                 },
                 error: function() {
-                    $("#preloader_ch").remove();
+                    preloader('end');
                     showAlert("Alert", "Une erreur est survenue ", "error");
                 }
             });
 
         });
-        
+
+        $('.table_proforma').off('click', '.btn-delete').on('click', '.btn-delete', function (event) {
+            event.preventDefault();
+
+            const code = $(this).data('code');
+
+            confirmAction().then((result) => {
+                if (result.isConfirmed) {
+
+                    preloader('start');
+
+                    $.ajax({
+                        url: '/api/delete_fac_proforma/' + code,
+                        method: 'GET',
+                        success: function(response) {
+                            preloader('end');
+
+                            if (response.success) {
+                                list_proforma_all();
+                                Swal.fire("Succès!", "Opération éffectuée.", "success");
+                            } else if (response.error) {
+                                showAlert("Alert", "Échec de l'opération", "warning");
+                            } else {
+                                showAlert("Alert", "Une erreur est survenue", "error");
+                            }
+                        },
+                        error: function() {
+                            preloader('end');
+                            showAlert("Erreur", "Une erreur est survenue", "error");
+                        }
+                    });
+                }
+            });
+        });
+ 
     }
 
     list_proforma_all();
+    $("#btn_search").on('click', function (event) {
+        event.preventDefault();
+
+        // Ajouter le préchargeur
+        preloader('start');
+
+        list_proforma_all();
+
+    });
 
 });

@@ -3,7 +3,6 @@
 	- utilisateur : cp979676_user
 	- Mot de passe user : xxh?xnaDvtPg
 
-
 - MAIL : 
 	- email : joboptique01@gmail.com
 	- password : Optique@01.

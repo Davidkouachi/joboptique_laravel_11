@@ -24,6 +24,8 @@ $(document).ready(function () {
 
     function list_rech_fac () {
 
+        $('#donnee').hide();
+
         let type = $('#rech_type').val();
         let magasin = $('#rech_magasin').val();
         let date1 = $('#rech_date1').val();
@@ -35,13 +37,7 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
-
+        preloader('start');
         $.ajax({
             url: '/api/list_rech_fac',
             method: 'GET',
@@ -53,7 +49,7 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function(data) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 const facture = data.data;
                 const donne = data.donne;
@@ -67,10 +63,12 @@ $(document).ready(function () {
 
                 if (facture.length > 0) {
 
+                    $('#donnee').show();
+
                     $.each(facture, function(index, item) {
 
                         const row = $(`
-                            <tr>
+                            <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
@@ -128,26 +126,29 @@ $(document).ready(function () {
 
                     initializeDataTable(".table_rech_fac", { responsive: { details: true } });
                 } else {
+                    $('#donnee').hide();
                     showAlert("Alert","Aucune facture n'à été trouvée","info");
-                    initializeDataTable(".table_rech_fac", { responsive: { details: true } });
+                    // initializeDataTable(".table_rech_fac", { responsive: { details: true } });
 
-                    $('#total').text('Total Générale : 0 Fcfa');
-                    $('#payer').text('Montant Client Payer : 0 Fcfa');
-                    $('#non_payer').text('Montant Client Non-payer : 0 Fcfa');
-                    $('#part_assurance').text('Part Assurance : 0 Fcfa');
-                    $('#part_client').text('Part Client : 0 Fcfa');
+                    // $('#total').text('Total Générale : 0 Fcfa');
+                    // $('#payer').text('Montant Client Payer : 0 Fcfa');
+                    // $('#non_payer').text('Montant Client Non-payer : 0 Fcfa');
+                    // $('#part_assurance').text('Part Assurance : 0 Fcfa');
+                    // $('#part_client').text('Part Client : 0 Fcfa');
 
+                    return false;
                 }
             },
             error: function() {
-                $("#preloader_ch").remove();
-                initializeDataTable(".table_rech_fac", { responsive: { details: true } });
+                $('#donnee').hide();
+                preloader('end');
+                // initializeDataTable(".table_rech_fac", { responsive: { details: true } });
 
-                $('#total').text('Total Générale : 0 Fcfa');
-                $('#payer').text('Montant Client Payer : 0 Fcfa');
-                $('#non_payer').text('Montant Client Non-payer : 0 Fcfa');
-                $('#part_assurance').text('Part Assurance : 0 Fcfa');
-                $('#part_client').text('Part Client : 0 Fcfa');
+                // $('#total').text('Total Générale : 0 Fcfa');
+                // $('#payer').text('Montant Client Payer : 0 Fcfa');
+                // $('#non_payer').text('Montant Client Non-payer : 0 Fcfa');
+                // $('#part_assurance').text('Part Assurance : 0 Fcfa');
+                // $('#part_client').text('Part Client : 0 Fcfa');
             }
         });
         

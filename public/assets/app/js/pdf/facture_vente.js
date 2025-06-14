@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    window.PDF_Facture_Vente = function (client, pres, produits, agence) 
+    window.PDF_Facture_Vente = function (client, pres, produits, agence, reste_payer = 0) 
     {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -184,9 +184,15 @@ $(document).ready(function () {
                 ["TAUX COUVERTURE", client['taux'] + "%", 9, "normal"],
                 ["PART ASSURANCE", client['partassurance'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 9, "normal"],
                 ["NET A PAYER", client['partclient'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
-                ["SOMME VERSER", client['payer'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
-                ["RESTE A PAYER", client['reste'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
             ];
+
+            // Si A vaut 2, on ajoute les deux lignes supplémentaires
+            if (reste_payer === 1) {
+                totalInfo.push(
+                    ["SOMME VERSÉE", client['payer'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
+                    ["RESTE À PAYER", client['reste'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"]
+                );
+            }
 
             totalInfo.forEach((item, index) => {
                 doc.setFontSize(item[2]);

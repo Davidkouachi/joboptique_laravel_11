@@ -134,4 +134,38 @@ $(document).ready(function () {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
+    window.confirmAction = function (title = "Confirmation requise", text = "Cette opération est irréversible. Êtes-vous sûr de vouloir effectuer cette action ? .")
+    {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Oui",
+            cancelButtonText: "Non"
+        });
+    }
+
+    window.preloader = function (type) {
+
+        if (type === 'start') {
+            
+            let preloader_ch = `
+                <div id="preloader_ch">
+                    <div class="spinner_preloader_ch">
+                        <div></div><div></div><div></div><div></div>
+                        <div></div><div></div><div></div><div></div>
+                    </div>
+                </div>
+            `;
+            $("body").append(preloader_ch);
+
+        } else if (type === 'end') {
+
+            $("#preloader_ch").remove();
+
+        }
+        
+    }
+
 });

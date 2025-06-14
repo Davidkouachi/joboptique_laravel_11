@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        // DB::table('porte_caisses')->insert(['solde' => '0','statut' => 0,'created_at' => now(),'updated_at' => now()]);
+
         $caisse = DB::table('caisse')->select('caisse.*')->get();
         foreach ($caisse as $value) {
             
@@ -114,8 +116,6 @@ class DatabaseSeeder extends Seeder
             // ]); 
 
         }
-
-        // DB::table('porte_caisses')->insert(['solde' => '166050','statut' => 0,'created_at' => now(),'updated_at' => now()]);
 
         DB::table('users')->insert([
             [

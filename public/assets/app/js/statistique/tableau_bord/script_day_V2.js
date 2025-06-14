@@ -80,9 +80,10 @@ $(document).ready(function () {
 
                 stats.forEach(function(stat) {
                     const percentageChange = calculatePercentageChange(stat.today, stat.last_week);
-                    const changeClass = percentageChange >= 0 ? 'text-white' : 'text-white'; // Color based on positive or negative change
+                    const changeClass = percentageChange >= 0 ? 'text-teal' : 'text-danger'; // Color based on positive or negative change
                     const changeIcon = percentageChange > 0 ? 'ni-arrow-long-up' : (percentageChange < 0 ? 'ni-arrow-long-down' : ''); // Icon for positive or negative change
                     const changeIcon0 = percentageChange > 0 ? 'up' : (percentageChange < 0 ? 'down' : ''); // Class for positive or negative change
+                    const changeBg = 'bg-secondary';
 
                     // Conditionally check if the percentage change is 0, and hide the icon if true
                     const iconHTML = percentageChange !== 0 
@@ -90,13 +91,13 @@ $(document).ready(function () {
                         : `<span class="${changeClass}">${percentageChange.toFixed(2)}%</span>`; // If percentage is 0, just display the percentage without the icon
 
                     const div = $(`
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                            <div class="card" style="background: linear-gradient(to right, #FFA500, #FF4500);">
+                        <div class="col-xxl-3 col-sm-6">
+                            <div class="card ${changeBg}">
                                 <div class="nk-ecwg nk-ecwg6">
                                     <div class="card-inner">
                                         <div class="card-title-group">
                                             <div class="card-title">
-                                                <h6 class="title ${changeClass}">${stat.title}</h6>
+                                                <h6 class="title text-white">${stat.title}</h6>
                                             </div>
                                         </div>
                                         <div class="data">
@@ -104,10 +105,10 @@ $(document).ready(function () {
                                                 <h4 class="${stat.color}" >${stat.today}</h4>
                                             </div>
                                             <div class="info ${changeClass}">
-                                                <span class="change ${changeIcon0} text-white">
+                                                <span class="change ${changeIcon0} ${changeClass}">
                                                     ${iconHTML}
                                                 </span>
-                                                <span class="${changeClass}" style="font-size:12px;" >vs. la semaine passée (${stat.last_week})</span>
+                                                <span class="text-white" style="font-size:12px;" >vs. la semaine passée (${stat.last_week})</span>
                                             </div>
                                         </div>
                                     </div>
@@ -162,21 +163,21 @@ $(document).ready(function () {
                 const stats = [
                     {  
                         title: 'Solde Caisse', 
-                        count: (data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        count: (data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
                         icon: 'wallet-fill',
-                        color: 'success', 
+                        color: 'teal', 
                     },
                     { 
                         title: 'Total Clients', 
                         count: data.client,
                         icon: 'user-group-fill',
-                        color: 'primary', 
+                        color: 'warning', 
                     },
                     { 
                         title: 'Assurance Acceptées', 
                         count: data.assurance,
                         icon: 'building-fill',
-                        color: 'warning', 
+                        color: 'azure', 
                     },
                     { 
                         title: 'Agence', 
@@ -191,8 +192,8 @@ $(document).ready(function () {
                 stats.forEach(function(stat) {
 
                     const div = $(`
-                        <div class="col-xxl-3 col-lg-6 col-md-6 col-sm-6 col-12" >
-                            <div class="card pricing text-center" style="background: linear-gradient(to right, #87CEEB, #4682B4);">
+                        <div class="col-xxl-3 col-sm-6" >
+                            <div class="card pricing text-center bg-${stat.color}" >
                                 <div class="pricing-body">
                                     <ul class="nk-store-statistics">
                                         <li class="item">

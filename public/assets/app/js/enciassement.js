@@ -56,12 +56,7 @@ $(document).ready(function () {
         modal.hide();
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: "/api/insert_versement/"+code+'/'+matricule,
@@ -76,7 +71,7 @@ $(document).ready(function () {
                 agence_id: $("#id_agence").val().trim(),
             },
             success: function (response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 if (response.success) {
                     list_facture_client();
@@ -90,7 +85,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
                 console.log(response.message);
             },

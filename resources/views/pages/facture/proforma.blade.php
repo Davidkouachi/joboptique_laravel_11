@@ -16,24 +16,24 @@
                                     <div class="card-inner">
                                         <ul class="nav nav-tabs nav-tabs-s2 mt-n3">
                                             <li class="nav-item">
-                                                <a class="nav-link active" data-bs-toggle="tab" href="#new">
-                                                    <em class="icon ni ni-file"></em>
-                                                    <span>Nouvelle Facture</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-bs-toggle="tab" href="#liste">
+                                                <a class="nav-link active" data-bs-toggle="tab" href="#liste">
                                                     <em class="icon ni ni-list"></em>
                                                     <span>Liste des factures</span>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-bs-toggle="tab" href="#new">
+                                                    <em class="icon ni ni-file"></em>
+                                                    <span>Nouvelle Facture</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                         <div class="tab-content">
-                                            <div class="tab-pane active" id="new">
+                                            <div class="tab-pane" id="new">
                                                 <div class="card-title-group justify-content-center align-items-center mt-5">
                                                     <div class="card-title d-flex-column justify-content-center align-items-center text-center">
                                                         {{-- <img height="80px" width="80px" class="rounded-pill border border-1" src="{{ asset('assets/images/user8.png') }}" alt=""> --}}
-                                                        <h4 class="title fw-normal">Facture Proforma</h4>
+                                                        <h4 class="title fw-normal">Formulaire</h4>
                                                     </div>
                                                 </div>
                                                 <form id="formulaire_proforma" class="mt-5">
@@ -78,7 +78,7 @@
                                                                         Date de la facture
                                                                     </label>
                                                                     <div class="form-control-wrap">
-                                                                        <input type="date" class="form-control" id="date" max="{{ date('Y-m-d') }}" >
+                                                                        <input type="date" class="form-control" id="date" value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}" >
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -277,44 +277,71 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div class="tab-pane" id="liste">
-                                                <div class="card-title-group justify-content-center align-items-center mt-5">
+                                            <div class="tab-pane active" id="liste">
+                                                {{-- <div class="card-title-group justify-content-center align-items-center mt-5">
                                                     <div class="card-title d-flex-column justify-content-center align-items-center text-center">
-                                                        {{-- <img height="50px" width="50px" class="rounded-0 border border-0" src="{{ asset('assets/images/info_user.png') }}" alt=""> --}}
+                                                        <img height="50px" width="50px" class="rounded-0 border border-0" src="{{ asset('assets/images/info_user.png') }}" alt="">
                                                         <h4 class="title fw-normal">Liste des Factures</h4>
                                                     </div>
-                                                </div>
-                                                <div class="card-bordered card-preview mt-5">
-                                                    <div class="card-inner">
-                                                        <table class="datatable-init table table_proforma" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
-                                                            <thead>
-                                                                <tr class="nk-tb-item nk-tb-head">
-                                                                    <th class="nk-tb-col" >
-                                                                        <span class="sub-text"></span>
-                                                                    </th>
-                                                                    <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Code</span>
-                                                                    </th>
-                                                                    <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Nom et Prénoms</span>
-                                                                    </th>
-                                                                    <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Contact</span>
-                                                                    </th>
-                                                                    <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Valider</span>
-                                                                    </th>
-                                                                    <th class="nk-tb-col" >
-                                                                        <span class="sub-text">Date</span>
-                                                                    </th>
-                                                                    <th class="nk-tb-col nk-tb-col-tools text-end"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                        </table>
+                                                </div> --}}
+                                                <div class="row g-gs mb-3">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">
+                                                                Du
+                                                            </label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="date" id="Date1" class="form-control me-1" value="{{ date('Y-m-d', strtotime('-3 months')) }}" max="{{ date('Y-m-d') }}">
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">
+                                                                au
+                                                            </label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="date" id="Date2" class="form-control me-1" value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 text-center">
+                                                        <div class="form-group text-center">
+                                                            <a class="btn btn-md btn-outline-success" id="btn_search">
+                                                                <em class="icon ni ni-search"></em>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="table-responsive datatable-wrap p-2 mt-5">
+                                                    <table class="datatable-init table_proforma" data-auto-responsive="false" style="font-size:12px;" >
+                                                        <thead>
+                                                            <tr class="nk-tb-item nk-tb-head">
+                                                                <th class="nk-tb-col" >
+                                                                    <span class="sub-text"></span>
+                                                                </th>
+                                                                <th class="nk-tb-col" >
+                                                                    <span class="sub-text">Code</span>
+                                                                </th>
+                                                                <th class="nk-tb-col" >
+                                                                    <span class="sub-text">Nom et Prénoms</span>
+                                                                </th>
+                                                                <th class="nk-tb-col" >
+                                                                    <span class="sub-text">Contact</span>
+                                                                </th>
+                                                                <th class="nk-tb-col" >
+                                                                    <span class="sub-text">Valider</span>
+                                                                </th>
+                                                                <th class="nk-tb-col" >
+                                                                    <span class="sub-text">Date</span>
+                                                                </th>
+                                                                <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>

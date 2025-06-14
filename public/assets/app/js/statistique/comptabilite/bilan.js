@@ -33,7 +33,7 @@ $(document).ready(function () {
 
         const divcon = $(`
             <div class="card-body" id="graph_op" ></div>
-            <div class="card-body mb-3" id="graphT_op" ></div>
+            <div class="card-body" id="graphT_op" ></div>
         `);
 
         contenug.append(divcon);
@@ -107,18 +107,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         categories: [
-                            "Janvier",
-                            "Février",
-                            "Mars",
-                            "Avril",
+                            "Janv",
+                            "Fév",
+                            "Mar",
+                            "Avr",
                             "Mai",
-                            "Juin",
-                            "Juillet",
+                            "Jui",
+                            "Juil",
                             "Aôut",
-                            "Septembre",
-                            "Octobre",
-                            "Novembre",
-                            "Decembre",
+                            "Sept",
+                            "Oct",
+                            "Nov",
+                            "Déc",
                         ],
                     },
                     yaxis: {
@@ -153,7 +153,7 @@ $(document).ready(function () {
                 chart.render();
 
                 const stat = $(`
-                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
+                    <div class="d-flex flex-wrap justify-content-center align-items-center">
                         <div style="background-color: #0ebb13;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
                             <em class="ni ni-money text-white fs-4"></em>
                             <span class="me-1 text-white ps-1">+ ${data.total_entrer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa</span>
@@ -193,7 +193,7 @@ $(document).ready(function () {
 
         const divcon = $(`
             <div class="card-body" id="graph_eva_vente" ></div>
-            <div class="card-body mb-3" id="graphT_eva_vente" ></div>
+            <div class="card-body" id="graphT_eva_vente" ></div>
         `);
 
         contenug.append(divcon);
@@ -268,18 +268,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         categories: [
-                            "Janvier",
-                            "Février",
-                            "Mars",
-                            "Avril",
+                            "Janv",
+                            "Fév",
+                            "Mar",
+                            "Avr",
                             "Mai",
-                            "Juin",
-                            "Juillet",
+                            "Jui",
+                            "Juil",
                             "Aôut",
-                            "Septembre",
-                            "Octobre",
-                            "Novembre",
-                            "Decembre",
+                            "Sept",
+                            "Oct",
+                            "Nov",
+                            "Déc",
                         ],
                         labels: {
                             style: {
@@ -322,8 +322,8 @@ $(document).ready(function () {
                 chart.render();
 
                 const stat = $(`
-                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
-                        <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div style="background: transparent;" class="text-white">
                             <span class="fw-semibold text-white ps-1 h5">
                                 Montant Total : ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa
                             </span>
@@ -549,7 +549,7 @@ $(document).ready(function () {
 
         const divcon = $(`
             <div class="card-body" id="graph_client" ></div>
-            <div class="card-body mb-3" id="graphT_client" ></div>
+            <div class="card-body" id="graphT_client" ></div>
         `);
 
         contenug.append(divcon);
@@ -614,18 +614,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         categories: [
-                            "Janvier",
-                            "Février",
-                            "Mars",
-                            "Avril",
+                            "Janv",
+                            "Fév",
+                            "Mar",
+                            "Avr",
                             "Mai",
-                            "Juin",
-                            "Juillet",
+                            "Jui",
+                            "Juil",
                             "Aôut",
-                            "Septembre",
-                            "Octobre",
-                            "Novembre",
-                            "Decembre",
+                            "Sept",
+                            "Oct",
+                            "Nov",
+                            "Déc",
                         ],
                         labels: {
                             style: {
@@ -668,7 +668,7 @@ $(document).ready(function () {
                 chart.render();
 
                 const stat = $(`
-                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
+                    <div class="d-flex flex-wrap justify-content-center align-items-center">
                         <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
                             <span class="me-1 text-white ps-1">
                                 Nouveau Patient(s) : + ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}

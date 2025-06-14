@@ -99,19 +99,30 @@ class ListeController extends Controller
         ]);
     }
 
-    public function list_proforma_all()
+    public function list_proforma_all($date1, $date2)
     {
-        $proforma = DB::table('proforma')->select('proforma.*',)->orderBy('date','desc')->get();
+        $date1 = Carbon::parse($date1)->startOfDay();
+        $date2 = Carbon::parse($date2)->endOfDay();
+
+        $proforma = DB::table('proforma')
+            ->whereBetween('proforma.date', [$date1, $date2])
+            ->select('proforma.*',)
+            ->orderBy('date','desc')
+            ->get();
 
         return response()->json([
             'data' => $proforma,
         ]);
     }
 
-    public function list_vente_all()
+    public function list_vente_all($date1, $date2)
     {
+        $date1 = Carbon::parse($date1)->startOfDay();
+        $date2 = Carbon::parse($date2)->endOfDay();
+
         $vente = DB::table('vente')
             ->join('client', 'client.matricule', '=', 'vente.matricule')
+            ->whereBetween('vente.date', [$date1, $date2])
             ->select(
                 'vente.*',
                 'client.nomprenom as client'

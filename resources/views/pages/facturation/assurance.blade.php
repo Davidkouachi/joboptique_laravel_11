@@ -16,7 +16,7 @@
                                 <div class="card-title-group justify-content-center align-items-center">
                                     <div class="card-title d-flex justify-content-center align-items-center d-flex flex-column">
                                         <img class=" mb-1 p-0" height="50" width="50" src="{{ asset('assets/images/pdf2.png') }}">
-                                        <h5 class="nk-block-title text-white">Facturation</h5>
+                                        <h5 class="nk-block-title text-white">Facturations</h5>
                                     </div>
                                 </div>
                             </div>
@@ -99,45 +99,40 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-bordered card-preview mt-5">
-                                    <div class="card-inner">
-                                        <div class="row g-gs justify-content-center align-items-center text-center" id="donnee">
-                                            <div class="col-md-4">
-                                                <span class="badge badge-md bg-warning" id="total"></span>
-                                            </div>
-                                        </div>
-                                        <table class="datatable-init table table_facturation" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
-                                            <thead>
-                                                <tr class="nk-tb-item nk-tb-head">
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text"></span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Nom & Prénoms</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Assurance</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Société</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Matricule assurance</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Part Assurance</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Date création</span>
-                                                    </th>
-                                                    <th class="nk-tb-col nk-tb-col-tools text-end"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                        </table>
+                                <div class="table-responsive datatable-wrap p-2 mt-5" id="donnee" style="display: none;">
+                                    <div class="d-flex justify-content-center align-items-center text-center">
+                                        <span class="badge badge-md bg-warning" id="total"></span>
                                     </div>
+                                    <table class="datatable-init table_facturation" data-auto-responsive="false" style="font-size:12px;" >
+                                        <thead>
+                                            <tr class="nk-tb-item nk-tb-head">
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text"></span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Nom & Prénoms</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Assurance</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Société</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Matricule assurance</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Part Assurance</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Date de création</span>
+                                                </th>
+                                                <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -154,6 +149,5 @@
 <script src="{{asset('assets/app/js/pdf/facturation.js')}}"></script>
 <script src="{{asset('assets/app/js/select.js')}}"></script>
 <script src="{{asset('assets/app/js/list/list_facturation_all.js')}}"></script>
-
 
 @endsection

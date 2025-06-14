@@ -11,6 +11,7 @@ $(document).ready(function () {
             method: 'GET',
             dataType: 'json',
             success: function(data) {
+                preloader('end');
                 const operation = data.data;
                 const donne = data.donne;
 
@@ -31,7 +32,7 @@ $(document).ready(function () {
                     $.each(operation, function(index, item) {
 
                         const row = $(`
-                            <tr>
+                            <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
@@ -69,33 +70,23 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <ul class="nk-tb-actions gx-1">
-                                        <li>
-                                            <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li>
-                                                            <a  href="#"
-                                                                class="text-warning btn-detail"
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#modalLarge" 
-                                                                data-codeop="${item.codeop}"
-                                                                data-type="${item.type}"
-                                                                data-typeop="${item.type_operation}"
-                                                                data-libelle="${item.libelle}"
-                                                                data-montant="${item.montant}"
-                                                                data-magasin="${item.magasin_nom}"
-                                                                data-dateop="${item.dateop}"
-                                                                data-login="${item.login}"
-                                                                data-created_at="${item.created_at}"
-                                                                data-numop="${item.num_operation}"
-                                                            >
-                                                                <em class="icon ni ni-eye"></em>
-                                                                <span>Détail</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                        <li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-detail text-warning"
+                                                title="Détails Opération"
+                                                data-codeop="${item.codeop}"
+                                                data-type="${item.type}"
+                                                data-typeop="${item.type_operation}"
+                                                data-libelle="${item.libelle}"
+                                                data-montant="${item.montant}"
+                                                data-magasin="${item.magasin_nom}"
+                                                data-dateop="${item.dateop}"
+                                                data-login="${item.login}"
+                                                data-created_at="${item.created_at}"
+                                                data-numop="${item.num_operation}"
+                                            >
+                                                <em class="icon ni ni-eye"></em>
+                                            </a>
                                         </li>
                                     </ul>
                                 </td>
@@ -129,6 +120,7 @@ $(document).ready(function () {
                 }
             },
             error: function() {
+                preloader('end');
                 initializeDataTable(".table_operation", { responsive: { details: true } });
 
                 $('#total').text('Total : 0 Fcfa');
@@ -139,52 +131,100 @@ $(document).ready(function () {
         
     }
 
-    $('.table_operation').on('click', '.btn-detail', function () {
-            const codeop = $(this).data('codeop');
-            const type = $(this).data('type');
-            const typeop = $(this).data('typeop');
-            const libelle = $(this).data('libelle');
-            const montant = $(this).data('montant');
-            const magasin = $(this).data('magasin');
-            const dateop = $(this).data('dateop');
-            const login = $(this).data('login');
-            const created_at = $(this).data('created_at');
-            const numop = $(this).data('numop');
+    $('.table_operation').on('click', '.btn-detail', function (event) {
+        event.preventDefault();
 
-            let solde;
-            if (type == 'entree') {
-                solde = '+ '+montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa';
-            } else if (type == 'sortie') {
-                solde = '- '+montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa';
-            } else {
-                solde = montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa';
-            }
+        const modalBody = `
+            <div class="modal fade" tabindex="-1" id="modalLarge">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="card">
+                            <div class="card-inner">
+                                <div class="team">
+                                    <div class="user-card user-card-s2">
+                                        <div class="user-avatar lg">
+                                            <img height="80px" width="80px" class="rounded-pill border border-1" src="assets/images/factures.jpg" alt="">
+                                        </div>
+                                        <div class="user-info">
+                                            <h6 id="d_creer_par" ></h6> 
+                                            <span class="sub-text" id="d_datecreat"></span>
+                                        </div>
+                                    </div>
+                                    <div class="p-2" style="max-height: 400px;" data-simplebar >
+                                        <ul class="team-info">
+                                            <li><span>Numéro d'opération</span><span id="d_num" ></span></li>
+                                            <li><span>Type</span><span id="d_type" ></span></li>
+                                            <li><span>Motif</span><span id="d_motif"></span></li>
+                                            <li><span>Montant</span><span id="d_montant" ></span></li>
+                                            <li><span>Magasin</span><span id="d_magasin" ></span></li>
+                                            <li><span>Date d'opération</span><span id="d_dateop" ></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
 
-            let op;
-            if (type == 'entree') {
-                op = 'Entrer d\'argent';
-            } else if (type == 'sortie') {
-                op = 'Sortie d\'argent';
-            } else if (typeop == 4) {
-                op = 'Ouverture de la caisse';
-            } else if (typeop == 5) {
-                op = 'Fermeture de la caisse';
-            }
+        $('body').append(modalBody);
 
-            $('#d_creer_par').text('Créer par '+login);
-            $('#d_datecreat').text('Le '+formatDate(created_at));
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalLarge'));
+        modal.show();
 
-            $('#d_type').text(op);
-            $('#d_motif').text(libelle);
-            $('#d_montant').text(solde);
-            $('#d_magasin').text(magasin);
-            $('#d_dateop').text('Le '+formatDateHeure(created_at));
-            $('#d_num').text(numop ?? 'Aucun');
+        const codeop = $(this).data('codeop');
+        const type = $(this).data('type');
+        const typeop = $(this).data('typeop');
+        const libelle = $(this).data('libelle');
+        const montant = $(this).data('montant');
+        const magasin = $(this).data('magasin');
+        const dateop = $(this).data('dateop');
+        const login = $(this).data('login');
+        const created_at = $(this).data('created_at');
+        const numop = $(this).data('numop');
 
+        let solde;
+        if (type == 'entree') {
+            solde = '+ '+montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa';
+        } else if (type == 'sortie') {
+            solde = '- '+montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa';
+        } else {
+            solde = montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa';
+        }
 
-        });
+        let op;
+        if (type == 'entree') {
+            op = 'Entrer d\'argent';
+        } else if (type == 'sortie') {
+            op = 'Sortie d\'argent';
+        } else if (typeop == 4) {
+            op = 'Ouverture de la caisse';
+        } else if (typeop == 5) {
+            op = 'Fermeture de la caisse';
+        }
+
+        $('#d_creer_par').text('Créer par '+login);
+        $('#d_datecreat').text('Le '+formatDate(created_at));
+
+        $('#d_type').text(op);
+        $('#d_motif').text(libelle);
+        $('#d_montant').text(solde);
+        $('#d_magasin').text(magasin);
+        $('#d_dateop').text('Le '+formatDateHeure(created_at));
+        $('#d_num').text(numop ?? 'Aucun');
+
+    });
 
     list_operation_all();
-    $("#btn_search").on("click", list_operation_all);
+    $("#btn_search").on('click', function (event) {
+        event.preventDefault();
+
+        // Ajouter le préchargeur
+        preloader('start');
+
+        list_operation_all();
+
+    });
 
 });

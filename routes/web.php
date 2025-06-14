@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('/Opération de Caisse', [Controller::class, 'operation'])->name('operation');
 	Route::get('/Encaissements', [Controller::class, 'encaissement'])->name('encaissement');
 	Route::get('/Blian Général', [Controller::class, 'bilan_generale_comptable'])->name('bilan_generale_comptable');
-	Route::get('/Blian Comptable', [Controller::class, 'bilan_comptable'])->name('bilan_comptable');
+	Route::get('/Rapport Magasin', [Controller::class, 'bilan_comptable'])->name('bilan_comptable');
 	Route::get('/Historique facture', [Controller::class, 'his_facture'])->name('his_facture');
 
 	Route::get('/Facturation Assurances', [Controller::class, 'facturation_assurance'])->name('facturation_assurance');

@@ -313,40 +313,38 @@
                                                     <span class="badge badge-md bg-danger" id="sortie"></span>
                                                 </div>
                                             </div>
-                                            <div class="card-bordered card-preview mt-5">
-                                                <div class="card-inner">
-                                                    <table class="datatable-init table table_operation" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
-                                                        <thead>
-                                                            <tr class="nk-tb-item nk-tb-head">
-                                                                <th class="nk-tb-col" >
-                                                                    <span class="sub-text"></span>
-                                                                </th>
-                                                                <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Type</span>
-                                                                </th>
-                                                                <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Montant</span>
-                                                                </th>
-                                                                <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Créer par</span>
-                                                                </th>
-                                                                <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Agence</span>
-                                                                </th>
-                                                                <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Date opération</span>
-                                                                </th>
-                                                                <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Date création</span>
-                                                                </th>
-                                                                <th class="nk-tb-col nk-tb-col-tools text-end"></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                            <div class="table-responsive datatable-wrap p-2 mt-3">
+                                                <table class="datatable-init table_operation" data-auto-responsive="false" style="font-size: 12px;" >
+                                                    <thead>
+                                                        <tr class="nk-tb-item nk-tb-head">
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text"></span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Type</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Montant</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Créer par</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Agence</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Date opération</span>
+                                                            </th>
+                                                            <th class="nk-tb-col" >
+                                                                <span class="sub-text">Date création</span>
+                                                            </th>
+                                                            <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -356,40 +354,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" tabindex="-1" id="modalLarge">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            {{-- <div class="modal-body"> --}}
-                <div class="card">
-                    <div class="card-inner">
-                        <div class="team">
-                            <div class="user-card user-card-s2">
-                                <div class="user-avatar lg">
-                                    <img height="80px" width="80px" class="rounded-pill border border-1" src="{{ asset('assets/images/factures.jpg') }}" alt="">
-                                </div>
-                                <div class="user-info">
-                                    <h6 id="d_creer_par" ></h6> 
-                                    <span class="sub-text" id="d_datecreat"></span>
-                                </div>
-                            </div>
-                            <div class="p-2" style="max-height: 400px;" data-simplebar >
-                                <ul class="team-info">
-                                    <li><span>Numéro d'opération</span><span id="d_num" ></span></li>
-                                    <li><span>Type</span><span id="d_type" ></span></li>
-                                    <li><span>Motif</span><span id="d_motif"></span></li>
-                                    <li><span>Montant</span><span id="d_montant" ></span></li>
-                                    <li><span>Magasin</span><span id="d_magasin" ></span></li>
-                                    <li><span>Date d'opération</span><span id="d_dateop" ></span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {{-- </div> --}}
         </div>
     </div>
 </div>

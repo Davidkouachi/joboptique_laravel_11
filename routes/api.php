@@ -65,8 +65,8 @@ Route::get('/insert_type_message', [InsertController::class, 'insert_type_messag
 // Liste debut
 Route::get('/list_client_all', [ListeController::class, 'list_client_all']);
 Route::get('/list_prospect_all', [ListeController::class, 'list_prospect_all']);
-Route::get('/list_proforma_all', [ListeController::class, 'list_proforma_all']);
-Route::get('/list_vente_all', [ListeController::class, 'list_vente_all']);
+Route::get('/list_proforma_all/{date1}/{date2}', [ListeController::class, 'list_proforma_all']);
+Route::get('/list_vente_all/{date1}/{date2}', [ListeController::class, 'list_vente_all']);
 Route::get('/list_operation_all/{date1}/{date2}/{magasin}', [ListeController::class, 'list_operation_all']);
 Route::get('/list_facture_client/{matricule}', [ListeController::class, 'list_facture_client']);
 Route::get('/list_facturation', [ListeController::class, 'list_facturation']);
@@ -75,6 +75,8 @@ Route::get('/list_message_all', [ListeController::class, 'list_message_all']);
 
 // Supprimer debut
 Route::get('/delete_type_message/{id}', [DeleteController::class, 'delete_type_message']);
+Route::get('/delete_fac_proforma/{code}', [DeleteController::class, 'delete_fac_proforma']);
+Route::get('/delete_fac_vente/{code}', [DeleteController::class, 'delete_fac_vente']);
 // Supprimer fin
 
 // Facture debut

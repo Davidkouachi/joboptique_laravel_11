@@ -76,46 +76,44 @@
                                         <span class="badge badge-md bg-danger" id="non_payer"></span>
                                     </div>
                                 </div>
-                                <div class="card-preview mt-0">
-                                    <div class="card-inner card-bordered">
-                                        <table class="datatable-init table table_facture_client" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
-                                            <thead>
-                                                <tr class="nk-tb-item nk-tb-head">
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text"></span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Code</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Statut</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Total</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Part Assurance</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Part Client</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Taux réduction</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Reste à payer</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Date création</span>
-                                                    </th>
-                                                    <th class="nk-tb-col nk-tb-col-tools text-end"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="table-responsive datatable-wrap p-2 mt-0">
+                                    <table class="datatable-init table_facture_client" data-auto-responsive="false" style="font-size:12px;" >
+                                        <thead>
+                                            <tr class="nk-tb-item nk-tb-head">
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text"></span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Code</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Statut</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Total</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Part Assurance</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Part Client</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Taux réduction</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Reste à payer</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Date création</span>
+                                                </th>
+                                                <th class="nk-tb-col nk-tb-col-tools text-end"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

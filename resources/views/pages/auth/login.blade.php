@@ -10,6 +10,8 @@
     <title>Login | JobOptique</title>
     <script src="{{asset('jquery.min.js')}}"></script>
     <script src="{{asset('assets/app/js/alert.js')}}"></script>
+    <script src="{{asset('assets/app/js/format.js')}}"></script>
+
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/style_login.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/style.css') }}">
@@ -21,7 +23,7 @@
         <div class="nk-main ">
             <div class="nk-wrap nk-wrap-nosidebar">
                 <div class="nk-content " style="background: rgba(0, 0, 0, 0.5);">
-                    <div class="nk-block nk-block-middle nk-auth-body wide-xxl ">
+                    <div class="nk-block nk-block-middle nk-auth-body wide-xxl" style="width: 370px; margin-right: 150px;">
                         <div class="card">
                             <div class="card-inner card-inner-lg">
                             	<div class="brand-logo pb-4 text-center mb-3">

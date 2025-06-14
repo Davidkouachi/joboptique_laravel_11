@@ -13,12 +13,7 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         // Première requête : rafraîchir le token CSRF
         $.ajax({
@@ -39,35 +34,37 @@ $(document).ready(function () {
                         password: password,
                     },
                     success: function (response) {
-                        $("#preloader_ch").remove();
+                        // preloader('end');
 
                         if (response.success) {
 
-                            Swal.fire({
-                                title: "Rédirection en cours...",
-                                html: "Veuillez patienter.",
-                                timerProgressBar: !0,
-                                allowOutsideClick: false,
-                                showConfirmButton: false,
-                                onBeforeOpen: () => {
-                                    Swal.showLoading();
-                                },
-                            });
+                            // Swal.fire({
+                            //     title: "Rédirection en cours...",
+                            //     html: "Veuillez patienter.",
+                            //     timerProgressBar: !0,
+                            //     allowOutsideClick: false,
+                            //     showConfirmButton: false,
+                            //     onBeforeOpen: () => {
+                            //         Swal.showLoading();
+                            //     },
+                            // });
 
                             redirectTo(response.login);
+                            preloader('end');
 
                         } else if (response.error) {
+                            preloader('end');
                             showAlert("Alert", "Login ou Mot de passe incorrect", "warning");
                         }
                     },
                     error: function () {
-                        $("#preloader_ch").remove();
+                        preloader('end');
                         showAlert("Erreur", "Erreur lors de l'authentification.", "error");
                     },
                 });
             },
             error: function () {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Erreur", "Une erreur est survenue lors de la recupération du token.", "error");
             },
         });

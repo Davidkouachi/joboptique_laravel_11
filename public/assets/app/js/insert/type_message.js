@@ -12,12 +12,7 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: "/api/insert_type_message",
@@ -27,7 +22,7 @@ $(document).ready(function () {
                 message: message.val(),
             },
             success: function (response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 if (response.success) {
 
@@ -43,7 +38,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
                 console.log(response.message);
             },

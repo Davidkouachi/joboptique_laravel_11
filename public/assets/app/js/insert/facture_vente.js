@@ -268,7 +268,7 @@ $(document).ready(function () {
 
     function restForm()
     {
-        $("#client").val(null);
+        $("#client").val(null).trigger('change.select2');
         $("#taux").val(null);
         $("#choix_assurance").val(0).trigger('change');
         $("#date").val(new Date().toISOString().slice(0, 10));
@@ -312,6 +312,7 @@ $(document).ready(function () {
         }
 
         const selectionsProduit = [];
+        let formIsValid = true;
 
         $('#contenu').find('.contenu_enfant').each(function() {
             let desi = $(this).find('.designation').val();
@@ -319,13 +320,15 @@ $(document).ready(function () {
             let qte = parseInt($(this).find('.quantite').val().replace(/[^0-9]/g, '')) || 0;
             let total = parseFloat($(this).find('.total').val().replace(/[^0-9]/g, '')) || 0;
 
-            if (isNaN(total) || total == 0) {
-                showAlert("ALERT", 'Vérifier les prix et quantités des Produits s\'il vous plaît.', "warning");
+            if (!desi.trim()) {
+                showAlert("ALERT", 'Vérifier le nom de chaques Produits s\'il vous plaît.', "warning");
+                formIsValid = false;
                 return false;
             }
 
-            if (!desi.trim()) {
-                showAlert("ALERT", 'Vérifier le nom de chaques Produits s\'il vous plaît.', "warning");
+            if (isNaN(total) || total == 0) {
+                showAlert("ALERT", 'Vérifier les prix et quantités des Produits s\'il vous plaît.', "warning");
+                formIsValid = false;
                 return false;
             }
 
@@ -337,6 +340,11 @@ $(document).ready(function () {
             });
 
         });
+
+        // Si un problème a été trouvé, on stoppe le traitement
+        if (!formIsValid) {
+            return false;
+        }
         
         if (isNaN(mTotal) || isNaN(netPayer) || isNaN(netAssurance) || mTotal < 0 || netPayer < 0 || netAssurance < 0 ) {
             showAlert("ALERT", 'Vérifier les montants s\'il vous plaît.', "warning");
@@ -344,12 +352,7 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: "/api/insert_vente",
@@ -369,7 +372,7 @@ $(document).ready(function () {
                 id_agence: $("#id_agence").val().trim(),
             },
             success: function (response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 if (response.success) {
 
@@ -391,7 +394,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
                 console.log(response.message);
             },

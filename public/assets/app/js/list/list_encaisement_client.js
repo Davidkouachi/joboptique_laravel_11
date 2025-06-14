@@ -5,19 +5,14 @@ $(document).ready(function () {
         let client = $('#client').val();
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: '/api/list_facture_client/'+client,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 const facture = data.data;
                 const donne = data.donne;
@@ -34,7 +29,7 @@ $(document).ready(function () {
                     $.each(facture, function(index, item) {
 
                         const row = $(`
-                            <tr>
+                            <tr class="nk-tb-item" >
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
@@ -82,52 +77,44 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <ul class="nk-tb-actions gx-1">
-                                        <li>
-                                            <div class="drodown"><a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        ${item.regle == null ? 
-                                                        `<li>
-                                                            <a  href="#"
-                                                                class="toggle text-success btn-plus"
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#Versement"
-                                                                data-code="${item.code}"
-                                                                data-matricule="${item.matricule}"
-                                                                data-reste="${item.reste}"
-                                                            >
-                                                                <em class="icon ni ni-plus-circle"></em>
-                                                                <span>Effectuer un Versement</span>
-                                                            </a>
-                                                        </li>` : ``}
-                                                        <li>
-                                                            <a  href="#"
-                                                                class="text-warning btn-pdf"
-                                                                data-code="${item.code}"
-                                                                data-matricule="${item.matricule}"
-                                                            >
-                                                                <em class="icon ni ni-printer"></em>
-                                                                <span>Facture</span>
-                                                            </a>
-                                                        </li>
-                                                        ${item.versement.length > 0 ? 
-                                                        `<li>
-                                                            <a  href="#"
-                                                                class="text-primary btn-recu"
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#modalLarge" 
-                                                                data-code="${item.code}"
-                                                                data-matricule="${item.matricule}"
-                                                                data-versement='${JSON.stringify(item.versement)}'
-                                                            >
-                                                                <em class="icon ni ni-list"></em>
-                                                                <span>Recu Paiement</span>
-                                                            </a>
-                                                        </li>` : ``}
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                        ${item.regle == null ? 
+                                        `<li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-plus text-success"
+                                                title="Effectuer un Versement"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#Versement"
+                                                data-code="${item.code}"
+                                                data-matricule="${item.matricule}"
+                                                data-reste="${item.reste}"
+                                            >
+                                                <em class="icon ni ni-plus-circle"></em>
+                                            </a>
+                                        </li>` : ``}
+                                        <li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-pdf text-warning"
+                                                title="Facture"
+                                                data-code="${item.code}"
+                                                data-matricule="${item.matricule}"
+                                            >
+                                                <em class="icon ni ni-printer"></em>
+                                            </a>
                                         </li>
+                                        ${item.versement.length > 0 ? 
+                                        `<li class="nk-tb-action-hidden" >
+                                            <a  href="#"
+                                                class="btn btn-trigger btn-icon btn-recu text-primary"
+                                                title="Recu Paiement"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modalLarge" 
+                                                data-code="${item.code}"
+                                                data-matricule="${item.matricule}"
+                                                data-versement='${JSON.stringify(item.versement)}'
+                                            >
+                                                <em class="icon ni ni-list"></em>
+                                            </a>
+                                        </li>` : ``}
                                     </ul>
                                 </td>
                             </tr>
@@ -151,7 +138,7 @@ $(document).ready(function () {
                 }
             },
             error: function() {
-                $("#preloader_ch").remove();
+                preloader('end');
                 initializeDataTable(".table_facture_client", { responsive: { details: true } });
 
                 $('#total').text('Montant Total : 0 Fcfa');
@@ -162,27 +149,24 @@ $(document).ready(function () {
         
     }
 
-    $('.table_facture_client').off('click', '.btn-pdf').on('click', '.btn-pdf', function () {
+    $('.table_facture_client').off('click', '.btn-pdf').on('click', '.btn-pdf', function (event) {
+        event.preventDefault();
+
         const code = $(this).data('code');
         const matricule = $(this).data('matricule');
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         $.ajax({
             url: '/api/imp_fac_vente/'+code+'/'+matricule,
             method: 'GET',
             success: function(response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 if (response.success) {
 
-                    PDF_Facture_Vente(response.client, response.pres, response.produits,$('#agence').val());
+                    PDF_Facture_Vente(response.client, response.pres, response.produits,$('#agence').val(), reste_payer = 1);
 
                 } else if (response.error) {
 
@@ -197,14 +181,15 @@ $(document).ready(function () {
 
             },
             error: function() {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Alert", "Une erreur est survenue ", "error");
             }
         });
 
     });
 
-    $('.table_facture_client').on('click', '.btn-recu', function () {
+    $('.table_facture_client').on('click', '.btn-recu', function (event) {
+        event.preventDefault();
         
         let code = $(this).data('code');
         let matricule = $(this).data('matricule');
@@ -226,7 +211,9 @@ $(document).ready(function () {
         })
 
         // Ajout d'un gestionnaire d'événements pour récupérer l'id du versement
-        $('#contenu_versement').off('click', '.btn_recu_vers').on('click', '.btn_recu_vers', function () {
+        $('#contenu_versement').off('click', '.btn_recu_vers').on('click', '.btn_recu_vers', function (event) {
+            event.preventDefault();
+
             let versementId = $(this).data('id');
 
             var modal = bootstrap.Modal.getInstance(document.getElementById('modalLarge'));
@@ -244,7 +231,7 @@ $(document).ready(function () {
                 url: '/api/imp_fac_recu/'+code+'/'+matricule+'/'+versementId,
                 method: 'GET',
                 success: function(response) {
-                    $("#preloader_ch").remove();
+                    preloader('end');
 
                     if (response.success) {
 
@@ -263,7 +250,7 @@ $(document).ready(function () {
 
                 },
                 error: function() {
-                    $("#preloader_ch").remove();
+                    preloader('end');
                     showAlert("Alert", "Une erreur est survenue ", "error");
                 }
             });
@@ -272,7 +259,9 @@ $(document).ready(function () {
 
     });
 
-    $('.table_facture_client').on('click', '.btn-plus', function () {
+    $('.table_facture_client').on('click', '.btn-plus', function (event) {
+        event.preventDefault();
+
         const code = $(this).data('code');
         const matricule = $(this).data('matricule');
         const reste = $(this).data('reste');

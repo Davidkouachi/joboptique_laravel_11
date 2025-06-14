@@ -41,4 +41,60 @@ class DeleteController extends Controller
                 return response()->json(['error' => true, 'message' => $e->getMessage()]);
             }
     }
+
+    public function delete_fac_proforma($code)
+    {
+        DB::beginTransaction();
+
+            try {
+
+                $Delete = DB::table('proforma')
+                                ->where('code', '=', $code)
+                                ->delete();
+
+                if (!$Delete === 0) {
+                    throw new \Exception('Erreur lors de la suppression dans proforma');
+                }
+
+                DB::commit();
+                return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json(['error' => true, 'message' => $e->getMessage()]);
+            }
+    }
+
+    public function delete_fac_vente($code)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Supprimer les détails de vente
+            $deletedDetails = DB::table('vente_details')
+                                ->where('code', $code)
+                                ->delete();
+
+            // Supprimer la facture assurance si elle existe
+            $deletedFactureAssurance = DB::table('facture_assurance')
+                                        ->where('code_vente', $code)
+                                        ->delete();
+
+            // Supprimer l'enregistrement principal de vente
+            $deletedVente = DB::table('vente')
+                            ->where('code', $code)
+                            ->delete();
+
+            if ($deletedVente === 0) {
+                throw new \Exception('Aucune vente trouvée à supprimer');
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Vente supprimée avec succès']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+
 }

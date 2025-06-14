@@ -19,8 +19,8 @@ $(document).ready(function () {
                 `;
 
                 const defaultOptions = {
-                    responsive: !0,
-                    autoWidth: !0,
+                    responsive: false,
+                    autoWidth: false,
                     pagingType: "simple_numbers",
                     dom: $(this).hasClass("is-separate") ? defaultDOM : defaultDOM,
                     language: {
@@ -39,6 +39,7 @@ $(document).ready(function () {
                         zeroRecords: "<div class='text-center no-data'>Aucune donnée trouvée</div>",
                         emptyTable: "<div class='text-center no-data'>Aucune donnée disponible dans le tableau</div>"
                     },
+                    width: '100%',
                 };
 
                 const finalOptions = additionalOptions
@@ -46,7 +47,7 @@ $(document).ready(function () {
                     : defaultOptions;
 
                 const optionsWithResponsive = responsiveOption === false
-                    ? $.extend(true, {}, finalOptions, { responsive: false, autoWidth: false })
+                    ? $.extend(true, {}, finalOptions, { responsive: false, autoWidth: true })
                     : finalOptions;
 
                 $(this).DataTable(optionsWithResponsive);
@@ -54,5 +55,23 @@ $(document).ready(function () {
             });
         }
     }
+
+    // window.initializeDataTable = function (selector) {
+    //     const tableSelector = $(selector);
+
+    //     if (tableSelector.length) {
+    //         tableSelector.each(function () {
+    //             const $table = $(this);
+
+    //             if ($.fn.DataTable.isDataTable($table)) {
+    //                 $table.DataTable().clear().destroy();
+    //             }
+
+    //             $table.DataTable({
+    //                 scrollX: true,                    
+    //             });
+    //         });
+    //     }
+    // }
 
 });

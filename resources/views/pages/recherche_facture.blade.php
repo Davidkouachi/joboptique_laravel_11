@@ -91,63 +91,61 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-inner">
-                                <div class="card-bordered card-preview">
-                                    <div class="row g-gs justify-content-center align-items-center text-center mt-0" id="donnee">
-                                        <div class="col-md-4">
-                                            <span class="badge badge-md bg-warning" id="total"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span class="badge badge-md bg-primary" id="part_assurance"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span class="badge badge-md bg-primary" id="part_client"></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="badge badge-md bg-success" id="payer"></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="badge badge-md bg-danger" id="non_payer"></span>
-                                        </div>
+                            <div class="card-inner" id="donnee" style="display: none;">
+                                <div class="row g-gs justify-content-center align-items-center text-center mt-n5" id="donnee">
+                                    <div class="col-md-4">
+                                        <span class="badge badge-md bg-warning" id="total"></span>
                                     </div>
-                                    <div class="card-inner">
-                                        <table class="datatable-init table table_rech_fac" data-auto-responsive="true" style="overflow-x: auto; font-size: 12px;" >
-                                            <thead>
-                                                <tr class="nk-tb-item nk-tb-head">
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text"></span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Code Vente</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Nom et Prénoms</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Total</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Part Assurance</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Net à Payer</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Montant Payer</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Montant Restant</span>
-                                                    </th>
-                                                    <th class="nk-tb-col" >
-                                                        <span class="sub-text">Date de création</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                        </table>
+                                    <div class="col-md-4">
+                                        <span class="badge badge-md bg-primary" id="part_assurance"></span>
                                     </div>
+                                    <div class="col-md-4">
+                                        <span class="badge badge-md bg-primary" id="part_client"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="badge badge-md bg-success" id="payer"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="badge badge-md bg-danger" id="non_payer"></span>
+                                    </div>
+                                </div>
+                                <div class="table-responsive datatable-wrap p-2 mt-3">
+                                    <table class="datatable-init table_rech_fac" data-auto-responsive="false" style="font-size:12px;" >
+                                        <thead>
+                                            <tr class="nk-tb-item nk-tb-head">
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text"></span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Code Vente</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Nom et Prénoms</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Total</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Part Assurance</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Net à Payer</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Montant Payer</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Montant Restant</span>
+                                                </th>
+                                                <th class="nk-tb-col" >
+                                                    <span class="sub-text">Date de création</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

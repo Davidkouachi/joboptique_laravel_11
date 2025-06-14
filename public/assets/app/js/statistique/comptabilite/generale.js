@@ -4,6 +4,37 @@ $(document).ready(function () {
     $('#chargement').hide();
 
     caisse();
+    
+    select_annee('#anne_op');
+    select_annee('#anne_vente');
+    select_annee('#anne_client');
+    select_annee('#anne_eva_vente');
+    select_magasin('#magasin_d_vente');
+    select_magasin('#magasin_estimation_vente', function() {
+        graph_vente_prevision();
+    });
+
+    graph_op();
+    graph_vente();
+    graph_eva_vente();
+    graph_client();
+
+    $("#anne_op").on('change', graph_op);
+    $("#anne_vente").on('change', graph_vente);
+    $("#anne_eva_vente").on('change', graph_eva_vente);
+    $("#anne_client").on('change', graph_client);
+    $("#magasin_estimation_vente").on('change', graph_vente_prevision);
+    $("#btn_search_vente_d").on('click', function (event) {
+        
+        event.preventDefault();
+
+        // Ajouter le préchargeur
+        preloader('start');
+
+        vente_detail();
+
+    });
+
 
     function caisse() 
     {
@@ -25,28 +56,6 @@ $(document).ready(function () {
         });
     }
 
-    select_annee('#anne_op');
-    select_annee('#anne_vente');
-    select_annee('#anne_client');
-    select_annee('#anne_eva_vente');
-    select_magasin('#magasin_d_vente');
-    select_magasin('#magasin_estimation_vente', function() {
-        graph_vente_prevision();
-    });
-
-
-    graph_op();
-    graph_vente();
-    graph_eva_vente();
-    graph_client();
-
-    $("#anne_op").on('change', graph_op);
-    $("#anne_vente").on('change', graph_vente);
-    $("#anne_eva_vente").on('change', graph_eva_vente);
-    $("#anne_client").on('change', graph_client);
-    $("#btn_search_vente_d").on('click', vente_detail);
-    $("#magasin_estimation_vente").on('change', graph_vente_prevision);
-
     function graph_op() 
     {
         $('#div_graph_op_message').show();
@@ -57,7 +66,7 @@ $(document).ready(function () {
 
         const divcon = $(`
             <div class="card-body" id="graph_op" ></div>
-            <div class="card-body mb-3" id="graphT_op" ></div>
+            <div class="card-body " id="graphT_op" ></div>
         `);
 
         contenug.append(divcon);
@@ -131,18 +140,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         categories: [
-                            "Janvier",
-                            "Février",
-                            "Mars",
-                            "Avril",
+                            "Janv",
+                            "Fév",
+                            "Mar",
+                            "Avr",
                             "Mai",
-                            "Juin",
-                            "Juillet",
+                            "Jui",
+                            "Juil",
                             "Aôut",
-                            "Septembre",
-                            "Octobre",
-                            "Novembre",
-                            "Decembre",
+                            "Sept",
+                            "Oct",
+                            "Nov",
+                            "Déc",
                         ],
                     },
                     yaxis: {
@@ -177,7 +186,7 @@ $(document).ready(function () {
                 chart.render();
 
                 const stat = $(`
-                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
+                    <div class="d-flex flex-wrap justify-content-center align-items-center">
                         <div style="background-color: #0ebb13;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
                             <em class="ni ni-money text-white fs-4"></em>
                             <span class="me-1 text-white ps-1">+ ${data.total_entrer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa</span>
@@ -207,137 +216,6 @@ $(document).ready(function () {
             });
     }
 
-    function graph_vente() 
-    {
-        $('#div_vente_message').show();
-        const yearSelect = $("#anne_vente").val();
-
-        const contenug = $("#contenu_graph_vente");
-        contenug.empty();
-
-        const divcon = $(`
-            <div class="col-xxl-6 col-sm-6" >
-                <div class="card-body" id="graph_vente_montant" ></div>    
-            </div>
-            <div class="col-xxl-6 col-sm-6" >
-                <div class="card-body" id="graph_vente_nombre" ></div>    
-            </div>
-        `);
-
-        contenug.append(divcon);
-
-        fetch('/api/G_bilan_vente/' + yearSelect)
-            .then(response => response.json())
-            .then(data => {
-
-                $('#div_vente_message').hide();
-
-                // Extraire les noms des magasins
-                let categories = data.map(item => item.nom);
-
-                // Extraire les montants des ventes
-                let totalVentes = data.map(item => parseFloat(item.total_ventes));
-
-                // Extraire le nombre de ventes
-                let nombreVentes = data.map(item => parseInt(item.nombre_ventes));
-
-                // Configuration du graphique en camembert pour le montant total des ventes
-
-                function generateRandomColors(count) {
-                    let colors = new Set(); // Utilisation d'un Set pour éviter les doublons
-
-                    while (colors.size < count) {
-                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-                        colors.add(color); // Ajoute uniquement si elle n'existe pas déjà
-                    }
-
-                    return Array.from(colors); // Convertit le Set en tableau
-                }
-
-                let colors1 = generateRandomColors(categories.length);
-
-                var optionsMontant = {
-                    chart: {
-                        type: "donut", // Changer le type en donut
-                        height: 350,
-                    },
-                    labels: categories, // Noms des magasins
-                    series: totalVentes, // Montant total des ventes
-                    colors: colors1, // Couleurs personnalisées
-                    legend: {
-                        position: "bottom",
-                    },
-                    title: {
-                        text: "Répartition du montant des ventes par magasin (en Fcfa)",
-                        align: "center",
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: function(val) {
-                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa";
-                            },
-                        },
-                    },
-                    plotOptions: {
-                        pie: {
-                            donut: {
-                                size: '60%' // Ajuste la taille du trou au centre du donut
-                            }
-                        }
-                    }
-                };
-
-
-                var chartMontant = new ApexCharts(document.querySelector("#graph_vente_montant"), optionsMontant);
-                chartMontant.render();
-
-                function generateRandomColors2(count) {
-                    let colors = new Set(); // Utilisation d'un Set pour éviter les doublons
-
-                    while (colors.size < count) {
-                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-                        colors.add(color); // Ajoute uniquement si elle n'existe pas déjà
-                    }
-
-                    return Array.from(colors); // Convertit le Set en tableau
-                }
-
-                let colors2 = generateRandomColors2(categories.length);
-
-                // Configuration du graphique en camembert pour le nombre total de ventes
-                var optionsNombre = {
-                    chart: {
-                        type: "pie",
-                        height: 350,
-                    },
-                    labels: categories, // Noms des magasins
-                    series: nombreVentes, // Nombre total de ventes
-                    colors: colors2, // Couleurs personnalisées
-                    legend: {
-                        position: "bottom",
-                    },
-                    title: {
-                        text: "Répartition du total des ventes par magasin",
-                        align: "center",
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: function(val) {
-                                return val + " ventes";
-                            },
-                        },
-                    },
-                };
-
-                var chartNombre = new ApexCharts(document.querySelector("#graph_vente_nombre"), optionsNombre);
-                chartNombre.render();
-
-            })
-            .catch(error => {
-                console.error('Erreur lors du chargement des données:', error);
-            });
-    }
-
     function graph_eva_vente() 
     {
         $('#div_graph_eva_vente_message').show();
@@ -348,7 +226,7 @@ $(document).ready(function () {
 
         const divcon = $(`
             <div class="card-body" id="graph_eva_vente" ></div>
-            <div class="card-body mb-3" id="graphT_eva_vente" ></div>
+            <div class="card-body" id="graphT_eva_vente" ></div>
         `);
 
         contenug.append(divcon);
@@ -423,18 +301,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         categories: [
-                            "Janvier",
-                            "Février",
-                            "Mars",
-                            "Avril",
+                            "Janv",
+                            "Fév",
+                            "Mar",
+                            "Avr",
                             "Mai",
-                            "Juin",
-                            "Juillet",
+                            "Jui",
+                            "Juil",
                             "Aôut",
-                            "Septembre",
-                            "Octobre",
-                            "Novembre",
-                            "Decembre",
+                            "Sept",
+                            "Oct",
+                            "Nov",
+                            "Déc",
                         ],
                         labels: {
                             style: {
@@ -477,8 +355,8 @@ $(document).ready(function () {
                 chart.render();
 
                 const stat = $(`
-                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
-                        <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div style="background: transparent;" class="text-white">
                             <span class="fw-semibold text-white ps-1 h5">
                                 Montant Total : ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa
                             </span>
@@ -506,11 +384,139 @@ $(document).ready(function () {
             })
             .catch(error => {
                 console.error('Erreur lors du chargement des données:', error);
-
-                
-
             });
     }
+
+    function graph_vente() 
+    {
+        $('#div_vente_message').show();
+        const yearSelect = $("#anne_vente").val();
+
+        const contenug = $("#contenu_graph_vente");
+        contenug.empty();
+
+        const divcon = $(`
+            <div class="col-xxl-6 col-sm-6" >
+                <div class="card-body " id="graph_vente_montant" ></div>    
+            </div>
+            <div class="col-xxl-6 col-sm-6" >
+                <div class="card-body " id="graph_vente_nombre" ></div>    
+            </div>
+        `);
+
+        contenug.append(divcon);
+
+        fetch('/api/G_bilan_vente/' + yearSelect)
+            .then(response => response.json())
+            .then(data => {
+
+                $('#div_vente_message').hide();
+
+                // Extraire les noms des magasins
+                let categories = data.map(item => item.nom);
+
+                // Extraire les montants des ventes
+                let totalVentes = data.map(item => parseFloat(item.total_ventes));
+
+                // Extraire le nombre de ventes
+                let nombreVentes = data.map(item => parseInt(item.nombre_ventes));
+
+                // Configuration du graphique en camembert pour le montant total des ventes
+
+                function generateRandomColors(count) {
+                    let colors = new Set(); // Utilisation d'un Set pour éviter les doublons
+
+                    while (colors.size < count) {
+                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+                        colors.add(color); // Ajoute uniquement si elle n'existe pas déjà
+                    }
+
+                    return Array.from(colors); // Convertit le Set en tableau
+                }
+
+                let colors1 = generateRandomColors(categories.length);
+
+                var optionsMontant = {
+                    chart: {
+                        type: "donut", // Changer le type en donut
+                        height: 250,
+                    },
+                    labels: categories, // Noms des magasins
+                    series: totalVentes, // Montant total des ventes
+                    colors: colors1, // Couleurs personnalisées
+                    legend: {
+                        position: "bottom",
+                    },
+                    title: {
+                        text: "Répartition du montant des ventes par magasin (en Fcfa)",
+                        align: "center",
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa";
+                            },
+                        },
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '60%' // Ajuste la taille du trou au centre du donut
+                            }
+                        }
+                    }
+                };
+
+
+                var chartMontant = new ApexCharts(document.querySelector("#graph_vente_montant"), optionsMontant);
+                chartMontant.render();
+
+                function generateRandomColors2(count) {
+                    let colors = new Set(); // Utilisation d'un Set pour éviter les doublons
+
+                    while (colors.size < count) {
+                        let color = "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+                        colors.add(color); // Ajoute uniquement si elle n'existe pas déjà
+                    }
+
+                    return Array.from(colors); // Convertit le Set en tableau
+                }
+
+                let colors2 = generateRandomColors2(categories.length);
+
+                // Configuration du graphique en camembert pour le nombre total de ventes
+                var optionsNombre = {
+                    chart: {
+                        type: "pie",
+                        height: 250,
+                    },
+                    labels: categories, // Noms des magasins
+                    series: nombreVentes, // Nombre total de ventes
+                    colors: colors2, // Couleurs personnalisées
+                    legend: {
+                        position: "bottom",
+                    },
+                    title: {
+                        text: "Répartition du total des ventes par magasin",
+                        align: "center",
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val + " ventes";
+                            },
+                        },
+                    },
+                };
+
+                var chartNombre = new ApexCharts(document.querySelector("#graph_vente_nombre"), optionsNombre);
+                chartNombre.render();
+
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des données:', error);
+            });
+    }    
 
     function graph_vente_prevision() 
     {
@@ -530,7 +536,7 @@ $(document).ready(function () {
 
                 const months = [
                     "Janv", "Fév", "Mar", "Avr", "Mai", "Jui", 
-                    "Juil", "Août", "Sept", "Oct", "Nov", "Déce"
+                    "Juil", "Août", "Sept", "Oct", "Nov", "Déc"
                 ];
 
                 // Initialisation des tableaux pour 12 mois
@@ -715,7 +721,7 @@ $(document).ready(function () {
 
         const divcon = $(`
             <div class="card-body" id="graph_client" ></div>
-            <div class="card-body mb-3" id="graphT_client" ></div>
+            <div class="card-body" id="graphT_client" ></div>
         `);
 
         contenug.append(divcon);
@@ -780,18 +786,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         categories: [
-                            "Janvier",
-                            "Février",
-                            "Mars",
-                            "Avril",
+                            "Janv",
+                            "Fév",
+                            "Mar",
+                            "Avr",
                             "Mai",
-                            "Juin",
-                            "Juillet",
+                            "Jui",
+                            "Juil",
                             "Aôut",
-                            "Septembre",
-                            "Octobre",
-                            "Novembre",
-                            "Decembre",
+                            "Sept",
+                            "Oct",
+                            "Nov",
+                            "Déc",
                         ],
                         labels: {
                             style: {
@@ -834,7 +840,7 @@ $(document).ready(function () {
                 chart.render();
 
                 const stat = $(`
-                    <div class="d-flex flex-wrap gap-1 justify-content-center align-items-center">
+                    <div class="d-flex flex-wrap justify-content-center align-items-center">
                         <div style="background: transparent;" class="d-flex align-items-center box-shadow px-3 py-1 rounded-2 me-2 mb-2 text-white">
                             <span class="me-1 text-white ps-1">
                                 Nouveau Patient(s) : + ${data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
@@ -874,19 +880,11 @@ $(document).ready(function () {
             return false;
         }
 
-        // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
-
         $.ajax({
             url: '/api/G_bilan_detail_vente/'+periode+'/'+magasin,
             method: 'GET',
             success: function(response) {
-                $("#preloader_ch").remove();
+                preloader('end');
 
                 const data = response.data;
 
@@ -1055,6 +1053,7 @@ $(document).ready(function () {
                 });
             },
             error: function() {
+                preloader('end');
                 // showAlert('danger', 'Impossible de generer le code automatiquement');
             }
         });

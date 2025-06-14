@@ -54,6 +54,7 @@ class AuthController extends Controller
 
             if ($magasin) {
                 session()->put('user_magasin', $magasin->nom);
+                session()->put('user_magasin_id', $magasin->id);
             }
 
             $service = DB::table('service')->where('id', '=', $user->service_id)->first();

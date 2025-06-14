@@ -200,12 +200,7 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        preloader('start');
 
         // Première requête : rafraîchir le token CSRF
         $.ajax({
@@ -226,7 +221,7 @@ $(document).ready(function () {
                         message: message.val(),
                     },
                     success: function (response) {
-                        $("#preloader_ch").remove();
+                        preloader('end');
 
                         if (response.success) {
 
@@ -238,109 +233,141 @@ $(document).ready(function () {
                         }
                     },
                     error: function () {
-                        $("#preloader_ch").remove();
+                        preloader('end');
                         showAlert("Alert", "Une erreur est survenue ", "error");
                     },
                 });
             },
             error: function () {
-                $("#preloader_ch").remove();
+                preloader('end');
                 showAlert("Alert", "Une erreur est survenue ", "error");
             },
         });
     });
 
     $(document).off('click', '.btn_suppr').on('click', '.btn_suppr', function (event) {
-
-        $('#modalDelete').remove();
-
-        $('body').append(`
-            <div class="modal fade" id="modalDelete" tabindex="-1">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content bg-white">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Confirmation</h5>
-                            <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <em class="icon ni ni-cross"></em>
-                            </a>
-                        </div>
-                        <div class="modal-body">
-                            <div class="">
-                                <div class="form-group text-center">
-                                    <label class="form-label">
-                                        Voulez-vous vraiment effectuée la suppresion ?
-                                    </label>
-                                    <div class="form-control-wrap">
-                                        <input type="hidden" id="Iddelete">
-                                    </div>
-                                </div>
-                                <div class="form-group d-flex justify-content-center align-items-center">
-                                    <a data-bs-dismiss="modal" aria-label="Close" class="btn btn-md btn-danger mb-2 me-2">
-                                        <span>Non</span>
-                                    </a>
-                                    <a id="deleteBtn" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dim btn-md btn-outline-success mb-2">
-                                        <span>Oui</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `);
-
-        // Affichage du modal
-        $('#modalDelete').modal('show');
-
-        const id = $(this).data('id');
-
-        $('#Iddelete').val(id);
-
-    });
-
-    $(document).off('click', '#deleteBtn').on('click', '#deleteBtn', function (event) {
-        let id = $('#Iddelete').val();
+        event.preventDefault();
 
         // $('#modalDelete').remove();
 
-        // Ajouter le préchargeur
-        let preloader_ch = `
-            <div id="preloader_ch">
-                <div class="spinner_preloader_ch"></div>
-            </div>
-        `;
-        $("body").append(preloader_ch);
+        // $('body').append(`
+        //     <div class="modal fade" id="modalDelete" tabindex="-1">
+        //         <div class="modal-dialog" role="document">
+        //             <div class="modal-content bg-white">
+        //                 <div class="modal-header">
+        //                     <h5 class="modal-title">Confirmation</h5>
+        //                     <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+        //                         <em class="icon ni ni-cross"></em>
+        //                     </a>
+        //                 </div>
+        //                 <div class="modal-body">
+        //                     <div class="">
+        //                         <div class="form-group text-center">
+        //                             <label class="form-label">
+        //                                 Voulez-vous vraiment effectuée la suppresion ?
+        //                             </label>
+        //                             <div class="form-control-wrap">
+        //                                 <input type="hidden" id="Iddelete">
+        //                             </div>
+        //                         </div>
+        //                         <div class="form-group d-flex justify-content-center align-items-center">
+        //                             <a data-bs-dismiss="modal" aria-label="Close" class="btn btn-md btn-danger mb-2 me-2">
+        //                                 <span>Non</span>
+        //                             </a>
+        //                             <a id="deleteBtn" data-bs-dismiss="modal" aria-label="Close" class="btn btn-dim btn-md btn-outline-success mb-2">
+        //                                 <span>Oui</span>
+        //                             </a>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+        // `);
 
-        $.ajax({
-            url: '/api/delete_type_message/' + id,
-            method: 'GET',
-            success: function(response) {
-                $("#preloader_ch").remove();
+        // // Affichage du modal
+        // $('#modalDelete').modal('show');
 
-                if (response.success) {
+        const id = $(this).data('id');
 
-                    list_message_all();
-                    showAlert("Succès", "Opération éffectuée", "success");
+        confirmAction().then((result) => {
+            if (result.isConfirmed) {
 
-                } else if (response.error_db) {
+                preloader('start');
 
-                    showAlert("Alert", "Echec de l'opération ", "error");
-                    console.log(response.message);
+                $.ajax({
+                    url: '/api/delete_type_message/' + id,
+                    method: 'GET',
+                    success: function(response) {
+                        preloader('end');
 
-                } else {
+                        if (response.success) {
 
-                    showAlert("Alert", "Une erreur est survenue ", "error");
+                            list_message_all();
+                            showAlert("Succès", "Opération éffectuée", "success");
 
-                }
+                        } else if (response.error_db) {
 
-            },
-            error: function() {
-                $("#preloader_ch").remove();
-                showAlert("Alert", "Une erreur est survenue ", "error");
+                            showAlert("Alert", "Echec de l'opération ", "error");
+                            console.log(response.message);
+
+                        } else {
+
+                            showAlert("Alert", "Une erreur est survenue ", "error");
+
+                        }
+
+                    },
+                    error: function() {
+                        preloader('end');
+                        showAlert("Alert", "Une erreur est survenue ", "error");
+                    }
+                });
             }
         });
 
     });
+
+    // $(document).off('click', '#deleteBtn').on('click', '#deleteBtn', function (event) {
+    //     // let id = $('#Iddelete').val();
+
+
+
+    //     // $('#modalDelete').remove();
+
+    //     // Ajouter le préchargeur
+    //     // preloader('start');
+
+    //     // $.ajax({
+    //     //     url: '/api/delete_type_message/' + id,
+    //     //     method: 'GET',
+    //     //     success: function(response) {
+    //     //         preloader('end');
+
+    //     //         if (response.success) {
+
+    //     //             list_message_all();
+    //     //             showAlert("Succès", "Opération éffectuée", "success");
+
+    //     //         } else if (response.error_db) {
+
+    //     //             showAlert("Alert", "Echec de l'opération ", "error");
+    //     //             console.log(response.message);
+
+    //     //         } else {
+
+    //     //             showAlert("Alert", "Une erreur est survenue ", "error");
+
+    //     //         }
+
+    //     //     },
+    //     //     error: function() {
+    //     //         preloader('end');
+    //     //         showAlert("Alert", "Une erreur est survenue ", "error");
+    //     //     }
+    //     // });
+
+    // });
 
     $('#reloader_liste_type').on('click', list_message_all);
 
