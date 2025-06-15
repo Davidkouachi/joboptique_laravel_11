@@ -36,7 +36,16 @@ $(document).ready(function () {
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
                                 <td class="nk-tb-col">
-                                    <span class="tb-amount">${item.code}</span>
+                                    <div class="user-card gap-1">
+                                        <div class="user-avatar bg-orange">
+                                            <em class="ni ni-file" ></em>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <span class="tb-amount">
+                                                ${item.code}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">

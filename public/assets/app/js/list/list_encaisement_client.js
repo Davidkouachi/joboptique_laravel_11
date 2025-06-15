@@ -2,6 +2,9 @@ $(document).ready(function () {
 
     window.list_facture_client = function () {
 
+        $('#donnee1').hide();
+        $('#donnee2').hide();
+
         let client = $('#client').val();
 
         // Ajouter le préchargeur
@@ -26,6 +29,9 @@ $(document).ready(function () {
 
                 if (facture.length > 0) {
 
+                    $('#donnee1').show();
+                    $('#donnee2').show();
+
                     $.each(facture, function(index, item) {
 
                         const row = $(`
@@ -33,10 +39,17 @@ $(document).ready(function () {
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
-                                <td class="nk-tb-col" >
-                                    <span class="tb-amount">
-                                        <span class="title">${item.code}</span>
-                                    </span>
+                                <td class="nk-tb-col">
+                                    <div class="user-card gap-1">
+                                        <div class="user-avatar bg-orange">
+                                            <em class="ni ni-file" ></em>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <span class="tb-amount">
+                                                ${item.code}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="nk-tb-col">
                                     <span class="badge ${item.regle == 1 ? 'bg-success' : 'bg-danger'}"> 
@@ -129,21 +142,30 @@ $(document).ready(function () {
 
                     initializeDataTable(".table_facture_client", { responsive: { details: true } });
                 } else {
-                    initializeDataTable(".table_facture_client", { responsive: { details: true } });
 
-                    $('#total').text('Montant Total : 0 Fcfa');
-                    $('#payer').text('Montant Payer : 0 Fcfa');
-                    $('#non_payer').text('Montant non-payer : 0 Fcfa');
+                    showAlert("Alert", "Aucune facture n'a été trouver.", "info");
+
+                    $('#donnee1').hide();
+                    $('#donnee2').hide();
+
+                    // initializeDataTable(".table_facture_client", { responsive: { details: true } });
+
+                    // $('#total').text('Montant Total : 0 Fcfa');
+                    // $('#payer').text('Montant Payer : 0 Fcfa');
+                    // $('#non_payer').text('Montant non-payer : 0 Fcfa');
 
                 }
             },
             error: function() {
                 preloader('end');
-                initializeDataTable(".table_facture_client", { responsive: { details: true } });
 
-                $('#total').text('Montant Total : 0 Fcfa');
-                $('#payer').text('Montant Payer : 0 Fcfa');
-                $('#non_payer').text('Montant non-payer : 0 Fcfa');
+                $('#donnee1').hide();
+                $('#donnee2').hide();
+                // initializeDataTable(".table_facture_client", { responsive: { details: true } });
+
+                // $('#total').text('Montant Total : 0 Fcfa');
+                // $('#payer').text('Montant Payer : 0 Fcfa');
+                // $('#non_payer').text('Montant non-payer : 0 Fcfa');
             }
         });
         

@@ -112,5 +112,91 @@ class StatistiqueController extends Controller
         ]);
     }
 
+    public function stat_vente_proforma($magasin)
+    {
+        $currentYear = date('Y');
+
+        // 1. Récupérer les ventes de l'année en cours
+        $salesData = DB::table('vente')
+            ->select(
+                DB::raw('MONTH(date) as month'),
+                DB::raw('SUM(total) as total_vente'),
+                DB::raw('COUNT(code) as nombre_vente')
+            )
+            ->where('magasin', $magasin)
+            ->whereYear('date', $currentYear)
+            ->groupBy(DB::raw('MONTH(date)'))
+            ->get()
+            ->keyBy('month');
+
+        // 2. Récupérer les proformas de l'année en cours
+        $proformaData = DB::table('proforma')
+            ->select(
+                DB::raw('MONTH(date) as month'),
+                DB::raw('COUNT(code) as nombre_proforma')
+            )
+            ->where('magasin', $magasin)
+            ->whereYear('date', $currentYear)
+            ->groupBy(DB::raw('MONTH(date)'))
+            ->get()
+            ->keyBy('month');
+
+        // 3. Initialiser les 12 mois avec données
+        $dataByMonth = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $vente = $salesData->get($i);
+            $proforma = $proformaData->get($i);
+
+            $dataByMonth[] = (object) [
+                'month' => $i,
+                'month_name' => \Carbon\Carbon::createFromDate(null, $i, 1)->translatedFormat('F'),
+                'total_vente' => $vente ? (float) $vente->total_vente : 0,
+                'nombre_vente' => $vente ? (int) $vente->nombre_vente : 0,
+                'nombre_proforma' => $proforma ? (int) $proforma->nombre_proforma : 0,
+            ];
+        }
+
+        return response()->json([
+            'annee' => $currentYear,
+            'prevision' => $dataByMonth,
+        ]);
+    }
+
+    public function stat_rapport_caisse($magasin)
+    {
+        $currentYear = date('Y');
+
+        // Total général
+        $totalG = 0;
+        $total_entrer = 0;
+        $total_sortie = 0;
+
+        // Une seule requête pour tout récupérer
+        $data = DB::table('caisse')
+            ->whereYear('dateop', $currentYear)
+            ->groupBy(DB::raw('MONTH(dateop)'))
+            ->select(
+                DB::raw('MONTH(dateop) as month'),
+                DB::raw('IFNULL(SUM(CASE WHEN type = "entree" THEN montant ELSE 0 END), 0) as total_entrer'),
+                DB::raw('IFNULL(SUM(CASE WHEN type = "sortie" THEN montant ELSE 0 END), 0) as total_sortie')
+            )
+            ->get();
+
+        // Traitement des résultats
+        foreach ($data as $value) {
+
+            // Totaux globaux
+            $total_entrer += (int) $value->total_entrer;
+            $total_sortie += (int) $value->total_sortie;
+        }
+
+        // Retourner la réponse JSON
+        return response()->json([
+            'annee' => $currentYear,
+            'total_entrer' => $total_entrer,
+            'total_sortie' => $total_sortie,
+            'total' => (int) $total_entrer - $total_sortie,
+        ]);
+    }
 
 }

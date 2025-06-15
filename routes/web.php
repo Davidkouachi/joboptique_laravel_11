@@ -15,6 +15,8 @@ Route::middleware(['auth'])->group(function () {
 
 	Route::get('/', [Controller::class, 'tableau_bord'])->name('tableau_bord');
 
+	Route::get('/Profil', [Controller::class, 'profil'])->name('profil');
+
 	Route::get('/Clients', [Controller::class, 'client'])->name('client');
 	Route::get('/Prospects', [Controller::class, 'prospect'])->name('prospect');
 

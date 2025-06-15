@@ -23,6 +23,7 @@ Route::middleware(['web'])->group(function () {
 
     // Mise à jour debut
     Route::post('/update_type_message/{id}', [UpdateController::class, 'update_type_message']);
+    Route::post('/update_password', [UpdateController::class, 'update_password']);
     // Mise à jour fin
 
 });
@@ -89,6 +90,8 @@ Route::get('/imp_fac_recu/{code}/{matricule}/{id}', [FactureController::class, '
 Route::get('/stat_day', [StatistiqueController::class, 'stat_day']);
 Route::get('/stat_nbre/{magasin}', [StatistiqueController::class, 'stat_nbre']);
 Route::get('/stat_table', [StatistiqueController::class, 'stat_table']);
+Route::get('/stat_vente_proforma/{magasin}', [StatistiqueController::class, 'stat_vente_proforma']);
+Route::get('/stat_rapport_caisse/{magasin}', [StatistiqueController::class, 'stat_rapport_caisse']);
 // Statistique fin
 
 // Bilan debut

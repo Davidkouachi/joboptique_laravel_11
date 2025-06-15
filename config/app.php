@@ -79,6 +79,9 @@ return [
     */
 
     'locale' => env('APP_LOCALE', 'fr'),
+    'language' => 'Francais',
+    'FormatDate' => 'Jour / Mois / Année',
+    'TimeZone' => 'Jour / Mois / Année',
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'fr'),
 

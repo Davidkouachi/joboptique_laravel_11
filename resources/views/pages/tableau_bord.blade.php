@@ -45,6 +45,79 @@
                     </div>
                     <div class="row g-gs mb-5" id="div_nbre"></div>
 
+                    <div class="row g-gs mb-5" >
+                        <div class="col-12" >
+                            <div class="card">
+                                <div class="card-inner">
+                                    <div class="card-title-group">
+                                        <div class="card-title">
+                                            <h6 class="title">Rapport Proformas & Ventes 
+                                                (<script>
+                                                    document.write(new Date().getFullYear())
+                                                </script>)
+                                            </h6>
+                                        </div>
+                                        <div class="card-tools">
+                                            <a class="btn btn-sm btn-icon btn-gray btn-dim mb-2" id="btn_refresh_stat_vente_proforma">
+                                                <em class="icon ni ni-reload" ></em>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-inner justify-content-center align-items-center " style="height: 400px;">
+                                    <div class="mb-3" id="graph_vente_proforma"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xxl-6" >
+                            <div class="card">
+                                <div class="card-inner border-bottom">
+                                    <div class="card-title-group">
+                                        <div class="card-title">
+                                            <h6 class="title">Opérations de caisse (Semaine du {{ \Carbon\Carbon::now()->startOfWeek()->format('d/m/Y') }})</h6>
+                                        </div>
+                                        <div class="card-tools">
+                                            <a class="btn btn-sm btn-icon btn-gray btn-dim mb-2" id="btn_refresh_stat_hisOp">
+                                                <em class="icon ni ni-reload" ></em>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-title-group d-flex justify-content-center mb-n3">
+                                        <a href="{{ route('operation') }}" class="btn btn-white btn-sm btn-warning btn-dim">
+                                            Voir plus
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-inner" style="height: 377px;" data-simplebar="">
+                                    <div class="timeline text-center" id="div_his_op"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xxl-6" >
+                            <div class="card">
+                                <div class="card-inner">
+                                    <div class="card-title-group">
+                                        <div class="card-title">
+                                            <h6 class="title">Rapport caisse 
+                                                (<script>
+                                                    document.write(new Date().getFullYear())
+                                                </script>)
+                                            </h6>
+                                        </div>
+                                        <div class="card-tools">
+                                            <a class="btn btn-sm btn-icon btn-gray btn-dim mb-2" id="btn_refresh_stat_raport_vente">
+                                                <em class="icon ni ni-reload" ></em>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-inner justify-content-center align-items-center " style="height: 400px;">
+                                    <div class="row g-gs mb-3" id="graph_rapport_caisse"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="row g-gs mb-2">
                         <div class="col-12">
                             <div class="nk-block-head nk-block-head-sm">
@@ -72,6 +145,9 @@
     </div>
 </div>
 
-<script src="{{asset('assets/app/js/statistique/tableau_bord/script_day.js')}}"></script>
+{{-- <script src="{{asset('assets/app/js/statistique/tableau_bord/script_day.js')}}"></script> --}}
+<script src="{{asset('assets/app/js/statistique/tableau_bord/script_day_V2.js')}}"></script>
+
+<script src="assets/js/charts/chart-analyticse1e3.js"></script>
 
 @endsection

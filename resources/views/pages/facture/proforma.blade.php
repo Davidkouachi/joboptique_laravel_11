@@ -324,7 +324,7 @@
                                                                     <span class="sub-text">Code</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Nom et Prénoms</span>
+                                                                    <span class="sub-text">Client</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
                                                                     <span class="sub-text">Contact</span>

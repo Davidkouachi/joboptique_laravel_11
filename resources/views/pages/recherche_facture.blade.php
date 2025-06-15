@@ -120,7 +120,7 @@
                                                     <span class="sub-text">Code Vente</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Nom et Prénoms</span>
+                                                    <span class="sub-text">Client</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
                                                     <span class="sub-text">Total</span>

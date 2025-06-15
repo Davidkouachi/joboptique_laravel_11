@@ -49,12 +49,19 @@ $(document).ready(function () {
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
                                 <td class="nk-tb-col">
-                                    <span class="tb-amount">${item.matricule}</span>
-                                </td>
-                                <td class="nk-tb-col">
-                                    <span class="tb-amount">
-                                        ${item.nomprenom}
-                                    </span>
+                                    <div class="user-card gap-1">
+                                        <div class="user-avatar bg-azure">
+                                            <em class="ni ni-user" ></em>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <span class="tb-amount">
+                                                ${item.nomprenom}
+                                            </span>
+                                            <span>
+                                                Id : ${item.matricule}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">+225 ${item.cel}</span>

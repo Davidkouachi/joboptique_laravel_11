@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row g-gs justify-content-center align-items-center text-center mb-2" id="donnee">
+                                <div class="row g-gs justify-content-center align-items-center text-center mb-2" id="donnee1" style="display: none;">
                                     <div class="col-md-4">
                                         <span class="badge badge-md bg-warning" id="total"></span>
                                     </div>
@@ -76,7 +76,7 @@
                                         <span class="badge badge-md bg-danger" id="non_payer"></span>
                                     </div>
                                 </div>
-                                <div class="table-responsive datatable-wrap p-2 mt-0">
+                                <div class="table-responsive datatable-wrap p-2 mt-0" id="donnee2" style="display: none;">
                                     <table class="datatable-init table_facture_client" data-auto-responsive="false" style="font-size:12px;" >
                                         <thead>
                                             <tr class="nk-tb-item nk-tb-head">

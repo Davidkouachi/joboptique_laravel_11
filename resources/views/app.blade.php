@@ -21,6 +21,7 @@
     <script src="{{ asset('assets/app/js/select.js') }}"></script>
     <script src="{{ asset('assets/app/js/script.js') }}"></script>
     <script src="{{ asset('assets/app/js/cookies.js') }}"></script>
+    <script src="{{ asset('assets/app/js/password.js') }}"></script>
     
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css') }}">
@@ -31,6 +32,7 @@
 
     <input type="hidden" id="login" value="{{ Auth::user()->login }}">
     <input type="hidden" id="agence" value="{{ session('user_magasin') }}">
+    <input type="hidden" id="agence_id" value="{{ session('user_magasin_id') }}">
     <input type="hidden" id="id_agence" value="{{ Auth::user()->magasin_id }}">
     <input type="hidden" id="API_SMS_USERNANME" value="{{ env('API_SMS_USERNANME') }}">
     <input type="hidden" id="API_SMS_PASSWORD" value="{{ env('API_SMS_PASSWORD') }}">
@@ -215,7 +217,7 @@
                             <div class="nk-header-tools">
                                 <ul class="nk-quick-nav">
                                     <li class="dropdown chats-dropdown">
-                                        <span class="badge rounded-pill bg-info p-1">
+                                        <span class="badge rounded-pill bg-azure p-1">
                                             {{session('user_magasin')}}
                                         </span>
                                     </li>
@@ -228,7 +230,7 @@
                                     </li> --}}
                                     <li class="dropdown user-dropdown"><a href="#" class="dropdown-toggle me-n1" data-bs-toggle="dropdown">
                                             <div class="user-toggle">
-                                                <div class="user-avatar sm bg-primary">
+                                                <div class="user-avatar sm bg-azure">
                                                     <em class="icon ni ni-user-alt"></em>
                                                 </div>
                                                 <div class="user-info d-none d-xl-block">
@@ -255,6 +257,18 @@
                                             </div>
                                             <div class="dropdown-inner">
                                                 <ul class="link-list">
+                                                    <li>
+                                                        <a href="{{ route('profil') }}">
+                                                            <em class="icon ni ni-user-alt"></em>
+                                                            <span>Profil</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" id="UpdatePassword">
+                                                            <em class="icon ni ni-setting"></em>
+                                                            <span>Sécurité</span>
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <a href="{{ route('deconnecter') }}">
                                                             <em class="icon ni ni-signout"></em>
@@ -320,7 +334,6 @@
             </p>
         </a>
     </div> --}}
-
     
     <script src="{{ asset('assets/js/bundlee1e3.js') }}"></script>
     <script src="{{ asset('assets/js/scriptse1e3.js') }}"></script>

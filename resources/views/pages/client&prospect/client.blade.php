@@ -294,11 +294,14 @@
                                                                     <span class="sub-text"></span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
+                                                                    <span class="sub-text">Client</span>
+                                                                </th>
+                                                                {{-- <th class="nk-tb-col" >
                                                                     <span class="sub-text">Matricule</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
                                                                     <span class="sub-text">Nom et Prénoms</span>
-                                                                </th>
+                                                                </th> --}}
                                                                 <th class="nk-tb-col" >
                                                                     <span class="sub-text">Contact</span>
                                                                 </th>

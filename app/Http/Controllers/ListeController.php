@@ -238,6 +238,7 @@ class ListeController extends Controller
                 'vente.partassurance as partassurance',
                 'client.matricule_assurance as matricule_assurance',
                 'client.nomprenom as client',
+                'client.matricule as matricule',
                 'societe_assurance.libelle as societe',
                 'assurance.denomination as assurance',
                 'facture_assurance.numfacture as numfacture',

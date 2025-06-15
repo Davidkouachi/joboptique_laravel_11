@@ -63,6 +63,12 @@ class AuthController extends Controller
                 session()->put('user_service', $service->libelle);
             }
 
+            $actif = DB::table('utilisa')->where('login', '=', $user->login)->first();
+
+            if ($actif) {
+                session()->put('user_actif', $actif->actif);
+            }
+
             return response()->json([
                 'success' => true,
                 'login' => Auth::User()->login,

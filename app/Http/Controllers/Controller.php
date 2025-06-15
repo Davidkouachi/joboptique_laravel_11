@@ -73,4 +73,9 @@ class Controller
     {
         return view('pages.notification');
     }
+
+    public function profil()
+    {
+        return view('pages.utilisateur.profil');
+    }
 }
