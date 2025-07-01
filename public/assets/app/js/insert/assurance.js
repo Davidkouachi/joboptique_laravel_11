@@ -1,38 +1,37 @@
 $(document).ready(function () {
     
-    $("#formulaire_type_message").on("submit", function (event) {
+    $("#formulaire_new_assurance").on("submit", function (event) {
         event.preventDefault();
 
-        let type = $("#type_nom");
-        let message = $("#type_message");
+        let nom = $("#nom");
 
-        if (!type.val().trim() || !message.val().trim() ) {
-            showAlert("Alert","Veuillez remplir tous les champs s'il vous plaît !!!","warning");
+        if (!nom.val().trim()) {
+            showAlert("Alert","Veuillez remplir tous les champs obligatoire s'il vous plaît !!!","warning");
             return false;
-        }
+        } 
 
         // Ajouter le préchargeur
         preloader('start');
 
         $.ajax({
-            url: $('#url').attr('content') + "/api/insert_type_message",
+            url: $('#url').attr('content') + "/api/insert_assurance",
             method: "GET",
             data: {
-                type: type.val(),
-                message: message.val(),
+                nom: nom.val(),
+                login: $("#login").val().trim(),
             },
             success: function (response) {
                 preloader('end');
 
                 if (response.success) {
 
-                    type.val(null);
-                    message.val(null);
-                    $('#char_count_type').text('0/100');
-                    list_message_all();
+                    restForm();
+                    list_assurance_all();
                     showAlert("Succès", "Opération éffectuée", "success");
 
-                } else if (response.error) {
+                } else if (response.existe) {
+                    showAlert("Alert", "Cette assurance a déjà été enregistrer", "warning");
+                } else {
                     showAlert("Alert", "Echec de l\'opération", "error");
                     console.log(response.message);
                 }
@@ -44,5 +43,10 @@ $(document).ready(function () {
             },
         });
     });
+
+    function restForm()
+    {
+        $("#nom").val(null);
+    }
 
 });

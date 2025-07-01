@@ -3,24 +3,25 @@ $(document).ready(function () {
     select_client_vente('#client');
     select_remise('#remise');
     select_code_proforma_vente('#code_proforma');
+    numberTel("#netAssurance");
 
     addDesignation();
 
     $('#client').on('change', function() {
         let selectedOption = $(this).find(':selected');
-        let taux = parseInt(selectedOption.data('taux'));
-        $('#taux').val(taux);
+        // let taux = parseInt(selectedOption.data('taux'));
+        // $('#taux').val(taux);
 
-        if (taux == 0) {
-            $('#choix_assurance').val("0").trigger('change'); // Sélectionner "Non"
-            $('#choix_assurance option[value="1"]').remove(); // Supprimer "Oui"
-        } else {
-            // Ajouter l'option si elle a été supprimée auparavant
-            if ($('#choix_assurance option[value="1"]').length === 0) {
-                $('#choix_assurance').append('<option value="1">Oui</option>');
-                $('#choix_assurance').val("1").trigger('change');
-            }
-        }
+        // if (taux == 0) {
+        //     $('#choix_assurance').val("0").trigger('change'); // Sélectionner "Non"
+        //     $('#choix_assurance option[value="1"]').remove(); // Supprimer "Oui"
+        // } else {
+        //     // Ajouter l'option si elle a été supprimée auparavant
+        //     if ($('#choix_assurance option[value="1"]').length === 0) {
+        //         $('#choix_assurance').append('<option value="1">Oui</option>');
+        //         $('#choix_assurance').val("1").trigger('change');
+        //     }
+        // }
 
         $('#contenu').empty();
         addDesignation();
@@ -33,7 +34,7 @@ $(document).ready(function () {
         const matricule = $(this).val();
 
         $.ajax({
-            url: '/api/select_client_prescription/'+matricule,
+            url: $('#url').attr('content') + '/api/select_client_prescription/'+matricule,
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -59,6 +60,9 @@ $(document).ready(function () {
                     $('#sphere_OG, #cylindre_OG, #axe_OG, #addition_OG').text('');
 
                     showAlert("Alert", "Le client n'a pas de préscription", "warning");
+
+                    $("#client").val(null).trigger('change.select2');
+
                 }
                 
             },
@@ -68,11 +72,11 @@ $(document).ready(function () {
         });
     });
 
-    $('#choix_assurance').on('change', function() {
+    // $('#choix_assurance').on('change', function() {
         
-        const contenuDiv = $('#contenu');
-        updateMontantTotal(contenuDiv);
-    });
+    //     const contenuDiv = $('#contenu');
+    //     updateMontantTotal(contenuDiv);
+    // });
 
     $("#btn_ajouter").on("click", addDesignation);
 
@@ -93,7 +97,7 @@ $(document).ready(function () {
                     </h5>
                 </div>
                 <div class="row g-gs mt-1">
-                    <div class="col-md-7">
+                    <div class="col-12">
                         <div class="form-group">
                             <label class="form-label">Désignation</label>
                             <div class="form-control-wrap">
@@ -104,7 +108,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">Prix</label>
                             <div class="form-control-wrap">
@@ -113,7 +117,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label class="form-label">Quantité</label>
                             <div class="form-control-wrap">
@@ -121,7 +125,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">Total</label>
                             <div class="form-control-wrap">
@@ -209,16 +213,17 @@ $(document).ready(function () {
     }
 
     function updateMontantTotal(contenuDiv) {
+
         let montantTotal = 0;
         let montantPatient = 0;
         let montantAssurance = 0;
 
-        let taux = parseInt($('#taux').val()) || 0;
-        let choix_assurance = $('#choix_assurance').val();
+        // let taux = parseInt($('#taux').val()) || 0;
+        // let choix_assurance = $('#choix_assurance').val();
 
-        if (choix_assurance == 0) {
-            taux = 0;
-        }
+        // if (choix_assurance == 0) {
+        //     taux = 0;
+        // }
 
         // Calcul du montant total
         contenuDiv.find('.contenu_enfant').each(function () {
@@ -236,10 +241,27 @@ $(document).ready(function () {
         let remise = parseInt($('#remise').val().replace(/[^0-9.-]/g, '')) || 0; 
 
         // Calcul de la part de l'assurance et du patient
-        if (taux > 0) {
-            montantAssurance = Math.floor((montantTotal * taux) / 100);
-            montantPatient = montantTotal - montantAssurance;
+        // if (taux > 0) {
+        //     montantAssurance = Math.floor((montantTotal * taux) / 100);
+        //     montantPatient = montantTotal - montantAssurance;
+        // } else {
+        //     montantAssurance = 0;
+        //     montantPatient = montantTotal;
+        // }
+
+        // montantAssurance = Math.floor((montantTotal * taux) / 100);
+        // montantPatient = montantTotal - montantAssurance;
+
+        if ($('#netAssurance').val().replace(/[^0-9]/g, '') > 0) {
+
+            let assurance = parseInt($('#netAssurance').val().replace(/[^0-9]/g, '')) || 0;
+            let newNetPayer = montantTotal - assurance;
+        
+            montantAssurance = assurance;
+            montantPatient = newNetPayer;
+
         } else {
+
             montantAssurance = 0;
             montantPatient = montantTotal;
         }
@@ -255,6 +277,38 @@ $(document).ready(function () {
         $('#netPayer').val(formatPrice(montantPatient));
     }
 
+    $('#netAssurance').on('input', function() {
+
+        if ($('#mTotal').val().replace(/[^0-9]/g, '') <= 0) {
+            showAlert("ALERT", 'Vérifier les prix et quantités des Produits s\'il vous plaît.', "warning");
+            $(this).val(0);
+            return false;
+        }
+
+        let parent = $(this);
+        let assurance = parseInt(parent.val().replace(/[^0-9]/g, '')) || 0;
+        let total = parseInt($('#mTotal').val().replace(/[^0-9]/g, '')) || 0;
+        let newNetPayer = total - assurance;
+
+        if (assurance > total) {
+            $(this).val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+            $('#netPayer').val(0);
+            showAlert("ALERT", 'Le montant de la part assurance ne doit pas depassé le montant Total.', "warning");
+            return false;
+        }
+
+        $('#netPayer').val(newNetPayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+
+        if (!$(this).val().replace(/[^0-9]/g, '') || $(this).val().replace(/[^0-9]/g, '') == 0) {
+            $(this).val(0);
+        }
+
+        let rawValue = 0;
+        rawValue = parseInt($('#netAssurance').val().replace(/[^0-9]/g, ''));
+        $(this).val(rawValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+
+    });
+
     // Fonction pour formater les nombres avec séparateur de milliers
     function formatPrice(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -269,8 +323,8 @@ $(document).ready(function () {
     function restForm()
     {
         $("#client").val(null).trigger('change.select2');
-        $("#taux").val(null);
-        $("#choix_assurance").val(0).trigger('change');
+        // $("#taux").val(null);
+        // $("#choix_assurance").val(0).trigger('change');
         $("#date").val(new Date().toISOString().slice(0, 10));
 
         $('#sphere_OD, #cylindre_OD, #axe_OD, #addition_OD').text('');
@@ -291,8 +345,8 @@ $(document).ready(function () {
         event.preventDefault();
 
         let client = $("#client").val();
-        let taux = $("#taux").val();
-        let choix_assurance = $("#choix_assurance").val();
+        // let taux = $("#taux").val();
+        // let choix_assurance = $("#choix_assurance").val();
         let date = $("#date").val();
 
         let code_proforma = $("#code_proforma").val();
@@ -355,13 +409,13 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: "/api/insert_vente",
+            url: $('#url').attr('content') + "/api/insert_vente",
             method: "GET",
             data: {
                 selectionsProduit: selectionsProduit,
                 client: client,
-                taux: taux,
-                choix_assurance: choix_assurance,
+                // taux: taux,
+                // choix_assurance: choix_assurance,
                 date: date,
                 code_proforma:code_proforma || null,
                 total: mTotal,
@@ -384,7 +438,7 @@ $(document).ready(function () {
                     showAlert("Succès", "Opération éffectuée", "success");
                     restForm();
                     list_vente_all();
-                    PDF_Facture_Vente(response.client, response.pres, response.produits,$('#agence').val());
+                    // PDF_Facture_Vente(response.client, response.pres, response.produits,$('#agence').val());
 
                 } else if (response.json) {
                     showAlert("Alert", "Echec de l\'opération (Format JSON)", "info");

@@ -101,8 +101,8 @@
                             <div class="card">
                                 <div class="row g-gs" >
                                     <div class="col-xxl-6 col-12" >
-                                        <div class="card-inner">
-                                            <div class="card-title-group mb-3">
+                                        <div class="card-inner border-bottom">
+                                            <div class="d-flex align-items-center justify-content-center mb-3">
                                                 <div class="card-title">
                                                     <h6 class="title">Estimation des ventes de l'année en cours 
                                                         (<script>
@@ -124,9 +124,9 @@
                                     </div>
                                     <div class="col-xxl-6 col-12" >
                                         <div class="card-inner">
-                                            <div class="card-title-group mb-3">
+                                            <div class="d-flex align-items-center justify-content-center mb-3">
                                                 <div class="card-title">
-                                                    <h6 class="title">Rapport des ventes de l'année en cours 
+                                                    <h6 class="title ">Rapport des ventes de l'année en cours 
                                                         (<script>
                                                         document.write(new Date().getFullYear())
                                                         </script>)
@@ -173,6 +173,34 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12" >
+                            <div class="card card-full">
+                                <div class="nk-ecwg nk-ecwg8">
+                                    <div class="card-inner">
+                                        <div class="card-title-group justify-content-center align-items-center">
+                                            <div class="card-title">
+                                                <h6 class="title">Détails par périodes</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-inner">
+                                        <div class="card-title-group d-flex flex-column justify-content-center align-items-center">
+                                            <div class="d-flex mb-3">
+                                                <div class="form-group">
+                                                    <input type="month" class="form-control" id="periode" max="{{ date('Y-m')}}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <a class="btn btn-dim btn-outline-warning" id="btn_search_vente_d">
+                                                    <em class="icon ni ni-search" ></em>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 row g-gs" id="div_d_vente"></div>
                     </div>
                 </div>
             </div>

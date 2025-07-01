@@ -12,7 +12,6 @@ $(document).ready(function () {
     select_annee('#anne_op');
     select_annee('#anne_client');
     select_annee('#anne_eva_vente');
-    select_magasin('#magasin_d_vente');
 
     graph_op();
     graph_eva_vente();
@@ -22,6 +21,13 @@ $(document).ready(function () {
     $("#anne_op").on('change', graph_op);
     $("#anne_eva_vente").on('change', graph_eva_vente);
     $("#anne_client").on('change', graph_client);
+    $("#btn_search_vente_d").on('click', function (event) {
+        
+        event.preventDefault();
+
+        vente_detail();
+
+    });
 
     function graph_op() 
     {
@@ -38,7 +44,7 @@ $(document).ready(function () {
 
         contenug.append(divcon);
 
-        fetch('/api/bilan_op/' + yearSelect +'/'+ $('#id_agence').val())
+        fetch($('#url').attr('content') + '/api/bilan_op/' + yearSelect +'/'+ $('#id_agence').val())
             .then(response => response.json())
             .then(data => {
 
@@ -198,7 +204,7 @@ $(document).ready(function () {
 
         contenug.append(divcon);
 
-        fetch('/api/bilan_eva_vente/' + yearSelect +'/'+ $('#id_agence').val())
+        fetch($('#url').attr('content') + '/api/bilan_eva_vente/' + yearSelect +'/'+ $('#id_agence').val())
             .then(response => response.json())
             .then(data => {
 
@@ -366,7 +372,7 @@ $(document).ready(function () {
         contenug1.empty();
         contenug2.empty();
 
-        fetch('/api/stat_prevision/' + $('#id_agence').val())
+        fetch($('#url').attr('content') + '/api/stat_prevision/' + $('#id_agence').val())
             .then(response => response.json())
             .then(data => {
                 $('#div_vente_prevision_message1').hide();
@@ -374,7 +380,7 @@ $(document).ready(function () {
 
                 const months = [
                     "Janv", "Fév", "Mar", "Avr", "Mai", "Jui", 
-                    "Juil", "Août", "Sept", "Oct", "Nov", "Déce"
+                    "Juil", "Août", "Sept", "Oct", "Nov", "Déc"
                 ];
 
                 // Initialisation des tableaux pour 12 mois
@@ -554,7 +560,7 @@ $(document).ready(function () {
 
         contenug.append(divcon);
 
-        fetch('/api/bilan_client/' + yearSelect +'/'+ $('#id_agence').val())
+        fetch($('#url').attr('content') + '/api/bilan_client/' + yearSelect +'/'+ $('#id_agence').val())
             .then(response => response.json())
             .then(data => {
 
@@ -694,6 +700,200 @@ $(document).ready(function () {
                 console.error('Erreur lors du chargement des données:', error);
 
             });
+    }
+
+    function vente_detail()
+    {
+        $('#div_d_vente').empty();
+
+        let periode = $('#periode').val();
+        let magasin = $('#id_agence').val();
+
+        if (!periode.trim()) {
+            showAlert("Alert", "Veuillez saisir la période s'il vous plaît", "info");
+            return false;
+        }
+
+        // Ajouter le préchargeur
+        preloader('start');
+
+        $.ajax({
+            url: $('#url').attr('content') + '/api/G_bilan_detail_vente/'+periode+'/'+magasin,
+            method: 'GET',
+            success: function(response) {
+                preloader('end');
+
+                const data = response.data;
+
+                const contenuDiv = $('#div_d_vente');
+
+                const stats = [
+                    {  
+                        title: 'Total Proforma', 
+                        count: (data.nbre_proforma.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'archive',
+                        color: 'warning', 
+                    },
+                    {  
+                        title: 'Total Proforma Validé', 
+                        count: (data.nbre_proforma_valide.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'check-circle',
+                        color: 'success', 
+                    },
+                    {  
+                        title: 'Total Proforma non-validés', 
+                        count: (data.nbre_proforma_nvalide.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'cross-circle',
+                        color: 'danger', 
+                    },
+                    {  
+                        title: 'Total Ventes', 
+                        count: (data.nbre_vente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'clipboard',
+                        color: 'warning', 
+                    },
+                    { 
+                        title: 'Total Ventes non-soldées', 
+                        count: (data.nbre_vente_nsolde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'cross-circle',
+                        color: 'danger', 
+                    },
+                    { 
+                        title: 'Total Ventes soldées', 
+                        count: (data.nbre_vente_solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ),
+                        icon: 'check-circle',
+                        color: 'success', 
+                    },
+                    { 
+                        title: 'Montant Total', 
+                        count: (data.total_tvente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'primary', 
+                    },
+                    // { 
+                    //     title: 'Montant Soldées', 
+                    //     count: (data.total_svente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                    //     icon: 'money',
+                    //     color: 'success', 
+                    // },
+                    // { 
+                    //     title: 'Montant non-soldées', 
+                    //     count: (data.total_nvente.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                    //     icon: 'money',
+                    //     color: 'danger', 
+                    // },
+                    { 
+                        title: 'Montant Part Assurance', 
+                        count: (data.total_partassurance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'warning', 
+                    },
+                    { 
+                        title: 'Montant Part Client', 
+                        count: (data.total_partclient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'warning', 
+                    },
+                    { 
+                        title: 'Part Client Soldées',
+                        count: (data.total_spartclient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'success', 
+                    },
+                    { 
+                        title: 'Part Client non-soldées', 
+                        count: (data.total_npartclient.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        icon: 'money',
+                        color: 'danger', 
+                    },
+                ];
+
+                stats.forEach(function(stat) {
+
+                    const div = $(`
+                        <div class="col-xxl-3 col-lg-4 col-sm-6" >
+                            <div class="card pricing text-center">
+                                <div class="pricing-body">
+                                    <ul class="nk-store-statistics">
+                                        <li class="item">
+                                            <em class="icon bg-${stat.color}-dim ni ni-${stat.icon}"></em>
+                                            <div class="info">
+                                                <div class="title">${stat.title}</div>
+                                                <div class="count text-${stat.color}">${stat.count}</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+
+                    contenuDiv.append(div);
+                });
+
+
+                const div2 = $(`
+                    <div class="col-12">
+                        <div class="card" style="background: linear-gradient(to right, #FFA500, #FF4500);">
+                            <div class="card-inner">
+                                <div class="card-title-group align-start mb-2">
+                                    <div class="card-title">
+                                        <h6 class="title text-white">Informations supplémentaires</h6>
+                                        <p class="text-white" >Par rapport aux ventes effectuées dans la période défini</p>
+                                    </div>
+                                </div>
+                                <div class="align-end gy-3 gx-5 align-items-center justify-content-center">
+                                    <div class="nk-sale-data-group flex-wrap g-5" id="info_detail_vente"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                contenuDiv.append(div2);
+
+                const stats2 = [
+                    {  
+                        title: 'Vente reglées', 
+                        donne: (data.vente_solde_pourcent ?? 0 ) + '%', 
+                    },
+                    {  
+                        title: 'Vente non-reglées', 
+                        donne: (data.vente_nsolde_pourcent ?? 0 ) + '%',  
+                    },
+                    {  
+                        title: 'Vente avec assurance', 
+                        donne: (data.vente_ass_pourcent ?? 0 ) + '%', 
+                    },
+                    {  
+                        title: 'Vente sans assurance', 
+                        donne: (data.vente_nass_pourcent ?? 0 ) + '%',  
+                    },
+                    {  
+                        title: 'Nombre de Versement', 
+                        donne: (data.vente_nbre_vers ?? 0 ),  
+                    },
+                ];
+
+                const contenuDetail = $('#info_detail_vente');
+                contenuDetail.empty();
+
+                stats2.forEach(function(stat2) {
+
+                    const div2 = $(`
+                        <div class="nk-sale-data text-center">
+                            <span class="amount text-white">${stat2.donne}</span>
+                            <span class="title h6 text-white">${stat2.title}</span>
+                        </div>
+                    `);
+
+                    contenuDetail.append(div2);
+                });
+            },
+            error: function() {
+                preloader('end');
+                // showAlert('danger', 'Impossible de generer le code automatiquement');
+            }
+        });
     }
 
 

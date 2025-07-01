@@ -109,6 +109,12 @@ class FactureController extends Controller
                 'assurance.denomination as assurance',
                 'societe_assurance.libelle as societe',
                 'tauxes.valeur as taux',
+                DB::raw("
+                    CASE 
+                        WHEN vente.partassurance > 0 THEN ROUND((vente.partassurance / vente.total) * 100, 2)
+                        ELSE 0
+                    END as pourcentage_assurance
+                "),
             )
             ->first();
 
@@ -166,7 +172,7 @@ class FactureController extends Controller
             'partassurance' => $facture->partassurance ?? 0,
             'reste' => $facture->reste ?? 0,
             'payer' => $facture->payer ?? 0,
-            'taux' => $facture->taux ?? 0
+            'pourcentage_assurance' => $facture->pourcentage_assurance ?? 0
         ];
 
         $pres_OD = $this->splitPrescription($facture_pres->OD);

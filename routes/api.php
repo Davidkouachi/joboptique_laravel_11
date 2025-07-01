@@ -61,6 +61,8 @@ Route::get('/insert_vente', [InsertController::class, 'insert_vente']);
 Route::get('/insert_operation/{id_agence}/{login}', [InsertController::class, 'insert_operation']);
 Route::get('/insert_versement/{code}/{matricule}', [InsertController::class, 'insert_versement']);
 Route::get('/insert_type_message', [InsertController::class, 'insert_type_message']);
+Route::get('/insert_assurance', [InsertController::class, 'insert_assurance']);
+Route::get('/insert_societe', [InsertController::class, 'insert_societe']);
 // Ajouter fin
 
 // Liste debut
@@ -72,6 +74,8 @@ Route::get('/list_operation_all/{date1}/{date2}/{magasin}', [ListeController::cl
 Route::get('/list_facture_client/{matricule}', [ListeController::class, 'list_facture_client']);
 Route::get('/list_facturation', [ListeController::class, 'list_facturation']);
 Route::get('/list_message_all', [ListeController::class, 'list_message_all']);
+Route::get('/list_assurance_all', [ListeController::class, 'list_assurance_all']);
+Route::get('/list_societe_all', [ListeController::class, 'list_societe_all']);
 // Liste fin
 
 // Supprimer debut
@@ -89,7 +93,7 @@ Route::get('/imp_fac_recu/{code}/{matricule}/{id}', [FactureController::class, '
 // Statistique debut
 Route::get('/stat_day', [StatistiqueController::class, 'stat_day']);
 Route::get('/stat_nbre/{magasin}', [StatistiqueController::class, 'stat_nbre']);
-Route::get('/stat_table', [StatistiqueController::class, 'stat_table']);
+Route::get('/stat_table/{magasin}', [StatistiqueController::class, 'stat_table']);
 Route::get('/stat_vente_proforma/{magasin}', [StatistiqueController::class, 'stat_vente_proforma']);
 Route::get('/stat_rapport_caisse/{magasin}', [StatistiqueController::class, 'stat_rapport_caisse']);
 // Statistique fin

@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     function list_user_sms() {
         $.ajax({
-            url: '/api/list_client_all',
+            url: $('#url').attr('content') + '/api/list_client_all',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -30,6 +30,8 @@ $(document).ready(function () {
                 // Effacer le contenu du tableau
                 table.find("tbody").empty();
 
+                let row = '';
+
                 if (clients.length > 0) {
 
                     // const table = $('.table_client');
@@ -37,7 +39,7 @@ $(document).ready(function () {
 
                     $.each(clients, function(index, item) {
 
-                        const row = $(`
+                        row += `
                             <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <div class="custom-control custom-control-sm custom-checkbox notext">
@@ -88,10 +90,11 @@ $(document).ready(function () {
                                     </ul>
                                 </td>
                             </tr>
-                        `);
+                        `;
 
-                        table.find("tbody").append(row);
                     });
+
+                    table.find("tbody").append(row);
 
                     initializeDataTable(".table_client", { responsive: { details: true } });
                 } else {

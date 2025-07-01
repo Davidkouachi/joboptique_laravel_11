@@ -83,6 +83,8 @@ class StatistiqueController extends Controller
         $nbre_agence = DB::table('magasin')->count();
         $solde = DB::table('porte_caisses')->where('magasin', $magasin)->select('solde')->first();
         $solde_caisse = $solde->solde;
+        $serviceCount = DB::table('service')->count();
+        $userCount = DB::table('users')->count();
 
         return response()->json([
             'data' => [
@@ -90,15 +92,18 @@ class StatistiqueController extends Controller
                 'client' => $nbre_client,
                 'agence' => $nbre_agence,
                 'solde' => $solde_caisse,
+                'service' => $serviceCount,
+                'users' => $userCount,
             ]
         ]);
     }
 
-    public function stat_table()
+    public function stat_table($magasin)
     {
 
         $vente = DB::table('vente')
             ->join('client', 'client.matricule', '=', 'vente.matricule')
+            ->where('vente.magasin', $magasin)
             ->select(
                 'vente.*',
                 'client.nomprenom as client'

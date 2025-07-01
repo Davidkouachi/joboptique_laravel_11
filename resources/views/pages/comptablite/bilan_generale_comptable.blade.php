@@ -43,7 +43,7 @@
                 {{-- <div class="nk-block" id="div_operation" style="display: none;"></div> --}}
 
                 <div class="nk-block">
-                    <div class="row g-gs mb-5" id="div_op">
+                    <div class="row g-gs mb-4" id="div_op">
                         <div class="col-12">
                             <div class="card"> 
                                 <div class="nk-ecwg nk-ecwg6">
@@ -215,7 +215,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row g-gs mb-5" >
+                    <div class="row g-gs mb-4" >
                         <div class="col-12" >
                             <div class="card card-full">
                                 <div class="nk-ecwg nk-ecwg8">
@@ -248,8 +248,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row g-gs mb-5" id="div_d_vente"></div>
-                    <div class="row g-gs mb-5" >
+                    <div class="row g-gs mb-4" id="div_d_vente"></div>
+                    <div class="row g-gs mb-4" >
                         <div class="col-12" >
                             <div class="card card-full">
                                 <div class="card-inner" style="margin-top: -50px;">

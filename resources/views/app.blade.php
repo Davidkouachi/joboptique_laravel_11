@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.jpg') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="base-url" content="{{ url('/') }}" id="url">
     <title>
-        @yield('titre') | JOBOPTIQUE
+        @yield('titre') | JOBOPTIQUE ? FCH9028525
     </title>
-    
     <script src="{{asset('jquery.min.js')}}"></script>
     <script src="{{ asset('assets/app/apexcharts/dist/apexcharts.min.js') }}"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
@@ -87,7 +87,7 @@
                                         <span class="nk-menu-icon">
                                             <em class="icon ni ni-users"></em>
                                         </span>
-                                        <span class="nk-menu-text">Clients & Prospects</span>
+                                        <span class="nk-menu-text">Acteurs</span>
                                     </a>
                                     <ul class="nk-menu-sub">
                                         <li class="nk-menu-item">
@@ -98,6 +98,16 @@
                                         <li class="nk-menu-item">
                                             <a href="{{ route('prospect') }}" class="nk-menu-link">
                                                 <span class="nk-menu-text">Prospects</span>
+                                            </a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="{{ route('assurance') }}" class="nk-menu-link">
+                                                <span class="nk-menu-text">Assurances</span>
+                                            </a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="{{ route('societe') }}" class="nk-menu-link">
+                                                <span class="nk-menu-text">Sociétés</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -143,7 +153,7 @@
                                         <span class="nk-menu-text">Comptablités</span>
                                     </a>
                                     <ul class="nk-menu-sub">
-                                        @if (session('user_magasin_id') === 1)
+                                        @if (session('user_magasin_id') === '1')
                                             <li class="nk-menu-item">
                                                 <a href="{{ route('bilan_generale_comptable') }}" class="nk-menu-link">
                                                     <span class="nk-menu-text">Bilan Générale</span>
@@ -257,12 +267,12 @@
                                             </div>
                                             <div class="dropdown-inner">
                                                 <ul class="link-list">
-                                                    <li>
+                                                    {{-- <li>
                                                         <a href="{{ route('profil') }}">
                                                             <em class="icon ni ni-user-alt"></em>
                                                             <span>Profil</span>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                     <li>
                                                         <a href="#" id="UpdatePassword">
                                                             <em class="icon ni ni-setting"></em>

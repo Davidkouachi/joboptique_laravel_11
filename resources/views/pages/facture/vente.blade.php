@@ -36,7 +36,16 @@
                                                         <h4 class="title fw-normal">Formulaire</h4>
                                                     </div>
                                                 </div>
+                                                <div class="example-alert">
+                                                    
+                                                </div>
                                                 <form id="formulaire_vente" class="mt-5">
+                                                    <div class="alert alert-fill alert-secondary alert-dismissible alert-icon">
+                                                        <em class="icon ni ni-info"></em> 
+                                                        <strong>INFO : </strong> 
+                                                        Lorsque vous selectionnez un client, le contenu du formulaire existant sera remis a zéro. 
+                                                        <button class="close" data-bs-dismiss="alert"></button>
+                                                    </div>
                                                     <div class="card-inner mb-5">
                                                         <div class="row g-gs">
                                                             <div class="col-12" >
@@ -46,7 +55,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-9">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
                                                                         Nom & Prénoms
@@ -59,7 +68,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-2">
+                                                            {{-- <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
                                                                         Taux couverture
@@ -75,8 +84,8 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-2">
+                                                            </div> --}}
+                                                            {{-- <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
                                                                         Utiliser l'assurance ?
@@ -92,8 +101,8 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-2">
+                                                            </div> --}}
+                                                            <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
                                                                         Date de la facture
@@ -243,7 +252,7 @@
                                                                                             Assurance
                                                                                         </span> 
                                                                                     </div> 
-                                                                                    <input id="netAssurance" readonly type="tel" class="form-control" value="0">
+                                                                                    <input id="netAssurance" type="tel" class="form-control" value="0">
                                                                                     <div class="input-group-prepend"> 
                                                                                         <span class="input-group-text">
                                                                                             Fcfa
@@ -282,7 +291,7 @@
                                                                 <div class="form-group text-center">
                                                                     <button type="submit" class="btn btn-md btn-outline-success">
                                                                         <span>Validé</span>
-                                                                        <em class="icon ni ni-printer"></em>
+                                                                        <em class="icon ni ni-check"></em>
                                                                     </button>
                                                                 </div>
                                                             </div>

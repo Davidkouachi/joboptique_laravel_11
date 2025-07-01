@@ -43,7 +43,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row g-gs mb-5" id="div_nbre"></div>
+
+                    <div class="card card-bordered card-preview mb-4">
+                        <div class="card-inner">
+                            <div class="py-2">
+                                <div id="div_nbre" class="slider-init" data-slick='{"slidesToShow": 4, "slidesToScroll": 1, "infinite":true, "responsive":[ {"breakpoint": 1500,"settings":{"slidesToShow": 3}},{"breakpoint": 892,"settings":{"slidesToShow": 2}}, {"breakpoint": 582,"settings":{"slidesToShow": 1}} ]}'>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- <div class="row g-gs mb-5" id="div_nbre"></div> --}}
 
                     <div class="row g-gs mb-5" >
                         <div class="col-12" >

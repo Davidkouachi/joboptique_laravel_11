@@ -166,12 +166,12 @@ $(document).ready(function () {
             doc.setFontSize(11);
             doc.setFont("Helvetica", "normal");
             const an2 = "Fait à Abidjan le " + formatDate(client[3]);
-            doc.text(an2, leftMargin, (yPoss + 15));
+            doc.text(an2, leftMargin, (yPoss + 50));
 
             doc.setFontSize(11);
             doc.setFont("Helvetica", "normal");
             const an3 = "Le commercial";
-            doc.text(an3, leftMargin + 140, (yPoss + 15));
+            doc.text(an3, leftMargin + 140, (yPoss + 50));
 
         }
 

@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+    window.urlBase = function () {
+
+        const url = $('#url').attr('content');
+
+        return url;
+    }
+
     window.formatDate = function (dateString) {
 
         const date = new Date(dateString);

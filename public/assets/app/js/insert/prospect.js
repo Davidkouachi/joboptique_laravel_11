@@ -14,7 +14,7 @@ $(document).ready(function () {
 
         $('#assurance_id').val(null).trigger('change');
         $('#societe_id').val(null).trigger('change');
-        $('#taux_id').val(null).trigger('change');
+        // $('#taux_id').val(null).trigger('change');
         $('#matricule').val(null);
 
         if ($(this).val() === '1') {
@@ -45,7 +45,7 @@ $(document).ready(function () {
         let assurer = $("#assurer");
         let assurance_id = $("#assurance_id");
         let societe_id = $("#societe_id");
-        let taux_id = $("#taux_id");
+        // let taux_id = $("#taux_id");
         let matricule = $("#matricule");
 
         if (!nom.val().trim() || !prenoms.val().trim() || !datenais.val().trim() || !sexe.val().trim() || !residence.val().trim() || !profession.val().trim() || !tel1.val().trim() || !assurer.val().trim() ) {
@@ -65,7 +65,7 @@ $(document).ready(function () {
 
         // Validation des champs relatifs à l'assurance
         if (assurer.val().trim() === "1") {
-            if (!assurance_id.val().trim() || !taux_id.val().trim() || !societe_id.val().trim() || !matricule.val().trim()) {
+            if (!assurance_id.val().trim() || !societe_id.val().trim() || !matricule.val().trim()) {
                 showAlert("Alert", "Veuillez remplir tous les champs relatifs à l'assurance.", "warning");
                 return false;
             }
@@ -83,7 +83,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: "/api/insert_prospect",
+            url: $('#url').attr('content') + "/api/insert_prospect",
             method: "GET",
             data: {
                 nom: nom.val(),
@@ -99,7 +99,7 @@ $(document).ready(function () {
                 email: email.val() || null,
                 assurance_id: assurance_id.val() || null,
                 societe_id: societe_id.val() || null,
-                taux_id: taux_id.val() || null,
+                // taux_id: taux_id.val() || null,
                 matricule_ass: matricule.val() || null,
                 login: $("#login").val().trim(),
             },
@@ -145,7 +145,7 @@ $(document).ready(function () {
         $("#assurer").val(0).trigger('change');
         $("#assurance_id").val(null).trigger('change');
         $("#societe_id").val(null).trigger('change');
-        $("#taux_id").val(null).trigger('change');
+        // $("#taux_id").val(null).trigger('change');
         $("#matricule");
 
         $('#div_assurer').stop(true, true).slideUp();

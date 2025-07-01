@@ -10,7 +10,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_societe',
+            url: $('#url').attr('content') + '/api/select_societe',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -38,7 +38,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_assurance',
+            url: $('#url').attr('content') + '/api/select_assurance',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -66,7 +66,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_taux',
+            url: $('#url').attr('content') + '/api/select_taux',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -94,7 +94,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_client',
+            url: $('#url').attr('content') + '/api/select_client',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -122,7 +122,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_client',
+            url: $('#url').attr('content') + '/api/select_client',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -151,7 +151,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_client',
+            url: $('#url').attr('content') + '/api/select_client',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -252,7 +252,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_traitement',
+            url: $('#url').attr('content') + '/api/select_traitement',
             method: 'GET',
             success: function(response) {
                 const datad = response.data;
@@ -282,7 +282,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_type_verre',
+            url: $('#url').attr('content') + '/api/select_type_verre',
             method: 'GET',
             success: function(response) {
                 const datad = response.data;
@@ -327,7 +327,7 @@ $(document).ready(function () {
         );
 
         $.ajax({
-            url: '/api/select_code_proforma_vente',
+            url: $('#url').attr('content') + '/api/select_code_proforma_vente',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -357,7 +357,7 @@ $(document).ready(function () {
         );
 
         $.ajax({
-            url: '/api/select_op_magasin',
+            url: $('#url').attr('content') + '/api/select_op_magasin',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -401,7 +401,7 @@ $(document).ready(function () {
         selectElement2.empty();
 
         $.ajax({
-            url: '/api/select_op_magasin',
+            url: $('#url').attr('content') + '/api/select_op_magasin',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -439,7 +439,7 @@ $(document).ready(function () {
         }));
 
         $.ajax({
-            url: '/api/select_type_message',
+            url: $('#url').attr('content') + '/api/select_type_message',
             method: 'GET',
             success: function(response) {
                 const data = response.data;

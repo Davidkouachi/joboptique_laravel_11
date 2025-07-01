@@ -59,7 +59,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: "/api/insert_versement/"+code+'/'+matricule,
+            url: $('#url').attr('content') + "/api/insert_versement/"+code+'/'+matricule,
             method: "GET",
             data: {
                 montant_payer: montant_payer,

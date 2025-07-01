@@ -6,7 +6,7 @@ $(document).ready(function () {
     function caisseVerf() {
 
         $.ajax({
-            url: '/api/caisseVerf/' + $('#id_agence').val(),
+            url: $('#url').attr('content') + '/api/caisseVerf/' + $('#id_agence').val(),
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -34,7 +34,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: '/api/caisseOuvert/'+id_agence+'/'+login,
+            url: $('#url').attr('content') + '/api/caisseOuvert/'+id_agence+'/'+login,
             method: 'GET',
             success: function(response) {
                 preloader('end');
@@ -67,7 +67,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: '/api/caisseFermer/'+id_agence+'/'+login,
+            url: $('#url').attr('content') + '/api/caisseFermer/'+id_agence+'/'+login,
             method: 'GET',
             success: function(response) {
                 preloader('end');

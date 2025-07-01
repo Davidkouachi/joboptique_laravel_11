@@ -6,7 +6,7 @@ $(document).ready(function () {
         let date2 = $('#Date2').val();
 
         $.ajax({
-            url: '/api/list_proforma_all/'+date1+'/'+date2,
+            url: $('#url').attr('content') + '/api/list_proforma_all/'+date1+'/'+date2,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -23,6 +23,8 @@ $(document).ready(function () {
                 // Effacer le contenu du tableau
                 table.find("tbody").empty();
 
+                let row = '';
+
                 if (proforma.length > 0) {
 
                     // const table = $('.table_client');
@@ -30,7 +32,7 @@ $(document).ready(function () {
 
                     $.each(proforma, function(index, item) {
 
-                        const row = $(`
+                        row += `
                             <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
@@ -81,8 +83,6 @@ $(document).ready(function () {
                                             <a  href="#"
                                                 class="btn btn-trigger btn-icon btn-delete text-danger"
                                                 title="Supprimer"
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#modalLarge" 
                                                 data-code="${item.code}"
                                             >
                                                 <em class="icon ni ni-trash"></em>
@@ -91,9 +91,7 @@ $(document).ready(function () {
                                     </ul>           
                                 </td>
                             </tr>
-                        `);
-
-                        table.find("tbody").append(row);
+                        `;
 
                         // $(`#detail-${item.matricule}`).on('click', function() {
                         //     console.log(item.nomprenom);
@@ -104,6 +102,8 @@ $(document).ready(function () {
                         //     $('#litIddelete').val(item.id);
                         // });
                     });
+
+                    table.find("tbody").append(row);
 
                     initializeDataTable(".table_proforma", { responsive: { details: true } });
                 } else {
@@ -124,7 +124,7 @@ $(document).ready(function () {
             preloader('start');
 
             $.ajax({
-                url: '/api/imp_fac_proforma/'+code,
+                url: $('#url').attr('content') + '/api/imp_fac_proforma/'+code,
                 method: 'GET',
                 success: function(response) {
                     preloader('end');
@@ -164,7 +164,7 @@ $(document).ready(function () {
                     preloader('start');
 
                     $.ajax({
-                        url: '/api/delete_fac_proforma/' + code,
+                        url: $('#url').attr('content') + '/api/delete_fac_proforma/' + code,
                         method: 'GET',
                         success: function(response) {
                             preloader('end');

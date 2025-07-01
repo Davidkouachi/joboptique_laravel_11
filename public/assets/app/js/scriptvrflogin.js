@@ -17,14 +17,14 @@ $(document).ready(function () {
 
         // Première requête : rafraîchir le token CSRF
         $.ajax({
-            url: "/refresh-csrf",
+            url: $('#url').attr('content') + "/refresh-csrf",
             method: "GET",
             success: function (response_crsf) {
                 $('meta[name="csrf-token"]').attr("content", response_crsf.csrf_token);
 
                 // Deuxième requête : authentification
                 $.ajax({
-                    url: "/api/traitement_login",
+                    url: $('#url').attr('content') + "/api/traitement_login",
                     method: "POST",
                     headers: {
                         "X-CSRF-TOKEN": response_crsf.csrf_token,
@@ -83,7 +83,7 @@ $(document).ready(function () {
         if (userIndex !== -1) {
             window.location.href = userPages[userIndex].lastUrl;
         } else {
-            window.location.href = "/";
+            window.location.href = $('#url').attr('content') + "/";
         }
     }
 

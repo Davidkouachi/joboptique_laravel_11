@@ -192,6 +192,12 @@ class ListeController extends Controller
             ->select(
                 'vente.*',
                 'client.matricule as matricule',
+                DB::raw("
+                    CASE 
+                        WHEN vente.partassurance > 0 THEN ROUND((vente.partassurance / vente.total) * 100, 2)
+                        ELSE 0
+                    END as pourcentage_assurance
+                "),
             )
             ->orderByRaw('vente.regle IS NOT NULL, vente.regle DESC')
             ->get();
@@ -273,6 +279,26 @@ class ListeController extends Controller
     {
 
         $data = DB::table('type_messages')->get();
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
+
+    public function list_assurance_all(Request $request)
+    {
+
+        $data = DB::table('assurance')->orderBy('dateajout', 'desc')->get();
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
+
+    public function list_societe_all(Request $request)
+    {
+
+        $data = DB::table('societe_assurance')->orderBy('id', 'desc')->get();
 
         return response()->json([
             'data' => $data,

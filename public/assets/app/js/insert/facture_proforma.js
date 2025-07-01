@@ -40,7 +40,7 @@ $(document).ready(function () {
                     </h5>
                 </div>
                 <div class="row g-gs mt-1">
-                    <div class="col-md-7">
+                    <div class="col-12">
                         <div class="form-group">
                             <label class="form-label">Désignation</label>
                             <div class="form-control-wrap">
@@ -51,7 +51,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">Prix</label>
                             <div class="form-control-wrap">
@@ -60,7 +60,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label class="form-label">Quantité</label>
                             <div class="form-control-wrap">
@@ -68,7 +68,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label class="form-label">Total</label>
                             <div class="form-control-wrap">
@@ -287,7 +287,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: "/api/insert_proforma",
+            url: $('#url').attr('content') + "/api/insert_proforma",
             method: "GET",
             data: {
                 selectionsProduit: selectionsProduit,

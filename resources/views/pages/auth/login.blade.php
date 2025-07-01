@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="base-url" content="{{ url('/') }}" id="url">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.jpg') }}">
     <title>Login | JobOptique</title>
     <script src="{{asset('jquery.min.js')}}"></script>
@@ -18,7 +19,7 @@
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css') }}">
 </head>
 
-<body class="nk-body bg-white npc-default pg-auth"> 
+<body class="nk-body bg-white npc-default pg-auth">
     <div class="nk-app-root">
         <div class="nk-main ">
             <div class="nk-wrap nk-wrap-nosidebar">

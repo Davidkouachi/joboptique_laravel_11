@@ -79,14 +79,14 @@ class CaisseController extends Controller
             $mail->Port = 587;
             $mail->setFrom(env('MAIL_USERNAME'), 'JOB OPTIQUE');
 
-            // $recipients = [
-            //     'lukdio@hotmail.fr',
-            //     'myghislainyao@gmail.com',
-            // ];
-
             $recipients = [
-                'davidkouachi01@gmail.com',
+                'lukdio@hotmail.fr',
+                'myghislainyao@gmail.com',
             ];
+
+            // $recipients = [
+            //     'davidkouachi01@gmail.com',
+            // ];
 
             foreach ($recipients as $recipient) {
                 $mail->addAddress($recipient);
@@ -230,14 +230,14 @@ class CaisseController extends Controller
             $mail->Port = 587;
             $mail->setFrom(env('MAIL_USERNAME'), 'JOB OPTIQUE');
             
-            // $recipients = [
-            //     'lukdio@hotmail.fr',
-            //     'myghislainyao@gmail.com',
-            // ];
-
             $recipients = [
-                    'davidkouachi01@gmail.com',
-                ];
+                'lukdio@hotmail.fr',
+                'myghislainyao@gmail.com',
+            ];
+
+            // $recipients = [
+            //     'davidkouachi01@gmail.com',
+            // ];
 
             foreach ($recipients as $recipient) {
                 $mail->addAddress($recipient);

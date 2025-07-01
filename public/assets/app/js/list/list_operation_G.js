@@ -9,7 +9,7 @@ $(document).ready(function () {
         let magasin = $('#magasin_id').val();
 
         $.ajax({
-            url: '/api/list_operation_all/'+date1+'/'+date2+'/'+magasin,
+            url: $('#url').attr('content') + '/api/list_operation_all/'+date1+'/'+date2+'/'+magasin,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -26,6 +26,8 @@ $(document).ready(function () {
                 // Effacer le contenu du tableau
                 table.find("tbody").empty();
 
+                let row = '';
+
                 if (operation.length > 0) {
 
                     // const table = $('.table_client');
@@ -33,18 +35,18 @@ $(document).ready(function () {
 
                     $.each(operation, function(index, item) {
 
-                        const row = $(`
+                        row += `
                             <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
                                 <td class="nk-tb-col">
-                                    <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === 4 || item.type_operation === 5   ? 'bg-warning' : 'bg-secondary'))}">
-                                        ${item.type ? item.type : (item.type_operation === 4 ? 'Ouverture de caisse' : (item.type_operation === 5   ? 'Fermeture de caisse' : 'Systéme'))}
+                                    <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === '4' || item.type_operation === '5'   ? 'bg-warning' : 'bg-secondary'))}">
+                                        ${item.type ? item.type : (item.type_operation === '4' ? 'Ouverture de caisse' : (item.type_operation === '5'   ? 'Fermeture de caisse' : 'Systéme'))}
                                     </span>
                                 </td>
                                 <td class="nk-tb-col">
-                                    <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === 4 || item.type_operation === 5   ? 'bg-warning' : 'bg-secondary'))}">
+                                    <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === '4' || item.type_operation === '5'   ? 'bg-warning' : 'bg-secondary'))}">
                                         ${(item.type === 'sortie' ? '-' : (item.type === 'entree' ? '+' : ''))} 
                                         ${item.montant ? item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0'} Fcfa
                                     </span>
@@ -93,9 +95,7 @@ $(document).ready(function () {
                                     </ul>
                                 </td>
                             </tr>
-                        `);
-
-                        table.find("tbody").append(row);
+                        `;
 
                         $('#total').text('Total : '+donne['total'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa');
                         $('#entrer').text('Entrer : + '+donne['entree'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa');
@@ -110,6 +110,8 @@ $(document).ready(function () {
                         //     $('#litIddelete').val(item.id);
                         // });
                     });
+
+                    table.find("tbody").append(row);
 
                     initializeDataTable(".table_operation", { responsive: { details: true } });
                 } else {

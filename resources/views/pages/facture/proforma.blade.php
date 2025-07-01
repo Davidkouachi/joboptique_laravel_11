@@ -46,7 +46,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-7">
+                                                            <div class="col-xl-6 col-lg-6 col-12">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
                                                                         Nom & Prénoms
@@ -59,7 +59,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
+                                                            <div class="col-xl-3 col-lg-3">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
                                                                         Contact
@@ -72,10 +72,10 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-2">
+                                                            <div class="col-xl-3 col-lg-3">
                                                                 <div class="form-group">
                                                                     <label class="form-label">
-                                                                        Date de la facture
+                                                                        Date
                                                                     </label>
                                                                     <div class="form-control-wrap">
                                                                         <input type="date" class="form-control" id="date" value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}" >

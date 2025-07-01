@@ -52,7 +52,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: "/api/insert_operation/"+id_agence+'/'+login,
+            url: $('#url').attr('content') + "/api/insert_operation/"+id_agence+'/'+login,
             method: "GET",
             data: {
                 motif: motif,

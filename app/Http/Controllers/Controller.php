@@ -78,4 +78,14 @@ class Controller
     {
         return view('pages.utilisateur.profil');
     }
+
+    public function assurance()
+    {
+        return view('pages.acteur.assurance');
+    }
+
+    public function societe()
+    {
+        return view('pages.acteur.societe');
+    }
 }

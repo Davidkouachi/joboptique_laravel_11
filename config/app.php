@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'JOB OPTIQUE'),
 
+    'url_lien' => env('APP_URL_LIEN', '/public/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

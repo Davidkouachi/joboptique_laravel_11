@@ -42,7 +42,7 @@ $(document).ready(function () {
         contenuDiv.append(div0);
 
         $.ajax({
-            url: '/api/stat_day',
+            url: $('#url').attr('content') + '/api/stat_day',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -144,8 +144,8 @@ $(document).ready(function () {
         contenuDiv.empty();
 
         const div0 = $(`
-            <div class="col-12" id="div_nbre_message">
-                <div class="card">
+            <div class="col" id="div_nbre_message">
+                <div class="">
                     <div class="nk-ecwg nk-ecwg6">
                         <div class="card-inner">
                             <div class="card-title-group justify-content-center align-items-center">
@@ -165,19 +165,19 @@ $(document).ready(function () {
         contenuDiv.append(div0);
 
         $.ajax({
-            url: '/api/stat_nbre/' + $('#id_agence').val(),
+            url: $('#url').attr('content') + '/api/stat_nbre/' + $('#id_agence').val(),
             method: 'GET',
             success: function(response) {
                 const data = response.data;
 
                 const stats = [
-                    {  
-                        title: 'Solde Caisse', 
-                        count: (data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
-                        icon: 'wallet-fill',
-                        color: '#006400',
-                        backgroun: 'background: linear-gradient(to right, #32CD32, #006400);',
-                    },
+                    // {  
+                    //     title: 'Solde Caisse', 
+                    //     count: (data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                    //     icon: 'wallet-fill',
+                    //     color: '#006400',
+                    //     backgroun: 'background: linear-gradient(to right, #32CD32, #006400);',
+                    // },
                     { 
                         title: 'Total Clients', 
                         count: data.client,
@@ -193,20 +193,35 @@ $(document).ready(function () {
                         backgroun: 'background: linear-gradient(to right, #1E90FF, #00008B);',
                     },
                     { 
-                        title: 'Agence', 
+                        title: 'Agences', 
                         count: data.agence,
                         icon: 'map-pin-fill',
                         color: '#B22222',
                         backgroun: 'background: linear-gradient(to right, #FF6347, #B22222);',
                     },
+                    { 
+                        title: 'Services', 
+                        count: data.service,
+                        icon: 'tree-structure-fill',
+                        color: '#6A0DAD',
+                        backgroun: 'background: linear-gradient(to right, #9370DB, #6A0DAD);',
+                    },
+                    { 
+                        title: 'Utilisateurs', 
+                        count: data.users,
+                        icon: 'user',
+                        color: '#8B4513',
+                        backgroun: 'background: linear-gradient(to right, #CD853F, #8B4513);',
+                    },
                 ];
 
+                contenuDiv.slick('unslick');
                 contenuDiv.empty();
 
                 stats.forEach(function(stat) {
 
                     const div = $(`
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" >
+                        <div class="col" >
                             <div class="card pricing text-center" style="${stat.backgroun}" >
                                 <div class="pricing-body">
                                     <ul class="nk-store-statistics">
@@ -225,6 +240,55 @@ $(document).ready(function () {
 
                     contenuDiv.append(div);
                 });
+
+                // 3. Réinitialiser le slider avec les mêmes options
+                contenuDiv.slick({
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    arrows: true,
+                    accessibility: true,
+                    responsive: [
+                        { breakpoint: 1500, settings: { slidesToShow: 3} },
+                        { breakpoint: 892, settings: { slidesToShow: 2} },
+                        { breakpoint: 582, settings:{ slidesToShow: 1} },
+                    ]
+                });
+
+                // Initial styling
+                styliserSlickArrows();
+
+                // Réappliquer à chaque redimensionnement ou changement
+                $('#div_nbre').on('setPosition afterChange reInit', function () {
+                    styliserSlickArrows();
+                });
+                
+                function styliserSlickArrows() {
+                    $('.slick-prev, .slick-next').css({
+                        display: 'flex',
+                        visibility: 'visible',
+                        opacity: 1,
+                        zIndex: 1000,
+                        position: 'absolute',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        backgroundColor: 'white',
+                        borderRadius: '50%',
+                        width: '40px',
+                        height: '40px',
+                        fontSize: '18px',
+                        color: '#00008B',
+                        border: '1px solid #ccc',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                    });
+
+                    $('.slick-prev').css({ left: '-5px' }).html('<em class="ni ni-chevron-left"></em>');
+                    $('.slick-next').css({ right: '-5px' }).html('<em class="ni ni-chevron-right"></em>');
+                }
+
             },
             error: function() {
                 // showAlert('danger', 'Impossible de generer le code automatiquement');
@@ -254,7 +318,7 @@ $(document).ready(function () {
         contenuDiv.append(div0);
 
         $.ajax({
-            url: '/api/stat_table',
+            url: $('#url').attr('content') + '/api/stat_table/' + $('#id_agence').val(),
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -262,7 +326,7 @@ $(document).ready(function () {
                 contenuDiv.empty();
 
                 const div1 = $(`
-                    <div class="nk-tb-list mt-2" id="div_table2">
+                    <div class="nk-tb-list mt-2" id="div_table2" >
                         <div class="nk-tb-item nk-tb-head">
                             <div class="nk-tb-col"><span>Code vente</span></div>
                             <div class="nk-tb-col tb-col-md"><span>Client</span></div>
@@ -279,7 +343,7 @@ $(document).ready(function () {
 
                     const div = $(`
                         <div class="nk-tb-item">
-                            <div class="nk-tb-col tb-col-md">
+                            <div class="nk-tb-col">
                                 <div class="user-card">
                                     <div class="user-avatar sm bg-orange">
                                         <em class="ni ni-file"></em>
@@ -296,11 +360,11 @@ $(document).ready(function () {
                                 <span class="tb-sub">${formatDate(item.date)}</span>
                             </div>
                             <div class="nk-tb-col">
-                                <span class="tb-sub tb-amount">${item.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0}<span> Fcfa</span></span>
+                                <span class="tb-sub tb-amount">${item.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? '0'}<span> Fcfa</span></span>
                             </div>
                             <div class="nk-tb-col">
-                                <span class="badge badge-dot badge-dot-xs bg-${item.regle == 1 ? 'success' : 'danger'}">
-                                    ${item.regle == 1 ? 'Reglé' : 'Non-rglé'}
+                                <span class="badge badge-dot badge-dot-xs bg-${item.regle == '1' ? 'success' : 'danger'}">
+                                    ${item.regle == '1' ? 'Reglé' : 'Non-rglé'}
                                 </span>
                             </div>
                         </div>
@@ -364,12 +428,10 @@ $(document).ready(function () {
         const magasin = $('#agence_id').val();
 
         $.ajax({
-            url: '/api/list_operation_all/'+date1+'/'+date2+'/'+magasin,
+            url: $('#url').attr('content') + '/api/list_operation_all/'+date1+'/'+date2+'/'+magasin,
             method: 'GET',
             success: function(response) {
                 const operation = response.data;
-
-                console.log(operation);
 
                 contenuDiv.empty();
 
@@ -387,7 +449,7 @@ $(document).ready(function () {
                             <li class="timeline-item">
                                 <div class="timeline-status bg-azure"></div>
                                 <div class="timeline-date">
-                                    ${getRelativeDateLabel(item.dateop)}
+                                    ${getRelativeDateLabel(item.created_at)}
                                 </div>
                                 <div class="timeline-data">
                                     <h6 class="timeline-title">
@@ -395,12 +457,12 @@ $(document).ready(function () {
                                     </h6>
                                     <div class="timeline-des d-flex flex-column gap-2">
                                         <span class="time d-flex gap-1 justify-content-start align-items-center">
-                                            <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === 4 || item.type_operation === 5   ? 'bg-warning' : 'bg-secondary'))}">
+                                            <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === '4' || item.type_operation === '5'   ? 'bg-warning' : 'bg-secondary'))}">
                                             ${(item.type === 'sortie' ? '-' : (item.type === 'entree' ? '+' : ''))} 
                                             ${item.montant ? item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0'} Fcfa
                                         </span>
                                             <em class="icon ni ni-alarm-alt"></em>
-                                            ${formatDateHeure(item.dateop)}
+                                            ${formatDateHeure(item.created_at)}
                                         </span>
                                     </div>
                                 </div>
@@ -454,7 +516,7 @@ $(document).ready(function () {
 
         const magasin = $('#agence_id').val();
 
-        fetch('/api/stat_vente_proforma/' + magasin)
+        fetch( $('#url').attr('content') + '/api/stat_vente_proforma/' + magasin)
             .then(response => response.json())
             .then(data => {
                 
@@ -592,7 +654,7 @@ $(document).ready(function () {
 
         const magasin = $('#agence_id').val();
 
-        fetch('/api/stat_rapport_caisse/' + magasin)
+        fetch( $('#url').attr('content') + '/api/stat_rapport_caisse/' + magasin)
             .then(response => response.json())
             .then(data => {
                 
@@ -606,7 +668,7 @@ $(document).ready(function () {
                         type: 'donut',
                         height: 300
                     },
-                    labels: ['Entrées', 'Sorties'],
+                    labels: ['Entrées (+)', 'Sorties (-)'],
                     series: [totalEntrer, totalSortie],
                     colors: ["#0ebb13", "#ff5a39"],
                     plotOptions: {
@@ -648,7 +710,11 @@ $(document).ready(function () {
                         }
                     },
                     dataLabels: {
-                        enabled: false
+                        enabled: true,
+                        formatter: function (val, opts) {
+                            // return opts.w.config.labels[opts.seriesIndex] + ": " + val.toFixed(1) + "%";
+                            return val.toFixed(1) + "%";
+                        }
                     },
                     legend: {
                         position: 'bottom',
@@ -686,10 +752,6 @@ $(document).ready(function () {
                 console.error('Erreur lors du chargement des données:', error);
             });
     }
-
-
-
-
 
 
 

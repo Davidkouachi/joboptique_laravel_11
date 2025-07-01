@@ -28,9 +28,6 @@ $(document).ready(function () {
         
         event.preventDefault();
 
-        // Ajouter le préchargeur
-        preloader('start');
-
         vente_detail();
 
     });
@@ -39,7 +36,7 @@ $(document).ready(function () {
     function caisse() 
     {
         $.ajax({
-            url: '/api/caisseVerfG',
+            url: $('#url').attr('content') + '/api/caisseVerfG',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -47,7 +44,7 @@ $(document).ready(function () {
                 $('#chargement').hide();
                 $('#solde').show();
 
-                $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'Fcfa');
+                $('#solde').text(data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Fcfa');
             
             },
             error: function() {
@@ -71,7 +68,7 @@ $(document).ready(function () {
 
         contenug.append(divcon);
 
-        fetch('/api/G_bilan_op/' + yearSelect)
+        fetch( $('#url').attr('content') +'/api/G_bilan_op/' + yearSelect)
             .then(response => response.json())
             .then(data => {
 
@@ -231,7 +228,7 @@ $(document).ready(function () {
 
         contenug.append(divcon);
 
-        fetch('/api/G_bilan_eva_vente/' + yearSelect)
+        fetch( $('#url').attr('content') +'/api/G_bilan_eva_vente/' + yearSelect)
             .then(response => response.json())
             .then(data => {
 
@@ -406,7 +403,7 @@ $(document).ready(function () {
 
         contenug.append(divcon);
 
-        fetch('/api/G_bilan_vente/' + yearSelect)
+        fetch( $('#url').attr('content') +'/api/G_bilan_vente/' + yearSelect)
             .then(response => response.json())
             .then(data => {
 
@@ -528,7 +525,7 @@ $(document).ready(function () {
         contenug1.empty();
         contenug2.empty();
 
-        fetch('/api/G_stat_prevision/' + $("#magasin_estimation_vente").val())
+        fetch( $('#url').attr('content') +'/api/G_stat_prevision/' + $("#magasin_estimation_vente").val())
             .then(response => response.json())
             .then(data => {
                 $('#div_vente_prevision_message1').hide();
@@ -726,7 +723,7 @@ $(document).ready(function () {
 
         contenug.append(divcon);
 
-        fetch('/api/G_bilan_client/' + yearSelect)
+        fetch( $('#url').attr('content') +'/api/G_bilan_client/' + yearSelect)
             .then(response => response.json())
             .then(data => {
 
@@ -880,8 +877,11 @@ $(document).ready(function () {
             return false;
         }
 
+        // Ajouter le préchargeur
+        preloader('start');
+
         $.ajax({
-            url: '/api/G_bilan_detail_vente/'+periode+'/'+magasin,
+            url: $('#url').attr('content') + '/api/G_bilan_detail_vente/'+periode+'/'+magasin,
             method: 'GET',
             success: function(response) {
                 preloader('end');

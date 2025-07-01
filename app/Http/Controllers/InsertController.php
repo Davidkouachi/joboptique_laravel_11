@@ -116,7 +116,7 @@ class InsertController extends Controller
                 'commercial' => null,
                 'login' => $request->login,
                 'assurance' => $request->assurance_id,
-                'tauxes' => $request->taux_id,
+                // 'tauxes' => $request->taux_id,
                 'magasin' => $request->magasin,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -722,6 +722,71 @@ class InsertController extends Controller
 
             if ($Inserted == 0) {
                 throw new Exception('Erreur lors de l\'insertion dans la table type_messages');
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function insert_assurance(Request $request)
+    {
+
+        $verf = DB::table('assurance')->where('denomination', $request->nom)->exists();
+
+        if ($verf) {
+            return response()->json(['existe' => true]);
+        } 
+
+        DB::beginTransaction();
+
+        try {
+
+            $Inserted = DB::table('assurance')->insert([
+                'denomination' => $request->nom,
+                'login' => $request->login,
+                'dateajout' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if ($Inserted == 0) {
+                throw new Exception('Erreur lors de l\'insertion dans la table assurance');
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Opération éffectuée']);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function insert_societe(Request $request)
+    {
+
+        $verf = DB::table('societe_assurance')->where('libelle', $request->nom)->exists();
+
+        if ($verf) {
+            return response()->json(['existe' => true]);
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            $Inserted = DB::table('societe_assurance')->insert([
+                'libelle' => $request->nom,
+                'login' => $request->login,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if ($Inserted == 0) {
+                throw new Exception('Erreur lors de l\'insertion dans la table societe_assurance');
             }
 
             DB::commit();

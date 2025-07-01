@@ -39,7 +39,7 @@ $(document).ready(function () {
         // Ajouter le préchargeur
         preloader('start');
         $.ajax({
-            url: '/api/list_rech_fac',
+            url: $('#url').attr('content') + '/api/list_rech_fac',
             method: 'GET',
             data: {
                 type: type,

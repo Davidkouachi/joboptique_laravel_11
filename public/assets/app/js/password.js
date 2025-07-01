@@ -75,47 +75,47 @@ $(document).ready(function () {
             preloader('start');
 
             $.ajax({
-            url: "/refresh-csrf",
-            method: "GET",
-            success: function (response_crsf) {
-                $('meta[name="csrf-token"]').attr("content", response_crsf.csrf_token);
+                url: $('#url').attr('content') + "/refresh-csrf",
+                method: "GET",
+                success: function (response_crsf) {
+                    $('meta[name="csrf-token"]').attr("content", response_crsf.csrf_token);
 
-                $.ajax({
-                    url: "/api/update_password",
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": response_crsf.csrf_token,
-                    },
-                    data: {
-                        mdp1: mdp1.val().trim(),
-                        login: $("#login").val().trim(),
-                    },
-                    success: function (response) {
-                        preloader('end');
+                    $.ajax({
+                        url: $('#url').attr('content') + "/api/update_password",
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": response_crsf.csrf_token,
+                        },
+                        data: {
+                            mdp1: mdp1.val().trim(),
+                            login: $("#login").val().trim(),
+                        },
+                        success: function (response) {
+                            preloader('end');
 
-                        if (response.success) {
+                            if (response.success) {
 
-                            showAlert("Succès", "Opération éffectuée", "success");
+                                showAlert("Succès", "Opération éffectuée", "success");
 
-                        } else if (response.error) {
+                            } else if (response.error) {
 
-                            showAlert("Alert", "Echec de l\'opération", "error");
+                                showAlert("Alert", "Echec de l\'opération", "error");
+                                console.log(response.message);
+                            }
+                        },
+                        error: function () {
+                            preloader('end');
+                            showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
                             console.log(response.message);
-                        }
+                        },
+                    });
+
                     },
                     error: function () {
                         preloader('end');
-                        showAlert("Erreur", "Erreur est survenu, veuillez réessayer.", "error");
-                        console.log(response.message);
+                        showAlert("Alert", "Une erreur est survenue ", "error");
                     },
                 });
-
-                },
-                error: function () {
-                    preloader('end');
-                    showAlert("Alert", "Une erreur est survenue ", "error");
-                },
-            });
         });
 
     });

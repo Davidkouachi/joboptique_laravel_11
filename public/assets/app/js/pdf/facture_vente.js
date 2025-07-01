@@ -116,7 +116,7 @@ $(document).ready(function () {
                     ["Nom", client['assurance']],
                     ["Matricule", client['matriculeass']],
                     ["N° bon", "Aucun"],
-                    ["Taux", client['taux'] + "%"]
+                    // ["Taux", client['taux'] + "%"]
                 ];
 
                 doc.setFontSize(9);
@@ -181,7 +181,7 @@ $(document).ready(function () {
             const totalInfo = [
                 ["TOTAL", client['total'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 9, "normal"],
                 ["REDUCTION", client['taured'] + "%", 9, "normal"],
-                ["TAUX COUVERTURE", client['taux'] + "%", 9, "normal"],
+                ["TAUX COUVERTURE", client['pourcentage_assurance'] + "%", 9, "normal"],
                 ["PART ASSURANCE", client['partassurance'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 9, "normal"],
                 ["NET A PAYER", client['partclient'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + " Fcfa", 10, "bold"],
             ];
@@ -213,7 +213,7 @@ $(document).ready(function () {
             doc.setFontSize(11);
             doc.setFont("Helvetica", "normal");
             const an3 = "Signature & Cachet";
-            doc.text(an3, leftMargin + 140, yOffsetAfterTotal + 10);
+            doc.text(an3, leftMargin + 140, yOffsetAfterTotal + 20);
 
         }
 

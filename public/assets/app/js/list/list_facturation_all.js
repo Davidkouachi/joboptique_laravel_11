@@ -69,7 +69,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: '/api/list_facturation',
+            url: $('#url').attr('content') + '/api/list_facturation',
             method: 'GET',
             data: {
                 type: type,
@@ -92,13 +92,15 @@ $(document).ready(function () {
 
                 table.find("tbody").empty();
 
+                let row = '';
+
                 if (facture.length > 0) {
 
                     $('#donnee').show();
 
                     $.each(facture, function(index, item) {
 
-                        const row = $(`
+                        row += `
                             <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
@@ -164,12 +166,12 @@ $(document).ready(function () {
                                     </ul>
                                 </td>
                             </tr>
-                        `);
-
-                        table.find("tbody").append(row);
+                        `;
 
                         $('#total').text('Montant Total : '+total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa');
                     });
+
+                    table.find("tbody").append(row);
 
                     initializeDataTable(".table_facturation", { responsive: { details: true } });
                 } else {

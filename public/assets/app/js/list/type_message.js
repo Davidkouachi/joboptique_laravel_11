@@ -44,7 +44,7 @@ $(document).ready(function () {
         contenuDiv.append(div_loader);
 
         $.ajax({
-            url: '/api/list_message_all',
+            url: $('#url').attr('content') + '/api/list_message_all',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -204,14 +204,14 @@ $(document).ready(function () {
 
         // Première requête : rafraîchir le token CSRF
         $.ajax({
-            url: "/refresh-csrf",
+            url: $('#url').attr('content') + "/refresh-csrf",
             method: "GET",
             success: function (response_crsf) {
                 $('meta[name="csrf-token"]').attr("content", response_crsf.csrf_token);
 
                 // Deuxième requête : authentification
                 $.ajax({
-                    url: "/api/update_type_message/" + id,
+                    url: $('#url').attr('content') + "/api/update_type_message/" + id,
                     method: "POST",
                     headers: {
                         "X-CSRF-TOKEN": response_crsf.csrf_token,
@@ -296,7 +296,7 @@ $(document).ready(function () {
                 preloader('start');
 
                 $.ajax({
-                    url: '/api/delete_type_message/' + id,
+                    url: $('#url').attr('content') + '/api/delete_type_message/' + id,
                     method: 'GET',
                     success: function(response) {
                         preloader('end');
@@ -339,7 +339,7 @@ $(document).ready(function () {
     //     // preloader('start');
 
     //     // $.ajax({
-    //     //     url: '/api/delete_type_message/' + id,
+    //     //     url: $('#url').attr('content') + '/api/delete_type_message/' + id,
     //     //     method: 'GET',
     //     //     success: function(response) {
     //     //         preloader('end');

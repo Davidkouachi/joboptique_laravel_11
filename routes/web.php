@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\AuthController;
@@ -8,7 +9,7 @@ Route::get('/refresh-csrf', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
-Route::get('/Se Connecter', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware(['auth'])->group(function () {
 	Route::get('/deconnecter', [AuthController::class, 'deconnecter'])->name('deconnecter');
@@ -19,6 +20,9 @@ Route::middleware(['auth'])->group(function () {
 
 	Route::get('/Clients', [Controller::class, 'client'])->name('client');
 	Route::get('/Prospects', [Controller::class, 'prospect'])->name('prospect');
+
+	Route::get('/Assurances', [Controller::class, 'assurance'])->name('assurance');
+	Route::get('/Sociétés', [Controller::class, 'societe'])->name('societe');
 
 	Route::get('/Préscriptions', [Controller::class, 'prescription'])->name('prescription');
 

@@ -42,7 +42,7 @@ $(document).ready(function () {
         contenuDiv.append(div0);
 
         $.ajax({
-            url: '/api/stat_day',
+            url: $('#url').attr('content') + '/api/stat_day',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -160,7 +160,7 @@ $(document).ready(function () {
         contenuDiv.append(div0);
 
         $.ajax({
-            url: '/api/stat_nbre/' + $('#id_agence').val(),
+            url: $('#url').attr('content') + '/api/stat_nbre/' + $('#id_agence').val(),
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -190,14 +190,27 @@ $(document).ready(function () {
                         icon: 'map-pin-fill',
                         color: 'danger', 
                     },
+                    { 
+                        title: 'Services', 
+                        count: data.service,
+                        icon: 'tree-structure-fill',
+                        color: 'info',
+                    },
+                    { 
+                        title: 'Utilisateurs', 
+                        count: data.users,
+                        icon: 'user',
+                        color: 'orange',
+                    },
                 ];
 
+                contenuDiv.slick('unslick');
                 contenuDiv.empty();
 
                 stats.forEach(function(stat) {
 
                     const div = $(`
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" >
+                        <div class="col" >
                             <div class="card pricing text-center" style="background: linear-gradient(to right, #87CEEB, #4682B4);">
                                 <div class="pricing-body">
                                     <ul class="nk-store-statistics">
@@ -216,6 +229,54 @@ $(document).ready(function () {
 
                     contenuDiv.append(div);
                 });
+
+                // 3. Réinitialiser le slider avec les mêmes options
+                contenuDiv.slick({
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    arrows: true,
+                    accessibility: true,
+                    responsive: [
+                        { breakpoint: 1500, settings: { slidesToShow: 3} },
+                        { breakpoint: 892, settings: { slidesToShow: 2} },
+                        { breakpoint: 582, settings:{ slidesToShow: 1} },
+                    ]
+                });
+
+                // Initial styling
+                styliserSlickArrows();
+
+                // Réappliquer à chaque redimensionnement ou changement
+                $('#div_nbre').on('setPosition afterChange reInit', function () {
+                    styliserSlickArrows();
+                });
+                
+                function styliserSlickArrows() {
+                    $('.slick-prev, .slick-next').css({
+                        display: 'flex',
+                        visibility: 'visible',
+                        opacity: 1,
+                        zIndex: 1000,
+                        position: 'absolute',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        backgroundColor: 'white',
+                        borderRadius: '50%',
+                        width: '40px',
+                        height: '40px',
+                        fontSize: '18px',
+                        color: '#00008B',
+                        border: '1px solid #ccc',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                    });
+
+                    $('.slick-prev').css({ left: '-5px' }).html('<em class="ni ni-chevron-left"></em>');
+                    $('.slick-next').css({ right: '-5px' }).html('<em class="ni ni-chevron-right"></em>');
+                }
             },
             error: function() {
                 // showAlert('danger', 'Impossible de generer le code automatiquement');
@@ -245,7 +306,7 @@ $(document).ready(function () {
         contenuDiv.append(div0);
 
         $.ajax({
-            url: '/api/stat_table',
+            url: $('#url').attr('content') + '/api/stat_table',
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -355,7 +416,7 @@ $(document).ready(function () {
         const magasin = $('#agence_id').val();
 
         $.ajax({
-            url: '/api/list_operation_all/'+date1+'/'+date2+'/'+magasin,
+            url: $('#url').attr('content') + '/api/list_operation_all/'+date1+'/'+date2+'/'+magasin,
             method: 'GET',
             success: function(response) {
                 const operation = response.data;
@@ -597,7 +658,7 @@ $(document).ready(function () {
                         type: 'donut',
                         height: 300
                     },
-                    labels: ['Entrées', 'Sorties'],
+                    labels: ['Entrées (+)', 'Sorties (-)'],
                     series: [totalEntrer, totalSortie],
                     colors: ["#0ebb13", "#ff5a39"],
                     plotOptions: {
@@ -639,7 +700,11 @@ $(document).ready(function () {
                         }
                     },
                     dataLabels: {
-                        enabled: false
+                        enabled: true,
+                        formatter: function (val, opts) {
+                            // return opts.w.config.labels[opts.seriesIndex] + ": " + val.toFixed(1) + "%";
+                            return val.toFixed(1) + "%";
+                        }
                     },
                     legend: {
                         position: 'bottom',

@@ -11,7 +11,7 @@ $(document).ready(function () {
         const matricule = $(this).val().trim();
 
         $.ajax({
-            url: '/api/select_client_prescription/'+matricule,
+            url: $('#url').attr('content') + '/api/select_client_prescription/'+matricule,
             method: 'GET',
             success: function(response) {
                 const data = response.data;
@@ -128,7 +128,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: "/api/insert_prescription/"+matricule,
+            url: $('#url').attr('content') + "/api/insert_prescription/"+matricule,
             method: "GET",
             data: {
                 sphere_OD: sphere_OD.val() || null,

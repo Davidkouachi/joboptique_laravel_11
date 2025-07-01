@@ -11,7 +11,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: '/api/list_facture_client/'+client,
+            url: $('#url').attr('content') + '/api/list_facture_client/'+client,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -27,6 +27,8 @@ $(document).ready(function () {
 
                 table.find("tbody").empty();
 
+                let row = '';
+
                 if (facture.length > 0) {
 
                     $('#donnee1').show();
@@ -34,7 +36,7 @@ $(document).ready(function () {
 
                     $.each(facture, function(index, item) {
 
-                        const row = $(`
+                        row += `
                             <tr class="nk-tb-item" >
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
@@ -55,7 +57,6 @@ $(document).ready(function () {
                                     <span class="badge ${item.regle == 1 ? 'bg-success' : 'bg-danger'}"> 
                                         ${item.regle == 1 ? 'Soldé' : 'Non-soldé'}
                                     </span>
-
                                 </td>
                                 <td class="nk-tb-col">
                                     <span class="badge text-primary"> 
@@ -75,7 +76,7 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <span class="tb-amount"> 
-                                        ${item.taured ? item.taured.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0'} %
+                                        ${item.pourcentage_assurance ? item.pourcentage_assurance : '0'} %
                                     </span>
                                 </td>
                                 <td class="nk-tb-col">
@@ -131,14 +132,14 @@ $(document).ready(function () {
                                     </ul>
                                 </td>
                             </tr>
-                        `);
-
-                        table.find("tbody").append(row);
+                        `;
 
                         $('#total').text('Montant Total : '+donne['total'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa');
                         $('#payer').text('Montant Payer : '+donne['payer'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa');
                         $('#non_payer').text('Montant non-payer : '+donne['non_payer'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+' Fcfa');
                     });
+
+                    table.find("tbody").append(row);
 
                     initializeDataTable(".table_facture_client", { responsive: { details: true } });
                 } else {
@@ -181,7 +182,7 @@ $(document).ready(function () {
         preloader('start');
 
         $.ajax({
-            url: '/api/imp_fac_vente/'+code+'/'+matricule,
+            url: $('#url').attr('content') + '/api/imp_fac_vente/'+code+'/'+matricule,
             method: 'GET',
             success: function(response) {
                 preloader('end');
@@ -225,7 +226,7 @@ $(document).ready(function () {
                 <li>
                     <a href="#" data-id="${item.id}" class="btn btn-primary mb-2 btn_recu_vers">
                         <em class="icon ni ni-printer"></em>
-                        <span>Versement ${index+1} (${item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa)</span>
+                        <span>Recu ${index+1} : ${item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} Fcfa, le ${formatDate(item.date)}</span>
                     </a>
                 </li>
             `);
@@ -250,7 +251,7 @@ $(document).ready(function () {
             $("body").append(preloader_ch);
 
             $.ajax({
-                url: '/api/imp_fac_recu/'+code+'/'+matricule+'/'+versementId,
+                url: $('#url').attr('content') + '/api/imp_fac_recu/'+code+'/'+matricule+'/'+versementId,
                 method: 'GET',
                 success: function(response) {
                     preloader('end');

@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     window.list_user_all = function () {
         $.ajax({
-            url: '/api/list_client_all',
+            url: $('#url').attr('content') + '/api/list_client_all',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -17,6 +17,8 @@ $(document).ready(function () {
                 // Effacer le contenu du tableau
                 table.find("tbody").empty();
 
+                let row = '';
+
                 if (clients.length > 0) {
 
                     // const table = $('.table_client');
@@ -24,7 +26,7 @@ $(document).ready(function () {
 
                     $.each(clients, function(index, item) {
 
-                        const row = $(`
+                        row += `
                             <tr class="nk-tb-item">
                                 <td class="nk-tb-col">
                                     <span class="tb-amount">${index + 1}</span>
@@ -79,7 +81,7 @@ $(document).ready(function () {
                                                 data-assurer="${item.assurance != null ? 'Client assurer' : `Client non-assurer` }"
                                                 data-assurance="${item.assurance != null ? item.assurance_lib : `Néant` }"
                                                 data-societe="${item.societe_assurance != null ? item.societe : `Néant` }"
-                                                data-taux="${item.tauxes != null ? item.taux+'%' : `Néant` }"
+                                                
                                                 data-matriculeass="${item.matricule_assurance != null ? item.matricule_assurance : `Néant` }"
                                                 data-dateenregistre="${formatDateHeure(item.dateenregistre)}"
                                             >
@@ -89,9 +91,9 @@ $(document).ready(function () {
                                     </ul>
                                 </td>
                             </tr>
-                        `);
+                        `;
 
-                        table.find("tbody").append(row);
+                        // data-taux="${item.tauxes != null ? item.taux+'%' : `Néant` }"
 
                         // $(`#detail-${item.matricule}`).on('click', function() {
                         //     console.log(item.nomprenom);
@@ -102,6 +104,8 @@ $(document).ready(function () {
                         //     $('#litIddelete').val(item.id);
                         // });
                     });
+
+                    table.find("tbody").append(row);
 
                     initializeDataTable(".table_client", { responsive: { details: true } });
                 } else {
@@ -155,7 +159,7 @@ $(document).ready(function () {
                                             </div>
                                             <ul class="team-info" id="d_div_assurer2">
                                                 <li><span>Assurance</span><span id="d_assurance" ></span></li>
-                                                <li><span>Taux</span><span id="d_taux" ></span></li>
+                                                
                                                 <li><span>Société</span><span id="d_societe" ></span></li>
                                                 <li><span>Matricule Assurance</span><span id="d_matriculeass" ></span></li>
                                             </ul>
@@ -167,6 +171,8 @@ $(document).ready(function () {
                     </div>
                 </div>
             `;
+
+            // <li><span>Taux</span><span id="d_taux" ></span></li>
 
             $('body').append(modalBody);
 
@@ -189,7 +195,7 @@ $(document).ready(function () {
             const assurer = $(this).data('assurer');
             const assurance = $(this).data('assurance');
             const societe = $(this).data('societe');
-            const taux = $(this).data('taux');
+            // const taux = $(this).data('taux');
             const matriculeass = $(this).data('matriculeass');
             const dateenregistre = $(this).data('dateenregistre');
 
@@ -209,7 +215,7 @@ $(document).ready(function () {
             $('#d_assurer').text(assurer);
             $('#d_assurance').text(assurance);
             $('#d_societe').text(societe);
-            $('#d_taux').text(taux);
+            // $('#d_taux').text(taux);
             $('#d_matriculeass').text(matriculeass);
             $('#d_datecreat').text('Date d\'enregistrement : '+dateenregistre);
 
