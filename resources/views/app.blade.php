@@ -6,15 +6,16 @@
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo.jpg') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="base-url" content="{{ url('/') }}" id="url">
     <title>
-        @yield('titre') | JOBOPTIQUE ? FCH9028525
+        @yield('titre') | JOBOPTIQUE
     </title>
     <script src="{{asset('jquery.min.js')}}"></script>
     <script src="{{ asset('assets/app/apexcharts/dist/apexcharts.min.js') }}"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
+    <script src="{{ asset('assets/app/js/messageLoader.js') }}"></script>
     <script src="{{asset('assets/app/js/alert.js')}}"></script>
     <script src="{{asset('assets/app/js/format.js')}}"></script>
     <script src="{{asset('assets/app/js/urlHis.js')}}"></script>
@@ -26,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/dashlitee1e3.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee1e3.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/style.css') }}">
+    
 </head>
 
 <body class="nk-body bg-lighter npc-default has-sidebar ">
@@ -41,7 +43,7 @@
 
     <div class="js-preloader">
         <div class="loading-animation">
-            <img class="mt-0" src="{{ asset('assets/images/logo.jpg') }}">
+            <img class="mt-0" src="{{ asset('assets/images/logo.png') }}">
             <div class="loading-animation tri-ring mt-5" style="margin-left: -30px; font-size: 10px;"></div>
         </div>
     </div>
@@ -57,8 +59,8 @@
                 <div class="nk-sidebar-element nk-sidebar-head">
                     <div class="nk-sidebar-brand">
                         <a href="#" class="logo-link nk-sidebar-logo">
-                            <img class="logo-dark logo-img" src="{{ asset('assets/images/logo.jpg') }}" srcset="{{ asset('assets/images/logo.jpg') }}" >
-                            <img class="logo-img logo-img-small" src="{{ asset('assets/images/logo.jpg') }}" srcset="{{ asset('assets/images/logo.jpg') }} 2x" style="height: 15px; width:30px;">
+                            <img class="logo-dark logo-img" src="{{ asset('assets/images/logo.png') }}" srcset="{{ asset('assets/images/logo.png') }}" >
+                            <img class="logo-img logo-img-small" src="{{ asset('assets/images/logo.png') }}" srcset="{{ asset('assets/images/logo.png') }} 2x" style="height: 15px; width:30px;">
                         </a>
                     </div>
                     <div class="nk-menu-trigger me-n2">
@@ -217,7 +219,7 @@
                             </div>
                             <div class="nk-header-brand d-xl-none">
                                 <a href="#" class="logo-link">
-                                    <img class="logo-dark logo-img" src="{{ asset('assets/images/logo.jpg') }}" srcset="{{ asset('assets/images/logo.jpg') }} 2x">
+                                    <img class="logo-dark logo-img" src="{{ asset('assets/images/logo.png') }}" srcset="{{ asset('assets/images/logo.png') }} 2x">
                                 </a>
                             </div>
                             <marquee class="d-none d-xl-block" >
@@ -300,7 +302,7 @@
                 <div class="nk-footer">
                     <div class="container-fluid">
                         <div class="nk-footer-wrap text-center">
-                            <div class="nk-footer-copyright"> &copy; 2024 JOBOPTIQUE. Copyright ©</div>
+                            <div class="nk-footer-copyright"> Copyright &copy; JOBOPTIQUE 2024 – Tous droits réservés. Développé par David Kouachi</div>
                         </div>
                     </div>
                 </div>
@@ -309,7 +311,7 @@
     </div>
 
     @if(!request()->routeIs('operation','bilan_comptable','encaissement','bilan_generale_comptable') )
-    <ul class="nk-sticky-toolbar">
+    <ul class="nk-sticky-toolbar me-3">
         <li class="demo-thumb bg-transparent" id="cadre_ouverture_caisse" style="display: none;">
             <a class="tipinfo bg-success text-white rounded-circle" id="btn_ouverture_caisse" title="Ouverture de caisse">
                 <em class="icon ni ni-unlock"></em>

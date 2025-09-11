@@ -7,7 +7,7 @@
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="base-url" content="{{ url('/') }}" id="url">
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo.jpg') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}">
     <title>Login | JobOptique</title>
     <script src="{{asset('jquery.min.js')}}"></script>
     <script src="{{asset('assets/app/js/alert.js')}}"></script>
@@ -24,12 +24,12 @@
         <div class="nk-main ">
             <div class="nk-wrap nk-wrap-nosidebar">
                 <div class="nk-content " style="background: rgba(0, 0, 0, 0.5);">
-                    <div class="nk-block nk-block-middle nk-auth-body wide-xxl" style="width: 370px; margin-right: 150px;">
+                    <div class="nk-block nk-block-middle nk-auth-body wide-xxl" style="width: 400px; margin-right: 150px;">
                         <div class="card">
                             <div class="card-inner card-inner-lg">
                             	<div class="brand-logo pb-4 text-center mb-3">
 		                        	<a class="logo-link">
-		                        		<img style="height: 600px; width: 200px; " class="logo-dark logo-img logo-img-lg" src="{{ asset('assets/images/logo.jpg') }}" srcset="{{ asset('assets/images/logo.jpg') }} 2x">
+		                        		<img style="height: 600px; width: 200px; " class="logo-dark logo-img logo-img-lg" src="{{ asset('assets/images/logo.png') }}" srcset="{{ asset('assets/images/logo.png') }} 2x">
 		                        	</a>
 		                        </div>
                                 <div class="nk-block-head mb-3">
@@ -63,7 +63,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                    	<button type="submit" class="btn btn-md btn-outline-success btn-block">Se connecter</button>
+                                    	<button type="submit" id="btn_connexion" class="btn btn-md btn-success btn-block">Connexion</button>
                                     </div>
                                 </form>
                             </div>

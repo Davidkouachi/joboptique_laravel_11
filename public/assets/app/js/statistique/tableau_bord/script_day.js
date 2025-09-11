@@ -21,20 +21,9 @@ $(document).ready(function () {
         contenuDiv.empty();
 
         const div0 = $(`
-            <div class="col-12" id="div_day_message">
-                <div class="card">
-                    <div class="nk-ecwg nk-ecwg6">
-                        <div class="card-inner">
-                            <div class="card-title-group justify-content-center align-items-center">
-                                <div class="card-title d-flex justify-content-center align-items-center">
-                                    <div class="spinner-border text-warning me-1" role="status"></div>
-                                    <h6 class="title text-warning">
-                                        Veuillez patienter s'il vous plaît ...
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-12">
+                <div class="pt-3 pb-3">
+                    ${messageLoader(`Veuillez patienter un instant ...`, `warning`, 1)}
                 </div>
             </div>
         `);
@@ -127,7 +116,15 @@ $(document).ready(function () {
                 });
             },
             error: function() {
-                // showAlert('danger', 'Impossible de generer le code automatiquement');
+                contenuDiv.empty();
+
+                const div0 = $(`
+                    <div class="pt-3 pb-3">
+                        ${messageLoader(`Impossible de récupérer les données`, `danger`, 0)}
+                    </div>
+                `);
+
+                contenuDiv.append(div0);
             }
         });
     }
@@ -139,20 +136,9 @@ $(document).ready(function () {
         contenuDiv.empty();
 
         const div0 = $(`
-            <div class="col-12" id="div_nbre_message">
-                <div class="card">
-                    <div class="nk-ecwg nk-ecwg6">
-                        <div class="card-inner">
-                            <div class="card-title-group justify-content-center align-items-center">
-                                <div class="card-title d-flex justify-content-center align-items-center">
-                                    <div class="spinner-border text-warning me-1" role="status"></div>
-                                    <h6 class="title text-warning">
-                                        Veuillez patienter s'il vous plaît ...
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col">
+                <div class="pt-3 pb-3">
+                    ${messageLoader(`Veuillez patienter un instant ...`, `warning`, 1)}
                 </div>
             </div>
         `);
@@ -168,7 +154,7 @@ $(document).ready(function () {
                 const stats = [
                     {  
                         title: 'Solde Caisse', 
-                        count: (data.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
+                        count: (data.solde.solde.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0 ) + ' Fcfa',
                         icon: 'wallet-fill',
                         color: 'success', 
                     },
@@ -279,7 +265,15 @@ $(document).ready(function () {
                 }
             },
             error: function() {
-                // showAlert('danger', 'Impossible de generer le code automatiquement');
+                contenuDiv.empty();
+
+                const div0 = $(`
+                    <div class="pt-3 pb-3">
+                        ${messageLoader(`Impossible de récupérer les données`, `danger`, 0)}
+                    </div>
+                `);
+
+                contenuDiv.append(div0);
             }
         });
     }
@@ -290,31 +284,41 @@ $(document).ready(function () {
 
         contenuDiv.empty();
 
+        $('#div_table').removeClass('card');
+
         const div0 = $(`
-            <div class="card-inner mb-3" >
-                <div class="card-title-group justify-content-center align-items-center">
-                    <div class="card-title d-flex justify-content-center align-items-center">
-                        <div class="spinner-border text-warning me-1" role="status"></div>
-                        <h6 class="title text-warning">
-                            Veuillez patienter s'il vous plaît ...
-                        </h6>
-                    </div>
-                </div>
+            <div class="pt-3 pb-3">
+                ${messageLoader(`Veuillez patienter un instant ...`, `warning`, 1)}
             </div>
         `);
 
         contenuDiv.append(div0);
 
         $.ajax({
-            url: $('#url').attr('content') + '/api/stat_table',
+            url: $('#url').attr('content') + '/api/stat_table/' + $('#id_agence').val(),
             method: 'GET',
             success: function(response) {
                 const data = response.data;
 
                 contenuDiv.empty();
 
+                if(data.length <= 0) {
+
+                    const div0 = $(`
+                        <div class="pt-3 pb-3">
+                            ${messageLoader(`Aucune données n'à été trouvées`, `danger`, 0)}
+                        </div>
+                    `);
+
+                    contenuDiv.append(div0);
+
+                    return;
+                }
+
+                $('#div_table').addClass('card');
+
                 const div1 = $(`
-                    <div class="nk-tb-list mt-2" id="div_table2">
+                    <div class="nk-tb-list mt-2" id="div_table2" >
                         <div class="nk-tb-item nk-tb-head">
                             <div class="nk-tb-col"><span>Code vente</span></div>
                             <div class="nk-tb-col tb-col-md"><span>Client</span></div>
@@ -331,7 +335,7 @@ $(document).ready(function () {
 
                     const div = $(`
                         <div class="nk-tb-item">
-                            <div class="nk-tb-col tb-col-md">
+                            <div class="nk-tb-col">
                                 <div class="user-card">
                                     <div class="user-avatar sm bg-orange">
                                         <em class="ni ni-file"></em>
@@ -348,11 +352,11 @@ $(document).ready(function () {
                                 <span class="tb-sub">${formatDate(item.date)}</span>
                             </div>
                             <div class="nk-tb-col">
-                                <span class="tb-sub tb-amount">${item.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? 0}<span> Fcfa</span></span>
+                                <span class="tb-sub tb-amount">${item.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') ?? '0'}<span> Fcfa</span></span>
                             </div>
                             <div class="nk-tb-col">
-                                <span class="badge badge-dot badge-dot-xs bg-${item.regle == 1 ? 'success' : 'danger'}">
-                                    ${item.regle == 1 ? 'Reglé' : 'Non-rglé'}
+                                <span class="badge badge-dot badge-dot-xs bg-${item.regle == '1' ? 'success' : 'danger'}">
+                                    ${item.regle == '1' ? 'Reglé' : 'Non-rglé'}
                                 </span>
                             </div>
                         </div>
@@ -360,9 +364,19 @@ $(document).ready(function () {
 
                     $('#div_table2').append(div);
                 });
+
+                
             },
             error: function() {
-                // showAlert('danger', 'Impossible de generer le code automatiquement');
+                contenuDiv.empty();
+
+                const div0 = $(`
+                    <div class="pt-3 pb-3">
+                        ${messageLoader(`Impossible de récupérer les données`, `danger`, 0)}
+                    </div>
+                `);
+
+                contenuDiv.append(div0);
             }
         });
     }
@@ -374,15 +388,8 @@ $(document).ready(function () {
         contenuDiv.empty();
 
         const div0 = `
-            <div class="card-inner mb-3" >
-                <div class="card-title-group justify-content-center align-items-center">
-                    <div class="card-title d-flex justify-content-center align-items-center">
-                        <div class="spinner-border text-warning me-1" role="status"></div>
-                        <h6 class="title text-warning">
-                            Veuillez patienter s'il vous plaît ...
-                        </h6>
-                    </div>
-                </div>
+            <div class="pt-3 pb-3" >
+                ${messageLoader(`Veuillez patienter un instant ...`, `warning`, 1)}
             </div>
         `;
 
@@ -421,8 +428,6 @@ $(document).ready(function () {
             success: function(response) {
                 const operation = response.data;
 
-                console.log(operation);
-
                 contenuDiv.empty();
 
                 if (operation.length > 0) {
@@ -437,22 +442,22 @@ $(document).ready(function () {
 
                         const row = `
                             <li class="timeline-item">
-                                <div class="timeline-status bg-primary is-outline"></div>
+                                <div class="timeline-status bg-azure"></div>
                                 <div class="timeline-date">
-                                    ${getRelativeDateLabel(item.dateop)}
+                                    ${getRelativeDateLabel(item.created_at)}
                                 </div>
                                 <div class="timeline-data">
                                     <h6 class="timeline-title">
                                         ${item.libelle}
-                                        <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === 4 || item.type_operation === 5   ? 'bg-warning' : 'bg-secondary'))}">
-                                            ${(item.type === 'sortie' ? '-' : (item.type === 'entree' ? '+' : ''))} 
-                                            ${item.montant ? item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0'} Fcfa
-                                        </span>
                                     </h6>
                                     <div class="timeline-des d-flex flex-column gap-2">
                                         <span class="time d-flex gap-1 justify-content-start align-items-center">
+                                            <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === '4' || item.type_operation === '5'   ? 'bg-warning' : 'bg-secondary'))}">
+                                            ${(item.type === 'sortie' ? '-' : (item.type === 'entree' ? '+' : ''))} 
+                                            ${item.montant ? item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0'} Fcfa
+                                        </span>
                                             <em class="icon ni ni-alarm-alt"></em>
-                                            ${formatDateHeure(item.dateop)}
+                                            ${formatDateHeure(item.created_at)}
                                         </span>
                                     </div>
                                 </div>
@@ -463,23 +468,27 @@ $(document).ready(function () {
                     });
 
                 } else {
-                    
-                    const message = `
-                        <h6 class="timeline-head text-danger">Aucune données n'a été trouver ...</h6>
-                    `;
 
-                    contenuDiv.append(message);
+                    const div0 = $(`
+                        <div class="pt-3 pb-3">
+                            ${messageLoader(`Aucune données n'à été trouvées`, `danger`, 0)}
+                        </div>
+                    `);
+
+                    contenuDiv.append(div0);
                 }
 
             },
             error: function() {
-                // showAlert('danger', 'Impossible de generer le code automatiquement');
+                contenuDiv.empty();
 
-                const message = $(`
-                    <h6 class="timeline-head text-danger">Aucune données n'a été trouver ...</h6>
+                const div0 = $(`
+                    <div class="pt-3 pb-3">
+                        ${messageLoader(`Impossible de récupérer les données`, `danger`, 0)}
+                    </div>
                 `);
 
-                contenuDiv.append(message);
+                contenuDiv.append(div0);
             }
         });
     }
@@ -487,30 +496,27 @@ $(document).ready(function () {
     function graph_vente_proforma() 
     {
 
-        const contenug = $("#graph_vente_proforma");
+        const contenuDiv = $("#graph_vente_proforma");
 
-        contenug.empty();
+        contenuDiv.empty();
 
-        const preloader = `
-            <div class="card-title-group justify-content-center align-items-center" id="div_vente_prevision_message1">
-                <div class="card-title d-flex justify-content-center align-items-center">
-                    <div class="spinner-border text-warning me-1" role="status"></div>
-                    <h6 class="title text-warning">
-                        Veuillez patienter s'il vous plaît ...
-                    </h6>
-                </div>
+        $('#graph_vente_proforma_parent').addClass('d-flex');
+
+        const div0 = `
+            <div class="pt-3 pb-3" >
+                ${messageLoader(`Veuillez patienter un instant ...`, `warning`, 1)}
             </div>
         `;
 
-        contenug.append(preloader);
+        contenuDiv.append(div0);
 
         const magasin = $('#agence_id').val();
 
-        fetch('/api/stat_vente_proforma/' + magasin)
+        fetch( $('#url').attr('content') + '/api/stat_vente_proforma/' + magasin)
             .then(response => response.json())
             .then(data => {
                 
-                contenug.empty();
+                contenuDiv.empty();
 
                 const months = [
                     "Janv", "Fév", "Mar", "Avr", "Mai", "Jui", 
@@ -611,44 +617,47 @@ $(document).ready(function () {
                     <div class="" id="contenu_graph_vente_proforma" ></div>
                 `);
 
-                contenug.append(divcon);
+                contenuDiv.append(divcon);
+
+                $('#graph_vente_proforma_parent').removeClass('d-flex');
 
                 var chart = new ApexCharts(document.querySelector("#contenu_graph_vente_proforma"), options);
                 chart.render();
 
             })
             .catch(error => {
-                console.error('Erreur lors du chargement des données:', error);
+                contenuDiv.empty();
+
+                const div0 = $(`
+                    <div class="pt-3 pb-3">
+                        ${messageLoader(`Impossible de récupérer les données`, `danger`, 0)}
+                    </div>
+                `);
+
+                contenuDiv.append(div0);
             });
     }
 
     function graph_rapport_caisse() 
     {
 
-        const contenug = $("#graph_rapport_caisse");
+        const contenuDiv = $("#graph_rapport_caisse");
 
-        contenug.empty();
+        contenuDiv.empty();
 
         const preloader = `
-            <div class="card-title-group justify-content-center align-items-center" id="div_vente_prevision_message1">
-                <div class="card-title d-flex justify-content-center align-items-center">
-                    <div class="spinner-border text-warning me-1" role="status"></div>
-                    <h6 class="title text-warning">
-                        Veuillez patienter s'il vous plaît ...
-                    </h6>
-                </div>
-            </div>
+            ${messageLoader(`Veuillez patienter un instant ...`, `warning`, 1)}
         `;
 
-        contenug.append(preloader);
+        contenuDiv.append(preloader);
 
         const magasin = $('#agence_id').val();
 
-        fetch('/api/stat_rapport_caisse/' + magasin)
+        fetch( $('#url').attr('content') + '/api/stat_rapport_caisse/' + magasin)
             .then(response => response.json())
             .then(data => {
                 
-                contenug.empty();
+                contenuDiv.empty();
 
                 const totalEntrer = data.total_entrer;
                 const totalSortie = data.total_sortie;
@@ -726,20 +735,26 @@ $(document).ready(function () {
                     }
                 };
 
-
-
                 const divcon = $(`
                     <div class="" id="contenu_graph_rapport_caisse" ></div>
                 `);
 
-                contenug.append(divcon);
+                contenuDiv.append(divcon);
 
                 var chart = new ApexCharts(document.querySelector("#contenu_graph_rapport_caisse"), options);
                 chart.render();
 
             })
             .catch(error => {
-                console.error('Erreur lors du chargement des données:', error);
+                contenuDiv.empty();
+
+                const div0 = $(`
+                    <div class="pt-3 pb-3">
+                        ${messageLoader(`Impossible de récupérer les données`, `danger`, 0)}
+                    </div>
+                `);
+
+                contenuDiv.append(div0);
             });
     }
 

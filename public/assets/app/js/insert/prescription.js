@@ -2,6 +2,169 @@ $(document).ready(function () {
 
     let data_client = 0;
 
+    const selectDiv = `
+        <div class="col-12 row g-gs mt-3">
+            <div class="col-12" >
+                <div class="card-title-group">
+                    <div class="card-title">
+                        <h4 class="title fw-normal">Caratéristique(s)</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Sphère OD
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Sphere_OD" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Cylindre OD
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Cylindre_OD" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Axe OD
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Axe_OD" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Addition OD
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Addition_OD" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Sphère OG
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Sphere_OG" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Cylindre OG
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Cylindre_OG" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Axe OG
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Axe_OG" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">
+                        Addition OG
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Addition_OG" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 row g-gs mt-3">
+            <div class="col-12" >
+                <div class="card-title-group">
+                    <div class="card-title">
+                        <h4 class="title fw-normal">Traitement(s)</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">
+                        Traitement OD
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Traitement_OD" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">
+                        Type verre OD
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Type_verre_OD" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">
+                        Traitement OG
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Traitement_OG" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">
+                        Type verre OG
+                    </label>
+                    <div class="form-control-wrap">
+                        <select id="Type_verre_OG" class="form-select js-select2 select_rech" data-search="on" data-placeholder="Selectionner">
+                    </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 row g-gs mt-3">
+            <div class="col-12">
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-md btn-outline-success">
+                        <span>Validé</span>
+                        <em class="icon ni ni-check"></em>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
     $('#contenu').hide();
 
     select_client_prescription('#client');
@@ -10,13 +173,25 @@ $(document).ready(function () {
 
         const matricule = $(this).val().trim();
 
+        const contenuDiv = $('#contenu');
+
+        contenuDiv.stop(true, true).slideUp();
+
+        contenuDiv.empty();
+
+        preloader('start');
+
         $.ajax({
             url: $('#url').attr('content') + '/api/select_client_prescription/'+matricule,
             method: 'GET',
             success: function(response) {
                 const data = response.data;
 
-                $('#contenu').stop(true, true).slideDown();
+                preloader('end');
+
+                contenuDiv.append(selectDiv);
+
+                contenuDiv.stop(true, true).slideDown();
 
                 if (data.length > 0) {
                     data_client = 1;
@@ -63,6 +238,7 @@ $(document).ready(function () {
                 
             },
             error: function() {
+                preloader('end');
                 console.error('Erreur lors de la récupération des prescriptions.');
             }
         });

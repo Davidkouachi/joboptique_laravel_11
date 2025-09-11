@@ -82,7 +82,8 @@ class StatistiqueController extends Controller
         $nbre_client = DB::table('client')->count();
         $nbre_agence = DB::table('magasin')->count();
         $solde = DB::table('porte_caisses')->where('magasin', $magasin)->select('solde')->first();
-        $solde_caisse = $solde->solde;
+        // $solde = DB::table('porte_caisses')->sum('solde');
+        $solde_caisse = $solde;
         $serviceCount = DB::table('service')->count();
         $userCount = DB::table('users')->count();
 

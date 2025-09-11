@@ -200,4 +200,6 @@ $(document).ready(function () {
 
     });
 
+    PDF_Assurance();
+
 });

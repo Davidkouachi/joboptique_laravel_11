@@ -356,6 +356,8 @@
     </div>
 </div>
 
+<script src="{{ asset('assets/app/plotly_3.1.0/dist/plotly.min.js') }}"></script>
+
 <script src="{{asset('assets/app/jsPDF-master/dist/jspdf.umd.js')}}"></script>
 <script src="{{asset('assets/app/jsPDF-AutoTable/dist/jspdf.plugin.autotable.min.js')}}"></script>
 <script src="{{asset('assets/app/js/Datatable/init.js')}}"></script>

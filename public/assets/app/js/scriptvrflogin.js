@@ -13,7 +13,8 @@ $(document).ready(function () {
         }
 
         // Ajouter le préchargeur
-        preloader('start');
+        // preloader('start');
+        spinerButton(1, '#btn_connexion', 'Vérification');
 
         // Première requête : rafraîchir le token CSRF
         $.ajax({
@@ -49,22 +50,26 @@ $(document).ready(function () {
                             //     },
                             // });
 
+                            spinerButton(1, '#btn_connexion', 'Rédirection en cours');
                             redirectTo(response.login);
-                            preloader('end');
+                            // preloader('end');
 
                         } else if (response.error) {
-                            preloader('end');
+                            // preloader('end');
+                            spinerButton(0, '#btn_connexion', 'Connexion');
                             showAlert("Alert", "Login ou Mot de passe incorrect", "warning");
                         }
                     },
                     error: function () {
-                        preloader('end');
+                        // preloader('end');
+                        spinerButton(0, '#btn_connexion', 'Connexion');
                         showAlert("Erreur", "Erreur lors de l'authentification.", "error");
                     },
                 });
             },
             error: function () {
-                preloader('end');
+                // preloader('end');
+                spinerButton(0, '#btn_connexion', 'Connexion');
                 showAlert("Erreur", "Une erreur est survenue lors de la recupération du token.", "error");
             },
         });

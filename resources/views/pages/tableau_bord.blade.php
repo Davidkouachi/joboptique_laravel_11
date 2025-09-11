@@ -75,7 +75,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-inner justify-content-center align-items-center " style="height: 400px;">
+                                <div class="card-inner d-flex justify-content-center align-items-center" style="height: 400px;" id="graph_vente_proforma_parent">
                                     <div class="mb-3" id="graph_vente_proforma"></div>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-inner justify-content-center align-items-center " style="height: 400px;">
+                                <div class="card-inner d-flex justify-content-center align-items-center " style="height: 400px;">
                                     <div class="row g-gs mb-3" id="graph_rapport_caisse"></div>
                                 </div>
                             </div>
@@ -145,9 +145,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row g-gs mb-5">
+                    <div class="row g-gs mb-5" >
                         <div class="col-12">
-                            <div class="card card-full" id="div_table" ></div>
+                            <div class="card-full" id="div_table" ></div>
                         </div>
                     </div>
                 </div>

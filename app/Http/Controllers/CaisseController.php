@@ -50,7 +50,7 @@ class CaisseController extends Controller
 
             $Inserted = DB::table('caisse')->insert([
                 'type' => null,
-                'libelle' => 'OUVERTURE DE CAISSE DU '.now(),
+                'libelle' => 'OUVERTURE DE CAISSE DU '. now()->format('d/m/Y à H:i:s'),
                 'montant' => $caisse->solde,
                 'magasin' => $id_agence,
                 'dateop' => now(),
@@ -139,7 +139,7 @@ class CaisseController extends Controller
 
             $Inserted = DB::table('caisse')->insert([
                 'type' => null,
-                'libelle' => 'FERMETURE DE CAISSE DU '.now(),
+                'libelle' => 'FERMETURE DE CAISSE DU '. now()->format('d/m/Y à H:i:s'),
                 'montant' => $caisse->solde,
                 'magasin' => $id_agence,
                 'dateop' => now(),
