@@ -218,8 +218,8 @@ window.PDF_Assurance = async function () {
     const W = doc.internal.pageSize.getWidth();
     const H = doc.internal.pageSize.getHeight();
 
-    // --- Convertir une image en Promise qui se résout quand elle est chargée
-    function loadImage(src) {
+    // -----------------------------------------------------------------------
+    async function loadImage(src) {
         return new Promise((resolve) => {
             const img = new Image();
             img.src = src;
@@ -227,7 +227,7 @@ window.PDF_Assurance = async function () {
         });
     }
 
-    function titreLabel(label, color, y) {
+    async function titreLabel(label, color, y) {
         // === Bandeau titre style "orange à gauche, arrondi à droite" ===
         const title = label;
         doc.setFont("helvetica", "bold");
@@ -254,27 +254,7 @@ window.PDF_Assurance = async function () {
         doc.text(title, boxX + mLeft, boxY);
     }
 
-    function drawRightRoundedBox(doc, x, y, w, h, r, color) {
-        doc.setFillColor(color[0], color[1], color[2]);
-
-        doc.setDrawColor(color[0], color[1], color[2]); 
-        doc.setLineWidth(0);
-
-        doc.lines(
-            [
-                [w - r, 0],         // ligne horizontale en haut
-                [r, r],             // quart de cercle haut droit
-                [0, h - 2*r],       // ligne verticale
-                [-r, r],            // quart de cercle bas droit
-                [-(w - r), 0],      // ligne horizontale bas
-            ],
-            x, y,
-            [1, 1],
-            "F"
-        );
-    }
-
-    function addTableWithFooterCheck(doc, columns, body, startY, color1) {
+    async function addTable(doc, columns, body, startY, color1) {
         const footerHeight = 15;     // hauteur du footer (ligne + logo + texte)
         const minBottomMargin = 0;  // marge de sécurité au-dessus du footer
 
@@ -308,8 +288,8 @@ window.PDF_Assurance = async function () {
                 halign: "center"
             },
             styles: {
-                fontSize: 7,
-                cellPadding: 2,
+                fontSize: 9,
+                cellPadding: 1,
                 halign: "center",
                 valign: "middle"
             },
@@ -321,17 +301,17 @@ window.PDF_Assurance = async function () {
             didDrawPage: (data) => {
                 // position finale du tableau (après rendu)
                 const cursorY = data.cursor.y;
-                console.log(
-                    `Page ${doc.internal.getCurrentPageInfo().pageNumber} → startY = ${startY} | cursorY = ${cursorY}`
-                );
+                // console.log(
+                //     `Page ${doc.internal.getCurrentPageInfo().pageNumber} → startY = ${startY} | cursorY = ${cursorY}`
+                // );
 
                 // si le tableau est descendu trop bas → forcer nouvelle page
                 if (cursorY + minBottomMargin > H - footerHeight) {
                     doc.addPage();
                     startY = 40;
-                    console.log(
-                        `⚠️ Tableau proche du footer → on ajoute une nouvelle page, startY = ${startY}`
-                    );
+                    // console.log(
+                    //     `⚠️ Tableau proche du footer → on ajoute une nouvelle page, startY = ${startY}`
+                    // );
                 }
             }
         });
@@ -339,7 +319,207 @@ window.PDF_Assurance = async function () {
         return startY;
     }
 
-    async function drawConsultationSection(yPos) {
+    async function addGraphPiePDF(doc, data, layout, x, y, w, h) {
+        const scale = 4; // upscale pour meilleure qualité
+
+        // Création du conteneur hors écran
+        const div = document.createElement("div");
+        div.style.width = w * scale + "px";
+        div.style.height = h * scale + "px";
+        div.style.position = "absolute";
+        div.style.left = "-9999px";
+        div.style.background = "transparent"; // ✅ fond transparent
+        document.body.appendChild(div);
+
+        try {
+            // Génération du graphique Plotly
+            await Plotly.newPlot(div, data, layout);
+
+            // Export en image haute résolution
+            const imgData = await Plotly.toImage(div, {
+                format: "png",
+                width: w * scale,
+                height: h * scale,
+                scale: scale
+            });
+
+            // === Centrage automatique ===
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const centerX = (pageWidth - w) / 2;
+
+            // Ajout au PDF
+            doc.addImage(imgData, "PNG", centerX, y, w, h);
+        } finally {
+            // Nettoyage
+            document.body.removeChild(div);
+        }
+    }
+
+    async function addGraphBarPDF(doc, data, layout, x, y, w, h) {
+        const scale = 4; // upscale pour meilleure qualité
+
+        const div = document.createElement("div");
+        div.style.width = w * scale + "px";
+        div.style.height = h * scale + "px";
+        div.style.position = "absolute";
+        div.style.left = "-9999px";
+        div.style.background = "transparent";
+        document.body.appendChild(div);
+
+        try {
+            await Plotly.newPlot(div, data, layout);
+
+            const imgData = await Plotly.toImage(div, {
+                format: "png",
+                width: w * scale,
+                height: h * scale,
+                scale: scale
+            });
+
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const centerX = (pageWidth - w) / 2;
+
+            doc.addImage(imgData, "PNG", centerX, y, w, h);
+        } finally {
+            document.body.removeChild(div);
+        }
+    }
+
+    async function addGraphLinePDF(doc, data, layout, x, y, w, h) {
+        const scale = 4;
+
+        const div = document.createElement("div");
+        div.style.width = w * scale + "px";
+        div.style.height = h * scale + "px";
+        div.style.position = "absolute";
+        div.style.left = "-9999px";
+        div.style.background = "transparent";
+        // div.style.height = (h * scale + 40) + "px"; // +40px de marge haute
+        document.body.appendChild(div);
+
+        try {
+            await Plotly.newPlot(div, data, layout);
+
+            const imgData = await Plotly.toImage(div, {
+                format: "png",
+                width: w * scale,
+                height: h * scale,
+                scale: scale
+            });
+
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const centerX = (pageWidth - w) / 2;
+
+            doc.addImage(imgData, "PNG", centerX, y, w, h);
+        } finally {
+            document.body.removeChild(div);
+        }
+    }
+
+    async function addGraphLineBarPDF(doc, data, layout, x, y, w, h) {
+        const scale = 4;
+
+        const div = document.createElement("div");
+        div.style.width = w * scale + "px";
+        div.style.height = h * scale + "px";
+        div.style.position = "absolute";
+        div.style.left = "-9999px";
+        div.style.background = "transparent";
+        // div.style.height = (h * scale + 40) + "px"; // +40px de marge haute
+        document.body.appendChild(div);
+
+        try {
+            await Plotly.newPlot(div, data, layout);
+
+            const imgData = await Plotly.toImage(div, {
+                format: "png",
+                width: w * scale,
+                height: h * scale,
+                scale: scale
+            });
+
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const centerX = (pageWidth - w) / 2;
+
+            doc.addImage(imgData, "PNG", centerX, y, w, h);
+        } finally {
+            document.body.removeChild(div);
+        }
+    }
+
+    function getAutoStep(maxVal) {
+        if (maxVal <= 0) return 1;
+
+        if (maxVal <= 50) return 5;
+        if (maxVal <= 100) return 10;
+        if (maxVal <= 200) return 20;
+        if (maxVal <= 500) return 50;
+        if (maxVal <= 1000) return 100;
+        if (maxVal <= 2000) return 200;
+        if (maxVal <= 5000) return 500;
+        return Math.ceil(maxVal / 1000) * 1000; // fallback pour grands nombres
+    }
+
+    function getYAxisMax(maxVal, step, minMargin = 5) {
+        let yMax = Math.ceil(maxVal / step) * step;
+
+        // S'assure qu'on a toujours une marge
+        if (yMax < maxVal + minMargin) {
+            yMax = Math.ceil((maxVal + minMargin) / step) * step;
+        }
+
+        return yMax;
+    }
+
+    async function addFooter(pageNumber, totalPages, pageWidth, pageHeight) {
+        if (pageNumber < 2) return; // à partir de la page 2
+
+        const footerHeight = 15; 
+        const y = pageHeight - footerHeight;
+
+        // Ligne horizontale bleue
+        doc.setDrawColor(color1); // bleu
+        doc.setLineWidth(1);
+        doc.line(10, y, pageWidth - 10, y);
+
+        // === Logo à gauche ===
+        // Remplace "logoBase64" par ton image en base64 (PNG ou JPG)
+        const logoSrcF = "assets/images/test/logo.png";
+        const logoWidth = 27;
+        const logoHeight = 10;
+        const heroF = await loadImage(logoSrcF);
+        doc.addImage(heroF, "PNG", mLeft, y + 2, logoWidth, logoHeight);
+
+        // // === Texte centré ===
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
+        doc.setTextColor(color1); // bleu foncé
+        doc.text(
+            "ASSURANCE MALADIE • STATISTIQUES DE CONSOMMATION • MA-IDT",
+            mLeft + 30,
+            y + 9,
+        );
+
+        // // === Cercle numéro de page à droite ===
+        const circleRadius = 5;
+        const circleX = pageWidth - 15;
+        const circleY = y + 8;
+
+        doc.setFillColor(color1);
+        doc.circle(circleX, circleY, circleRadius, "F");
+
+        // // Numéro de page (blanc, centré dans le cercle)
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text(`${pageNumber}`, circleX, circleY + 2, { align: "center" });
+    }
+    // -----------------------------------------------------------------------
+
+
+
+    // -----------------------------------------------------------------------
+    async function pageCouverture(yPos) {
         let leftMargin = 0;
 
         // === 1) Image d'en-tête ===
@@ -461,7 +641,7 @@ window.PDF_Assurance = async function () {
         doc.addImage(footer, "PNG", W / 2 - 25, pillY + 55, logoW, logoH);
     }
 
-    async function drawPage2(yPos) {
+    async function page2(yPos) {
         let y = yPos - 10;
 
         await titreLabel("SINISTRALITÉ GLOBALE 1", color2, y);
@@ -563,12 +743,12 @@ window.PDF_Assurance = async function () {
         };
 
         // Ajout dans le PDF
-        await addPlotlyToPDF(doc, data, layout, null, 20, 190, 80);
+        await addGraphPiePDF(doc, data, layout, null, 20, 190, 80);
 
         await titreLabel("SINISTRALITÉ GLOBALE 2", color2, y + 90);
 
         // === Exemple tableau 7 colonnes ===
-        const columns = ["N°","Col 1", "Col 2", "Col 3"];
+        const columns = ["N°","Col 1", "Col 2", "Col 3", "Col 4", "Col 5", "Col 6"];
         // === Données (100 lignes aléatoires) ===
         const body = [];
         for (let i = 0; i < 30; i++) {
@@ -577,13 +757,16 @@ window.PDF_Assurance = async function () {
                 `Ligne ${i + 1}-1`,
                 `Ligne ${i + 1}-2`,
                 `Ligne ${i + 1}-3`,
+                `Ligne ${i + 1}-4`,
+                `Ligne ${i + 1}-5`,
+                `Ligne ${i + 1}-6`,
             ]);
         }
 
         // === Position de départ du tableau ===
         let startY = y + 100;
         // === Appel de la fonction ===
-        startY = await addTableWithFooterCheck(doc, columns, body, startY, color1);
+        startY = await addTable(doc, columns, body, startY, color1);
         // === Footer sur toutes les pages (après avoir ajouté le tableau) ===
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
@@ -592,119 +775,276 @@ window.PDF_Assurance = async function () {
         }
     }
 
-    async function drawPage3(yPos) {
+    async function page3(yPos) {
         let y = yPos - 10;
 
         await titreLabel("SINISTRALITÉ GLOBALE 3", color2, y);
 
+        // === Données ===
+        const values1 = [35, 20, 20, 15, 35, 20, 20, 15];
+        const labels = ["A", "B", "C", "D", "E", "F", "G", "H"]; // ⚠️ ajoute tes propres labels
+
+        // === Traces pour un bar chart ===
+        const data = [
+            {
+                type: "bar",
+                x: labels,         // catégories en abscisse
+                y: values1,        // valeurs
+                text: values1.map(v => v + "%"), // étiquettes sur les barres
+                textposition: "auto",
+                name: "Répartition",
+                marker: {
+                    color: ["#005EB8", "#F7931E", "#2CA02C", "#D62728", "#005EB8", "#F7931E", "#2CA02C", "#D62728"], // couleurs des barres
+                    line: { color: "#fff", width: 1 }
+                }
+            }
+        ];
+
+        const maxVal = Math.max(...values1);
+
+        // ✅ on arrondit au multiple de 10 supérieur
+        const step = 5;
+        const yMax = getYAxisMax(maxVal, step, 5);
+
+        // === Mise en page ===
+        const layout = {
+            paper_bgcolor: "rgba(0,0,0,0)", // fond global transparent
+            plot_bgcolor: "rgba(0,0,0,0)",  // zone de tracé transparente
+            autosize: true,
+            margin: { l: 40, r: 20, t: 40, b: 60 },
+            showlegend: false,
+            xaxis: {
+                title: "Catégories",
+                tickfont: { size: 12, color: "#000" },
+                showgrid: false,   // ✅ enlève les lignes verticales
+                zeroline: true,   // ✅ enlève la ligne de 0
+            },
+            yaxis: {
+                title: "Valeurs",
+                tickfont: { size: 12, color: "#000" },
+                showgrid: false,   // ✅ enlève les lignes horizontales
+                zeroline: true,   // ✅ enlève la ligne de base
+                range: [0, yMax],   // ✅ borne max dynamique
+                dtick: step,        // ✅ graduations régulières
+            },
+            annotations: [
+                {
+                    text: "Graphique Bar<br>Total: " + values1.reduce((a, b) => a + b, 0),
+                    xref: "paper",
+                    yref: "paper",
+                    x: 0.5,  // centré horizontalement
+                    y: 1.2,  // au-dessus du graphe
+                    showarrow: false,
+                    font: { size: 14, color: "#000", family: "Arial", weight: "bold" }
+                },
+            ],
+        };
+
+        // Ajout dans le PDF (fonction identique à ton addGraphPiePDF)
+        await addGraphBarPDF(doc, data, layout, null, 25, 190, 80);
+
+        await titreLabel("SINISTRALITÉ GLOBALE 4", color2, y + 90);
+
+        // === Données ===
+        const values1line = [35, 20, 25, 40, 30, 45, 10, 20];
+        const labelsline = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
+        // === Traces pour un line chart ===
+        const dataline = [
+            {
+                type: "scatter",   // ✅ scatter + mode=lines = courbe
+                mode: "lines+markers+text",
+                x: labelsline,
+                y: values1line,
+                text: values1line.map(v => v), // ✅ valeurs à afficher
+                textposition: "top center",   // ✅ texte au-dessus du pic
+                name: "Évolution",
+                line: { color: color2, width: 5 },
+                marker: { size: 8, color: color1 },
+                text: values1line.map(v => v + "%"), // tooltip
+                hoverinfo: "x+y+text"
+            }
+        ];
+
+        const maxValline = Math.max(...values1line);
+        const stepline = 10;
+        const yMaxline = getYAxisMax(maxValline, stepline, 20);
+
+        // === Mise en page ===
+        const layoutline = {
+            paper_bgcolor: "rgba(0,0,0,0)",
+            plot_bgcolor: "rgba(0,0,0,0)",
+            autosize: true,
+            margin: { l: 40, r: 20, t: 40, b: 90 },
+            showlegend: false,
+            xaxis: {
+                title: "Catégories",
+                tickfont: { size: 12, color: "#000" },
+                type: "category",   // ✅ espace égal entre A, B, C...
+                showgrid: false,
+                zeroline: true,
+            },
+            yaxis: {
+                title: "Valeurs",
+                tickfont: { size: 12, color: "#000" },
+                showgrid: false,
+                zeroline: true,
+                range: [0, yMaxline],
+                dtick: stepline
+            },
+            annotations: [
+                {
+                    text: "Graphique Line<br>Total: " + values1line.reduce((a, b) => a + b, 0),
+                    xref: "paper",
+                    yref: "paper",
+                    x: 0.5,
+                    y: -0.8,
+                    showarrow: false,
+                    font: { size: 14, color: "#000", family: "Arial", weight: "bold" }
+                }
+            ],
+        };
+
+        // Ajout dans le PDF (fonction identique à addGraphBarPDF)
+        await addGraphLinePDF(doc, dataline, layoutline, null, 110, 190, 60);
+
+        await titreLabel("SINISTRALITÉ GLOBALE 5", color2, y + 160);
+
+        // === Données ===
+        const valuesBar2 = [35, 20, 25, 40, 30, 45, 10, 20];   // dataset pour les barres
+        const valuesLine2 = [15, 25, 30, 35, 20, 55, 40, 60]; // dataset pour la courbe
+        const labels2 = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
+        // === Traces ===
+        const datacombo = [
+            // ✅ Trace bar
+            {
+                type: "bar",
+                x: labels2,
+                y: valuesBar2,
+                name: "Barres",
+                // text: valuesBar2.map(v => v), // valeurs visibles dans les barres
+                // textposition: "outside",       // ✅ au-dessus des barres
+                marker: {
+                    color: "#005EB8",
+                    line: { 
+                        color: "#fff", 
+                        width: 1,
+                    }
+                },
+                opacity: 1,
+            },
+            // ✅ Trace line
+            {
+                type: "scatter",
+                mode: "lines+markers+text",
+                x: labels2,
+                y: valuesLine2,
+                name: "Ligne",
+                line: { color: color2, width: 3 },
+                marker: { size: 8, color: color1 },
+                // text: valuesLine2.map(v => v),      // valeurs affichées au-dessus des points
+                textposition: "top center",
+                textfont: { 
+                    size: 11, 
+                    color: "#000", 
+                    family: "Arial" 
+                },
+                hoverinfo: "x+y+text"
+            }
+        ];
+
+        // === Calcul de l'échelle dynamique ===
+        const maxValcombo = Math.max(...valuesBar2, ...valuesLine2); // ✅ prendre le max des deux jeux
+        const stepcombo = getAutoStep(maxValcombo);
+        const yMaxcombo = getYAxisMax(maxValcombo, stepcombo, 20);
+
+        // === Layout ===
+        const layoutcombo = {
+            paper_bgcolor: "rgba(0,0,0,0)",
+            plot_bgcolor: "rgba(0,0,0,0)",
+            autosize: true,
+            margin: { l: 40, r: 20, t: 40, b: 90 },
+            showlegend: true,
+            barmode: "group", // "overlay" si tu veux les barres superposées
+            xaxis: {
+                title: "Catégories",
+                tickfont: { size: 12, color: "#000" },
+                type: "category",
+                showgrid: false,
+                zeroline: true,
+            },
+            yaxis: {
+                title: "Valeurs",
+                tickfont: { size: 12, color: "#000" },
+                showgrid: false,
+                zeroline: true,
+                range: [0, yMaxcombo],
+                dtick: stepcombo
+            },
+            annotations: [
+                {
+                    text: "Graphique Combo<br>Total Bar: " + valuesBar2.reduce((a, b) => a + b, 0) +
+                          " | Total Line: " + valuesLine2.reduce((a, b) => a + b, 0),
+                    xref: "paper",
+                    yref: "paper",
+                    x: 0.5,
+                    y: -0.3,
+                    showarrow: false,
+                    font: { size: 14, color: "#000", family: "Arial", weight: "bold" }
+                }
+            ],
+        };
+
+        // === Ajout PDF ===
+        await addGraphLineBarPDF(doc, datacombo, layoutcombo, null, 180, 190, 90);
     }
 
-    async function addPlotlyToPDF(doc, data, layout, x, y, w, h) {
-        const scale = 4; // upscale pour meilleure qualité
+    async function page4(yPos) {
+        let y = yPos - 10;
 
-        // Création du conteneur hors écran
-        const div = document.createElement("div");
-        div.style.width = w * scale + "px";
-        div.style.height = h * scale + "px";
-        div.style.position = "absolute";
-        div.style.left = "-9999px";
-        div.style.background = "transparent"; // ✅ fond transparent
-        document.body.appendChild(div);
-
-        try {
-            // Génération du graphique Plotly
-            await Plotly.newPlot(div, data, layout);
-
-            // Export en image haute résolution
-            const imgData = await Plotly.toImage(div, {
-                format: "png",
-                width: w * scale,
-                height: h * scale,
-                scale: scale
-            });
-
-            // === Centrage automatique ===
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const centerX = (pageWidth - w) / 2;
-
-            // Ajout au PDF
-            doc.addImage(imgData, "PNG", centerX, y, w, h);
-        } finally {
-            // Nettoyage
-            document.body.removeChild(div);
-        }
+        await titreLabel("SINISTRALITÉ GLOBALE 6", color2, y);
     }
+    // -----------------------------------------------------------------------
 
-    async function addFooter(pageNumber, totalPages, pageWidth, pageHeight) {
-        if (pageNumber < 2) return; // à partir de la page 2
 
-        const footerHeight = 15; 
-        const y = pageHeight - footerHeight;
 
-        // Ligne horizontale bleue
-        doc.setDrawColor(color1); // bleu
-        doc.setLineWidth(1);
-        doc.line(10, y, pageWidth - 10, y);
+    // -----------------------------------------------------------------------
+    await pageCouverture(yPos);
 
-        // === Logo à gauche ===
-        // Remplace "logoBase64" par ton image en base64 (PNG ou JPG)
-        const logoSrcF = "assets/images/test/logo.png";
-        const logoWidth = 27;
-        const logoHeight = 10;
-        const heroF = await loadImage(logoSrcF);
-        doc.addImage(heroF, "PNG", mLeft, y + 2, logoWidth, logoHeight);
-
-        // // === Texte centré ===
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(8);
-        doc.setTextColor(color1); // bleu foncé
-        doc.text(
-            "ASSURANCE MALADIE • STATISTIQUES DE CONSOMMATION • MA-IDT",
-            mLeft + 30,
-            y + 9,
-        );
-
-        // // === Cercle numéro de page à droite ===
-        const circleRadius = 5;
-        const circleX = pageWidth - 15;
-        const circleY = y + 8;
-
-        doc.setFillColor(color1);
-        doc.circle(circleX, circleY, circleRadius, "F");
-
-        // // Numéro de page (blanc, centré dans le cercle)
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text(`${pageNumber}`, circleX, circleY + 2, { align: "center" });
-    }
-
-    // === page de couverture ===
-    await drawConsultationSection(yPos);
-
-    // === Nouvelle page ===
     doc.addPage(); 
 
-    await drawPage2(yPos);
+    await page2(yPos);
 
-    // === Nouvelle page ===
     doc.addPage(); 
 
-    await drawPage3(yPos);
+    await page3(yPos);
 
+    doc.addPage(); 
+
+    await page4(yPos);
+    // -----------------------------------------------------------------------
+
+
+
+    // -----------------------------------------------------------------------
     const P = doc.internal.getNumberOfPages();
 
     for (let i = 1; i <= P; i++) {
         doc.setPage(i);
         await addFooter(i, P, W, H);
     }
+    // -----------------------------------------------------------------------
 
+
+    // -----------------------------------------------------------------------
     // === Sauvegarde ===
     // doc.save("Couverture.pdf");
     // doc.output('dataurlnewwindow');
 
     const pdfData = doc.output("bloburl");
     window.open(pdfData);
+    // -----------------------------------------------------------------------
 
 };
 
