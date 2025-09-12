@@ -457,18 +457,39 @@ window.PDF_Assurance = async function () {
         if (maxVal <= 1000) return 100;
         if (maxVal <= 2000) return 200;
         if (maxVal <= 5000) return 500;
-        return Math.ceil(maxVal / 1000) * 1000; // fallback pour grands nombres
+
+        return Math.ceil(maxVal / 1000) * 1000;
     }
 
-    function getYAxisMax(maxVal, step, minMargin = 5) {
-        let yMax = Math.ceil(maxVal / step) * step;
+    function getYAxisMax(maxVal) {
 
-        // S'assure qu'on a toujours une marge
-        if (yMax < maxVal + minMargin) {
-            yMax = Math.ceil((maxVal + minMargin) / step) * step;
-        }
+        // +30% de marge
+        let rawMax = maxVal * 1.3;
+
+        // arrondi à l'entier supérieur
+        let yMax = Math.ceil(rawMax);
 
         return yMax;
+    }
+
+    async function addQRCodePDF(doc, text, x, y, size = 50) {
+        try {
+            // Génération du QR en DataURL (image base64)
+            const qrDataUrl = await QRCode.toDataURL(text, {
+                errorCorrectionLevel: "H", // haute tolérance aux erreurs
+                margin: 1,
+                scale: 6,
+                color: {
+                    dark: "#000000",
+                    light: "#FFFFFF"
+                }
+            });
+
+            // Ajout au PDF
+            doc.addImage(qrDataUrl, "PNG", x, y, size, size);
+        } catch (err) {
+            console.error("Erreur QRCode :", err);
+        }
     }
 
     async function addFooter(pageNumber, totalPages, pageWidth, pageHeight) {
@@ -794,7 +815,7 @@ window.PDF_Assurance = async function () {
                 textposition: "auto",
                 name: "Répartition",
                 marker: {
-                    color: ["#005EB8", "#F7931E", "#2CA02C", "#D62728", "#005EB8", "#F7931E", "#2CA02C", "#D62728"], // couleurs des barres
+                    color: color2, // couleurs des barres
                     line: { color: "#fff", width: 1 }
                 }
             }
@@ -803,8 +824,9 @@ window.PDF_Assurance = async function () {
         const maxVal = Math.max(...values1);
 
         // ✅ on arrondit au multiple de 10 supérieur
-        const step = 5;
-        const yMax = getYAxisMax(maxVal, step, 5);
+        const yMax = getYAxisMax(maxVal);
+        const step = getAutoStep(yMax);
+        
 
         // === Mise en page ===
         const layout = {
@@ -860,15 +882,15 @@ window.PDF_Assurance = async function () {
                 textposition: "top center",   // ✅ texte au-dessus du pic
                 name: "Évolution",
                 line: { color: color2, width: 5 },
-                marker: { size: 8, color: color1 },
+                marker: { size: 8, color: color1, line: { color: "#fff", width: 1 } },
                 text: values1line.map(v => v + "%"), // tooltip
                 hoverinfo: "x+y+text"
             }
         ];
 
         const maxValline = Math.max(...values1line);
-        const stepline = 10;
-        const yMaxline = getYAxisMax(maxValline, stepline, 20);
+        const yMaxline = getYAxisMax(maxValline);
+        const stepline = getAutoStep(yMaxline);
 
         // === Mise en page ===
         const layoutline = {
@@ -912,7 +934,7 @@ window.PDF_Assurance = async function () {
 
         // === Données ===
         const valuesBar2 = [35, 20, 25, 40, 30, 45, 10, 20];   // dataset pour les barres
-        const valuesLine2 = [15, 25, 30, 35, 20, 55, 40, 60]; // dataset pour la courbe
+        const valuesLine2 = [15, 25, 30, 35, 20, 55, 40, 20]; // dataset pour la courbe
         const labels2 = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
         // === Traces ===
@@ -933,6 +955,7 @@ window.PDF_Assurance = async function () {
                     }
                 },
                 opacity: 1,
+                yaxis: "y1" // 👉 utilise l'axe de gauche
             },
             // ✅ Trace line
             {
@@ -942,7 +965,7 @@ window.PDF_Assurance = async function () {
                 y: valuesLine2,
                 name: "Ligne",
                 line: { color: color2, width: 3 },
-                marker: { size: 8, color: color1 },
+                marker: { size: 8, color: color1, line: { color: "#fff", width: 1 } },
                 // text: valuesLine2.map(v => v),      // valeurs affichées au-dessus des points
                 textposition: "top center",
                 textfont: { 
@@ -950,14 +973,25 @@ window.PDF_Assurance = async function () {
                     color: "#000", 
                     family: "Arial" 
                 },
-                hoverinfo: "x+y+text"
+                hoverinfo: "x+y+text",
+                yaxis: "y2" // 👉 utilise l'axe de droite
             }
         ];
 
         // === Calcul de l'échelle dynamique ===
-        const maxValcombo = Math.max(...valuesBar2, ...valuesLine2); // ✅ prendre le max des deux jeux
-        const stepcombo = getAutoStep(maxValcombo);
-        const yMaxcombo = getYAxisMax(maxValcombo, stepcombo, 20);
+        // const maxValcombo = Math.max(...valuesBar2, ...valuesLine2); // ✅ prendre le max des deux jeux
+        // const yMaxcombo = getYAxisMax(maxValcombo);
+        // const stepcombo = getAutoStep(yMaxcombo);
+
+        // === Calcul dynamique des axes ===
+        const maxValBar = Math.max(...valuesBar2);
+        const maxValLine = Math.max(...valuesLine2);
+
+        const yMaxBar = getYAxisMax(maxValBar);
+        const yMaxLine = getYAxisMax(maxValLine);
+
+        const stepBar = getAutoStep(yMaxBar);
+        const stepLine = getAutoStep(yMaxLine);
 
         // === Layout ===
         const layoutcombo = {
@@ -966,6 +1000,12 @@ window.PDF_Assurance = async function () {
             autosize: true,
             margin: { l: 40, r: 20, t: 40, b: 90 },
             showlegend: true,
+            legend: {
+                x: 1.05,   // décale légèrement à droite du graphique
+                y: 1,
+                xanchor: "left",
+                yanchor: "top"
+            },
             barmode: "group", // "overlay" si tu veux les barres superposées
             xaxis: {
                 title: "Catégories",
@@ -976,16 +1016,30 @@ window.PDF_Assurance = async function () {
             },
             yaxis: {
                 title: "Valeurs",
-                tickfont: { size: 12, color: "#000" },
+                tickfont: { size: 12, color: color1 },
                 showgrid: false,
                 zeroline: true,
-                range: [0, yMaxcombo],
-                dtick: stepcombo
+                range: [0, yMaxBar],
+                dtick: stepBar
+            },
+            // Axe droit (ligne)
+            yaxis2: {
+                title: "Valeurs Ligne",
+                tickfont: { size: 12, color: color2 },
+                overlaying: "y",
+                side: "right",
+                showgrid: false,
+                zeroline: true,
+                range: [0, yMaxLine],
+                dtick: stepLine
             },
             annotations: [
                 {
-                    text: "Graphique Combo<br>Total Bar: " + valuesBar2.reduce((a, b) => a + b, 0) +
-                          " | Total Line: " + valuesLine2.reduce((a, b) => a + b, 0),
+                    text:
+                        "Graphique Combo<br>Total Bar: " +
+                        valuesBar2.reduce((a, b) => a + b, 0) +
+                        " | Total Line: " +
+                        valuesLine2.reduce((a, b) => a + b, 0),
                     xref: "paper",
                     yref: "paper",
                     x: 0.5,
@@ -993,17 +1047,96 @@ window.PDF_Assurance = async function () {
                     showarrow: false,
                     font: { size: 14, color: "#000", family: "Arial", weight: "bold" }
                 }
-            ],
+            ]
         };
 
         // === Ajout PDF ===
-        await addGraphLineBarPDF(doc, datacombo, layoutcombo, null, 180, 190, 90);
+        await addGraphLineBarPDF(doc, datacombo, layoutcombo, null, 180, 200, 90);
     }
 
     async function page4(yPos) {
         let y = yPos - 10;
 
         await titreLabel("SINISTRALITÉ GLOBALE 6", color2, y);
+
+        // === Données ===
+        const labels = ["Bénéfices (R)", "Pertes (P)"];
+
+        // Données du premier donut
+        const values1 = [40, 50];
+
+        // === Donuts côte à côte ===
+        const data = [
+            {
+                type: "pie",
+                hole: 0.1,
+                values: values1,
+                labels: labels,
+                name: "Donut 1",
+                domain: { row: 0, column: 0 },  // ✅ position (gauche)
+                textinfo: "label+value+percent",
+                textposition: "inside",
+                insidetextfont: { color: "#fff", size: 12 },
+                marker: {
+                    colors: ["#2CA02C", "#D62728"],
+                    line: { color: "#fff", width: 1 }
+                }
+            },
+        ];
+
+        // === Mise en page ===
+        const total = values1.reduce((a, b) => a + b, 0);
+
+        const layout = {
+            grid: { rows: 1, columns: 1 }, // ✅ deux colonnes
+            paper_bgcolor: "rgba(0,0,0,0)", // fond global transparent
+            plot_bgcolor: "rgba(0,0,0,0)",  // zone de tracé transparente
+            autosize: true,
+            margin: { l: 20, r: 20, t: 40, b: 60 }, // marges réduites
+            // title: {
+            //     text: "Répartition",
+            //     font: { size: 16 },
+            //     x: 0.5,               // centré horizontalement
+            //     xanchor: "center"
+            // },
+            showlegend: true,
+            legend: {
+                orientation: "h",     // légende horizontale
+                x: 0.5,               // centré horizontalement
+                xanchor: "center",
+                y: -0.2,              // placée sous le graphique
+                font: {
+                    family: "Arial",  // police
+                    size: 14,         // ✅ taille de la légende
+                    color: "#000"     // ✅ couleur du texte
+                }
+            },
+            // annotations: [
+            //     {
+            //         text: `TOTAL<br>${total}`, // Texte au centre
+            //         x: 0.5,
+            //         y: 0.5,
+            //         font: { size: 14, color: "#000", family: "Arial", weight: "bold" },
+            //         showarrow: false
+            //     }
+            // ],
+            // annotations: [
+            //     {
+            //         text: "Donut 1<br>Total: " + values1.reduce((a, b) => a + b, 0),
+            //         x: 0.5,   // ✅ centre du donut gauche
+            //         y: 0.5,
+            //         showarrow: false,
+            //         font: { size: 14, color: "#000", family: "Arial", weight: "bold" }
+            //     },
+            // ],
+        };
+
+        // Ajout dans le PDF
+        await addGraphPiePDF(doc, data, layout, null, 20, 190, 80);
+
+        await titreLabel("SINISTRALITÉ GLOBALE 7", color2, y + 90);
+
+        await addQRCodePDF(doc, "https://mon-site.com/facture/12345", W / 2 - 15, 120, 30);
     }
     // -----------------------------------------------------------------------
 
