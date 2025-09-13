@@ -214,6 +214,7 @@ window.PDF_Assurance = async function () {
 
     const color1 = "#280ea0"; // Bleu
     const color2 = "#fb0005"; // Rouge
+    const gridcolor1 = "#efefef"; // Gris ciel
 
     const W = doc.internal.pageSize.getWidth();
     const H = doc.internal.pageSize.getHeight();
@@ -447,6 +448,26 @@ window.PDF_Assurance = async function () {
         }
     }
 
+    async function addQRCodePDF(doc, text, x, y, size = 50) {
+        try {
+            // Génération du QR en DataURL (image base64)
+            const qrDataUrl = await QRCode.toDataURL(text, {
+                errorCorrectionLevel: "H", // haute tolérance aux erreurs
+                margin: 1,
+                scale: 6,
+                color: {
+                    dark: "#000000",
+                    light: "#FFFFFF"
+                }
+            });
+
+            // Ajout au PDF
+            doc.addImage(qrDataUrl, "PNG", x, y, size, size);
+        } catch (err) {
+            console.error("Erreur QRCode :", err);
+        }
+    }
+
     function getAutoStep(maxVal) {
         if (maxVal <= 0) return 1;
 
@@ -470,26 +491,6 @@ window.PDF_Assurance = async function () {
         let yMax = Math.ceil(rawMax);
 
         return yMax;
-    }
-
-    async function addQRCodePDF(doc, text, x, y, size = 50) {
-        try {
-            // Génération du QR en DataURL (image base64)
-            const qrDataUrl = await QRCode.toDataURL(text, {
-                errorCorrectionLevel: "H", // haute tolérance aux erreurs
-                margin: 1,
-                scale: 6,
-                color: {
-                    dark: "#000000",
-                    light: "#FFFFFF"
-                }
-            });
-
-            // Ajout au PDF
-            doc.addImage(qrDataUrl, "PNG", x, y, size, size);
-        } catch (err) {
-            console.error("Erreur QRCode :", err);
-        }
     }
 
     async function addFooter(pageNumber, totalPages, pageWidth, pageHeight) {
@@ -531,7 +532,7 @@ window.PDF_Assurance = async function () {
 
         // // Numéro de page (blanc, centré dans le cercle)
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(14);
+        doc.setFontSize(13);
         doc.setFont("helvetica", "bold");
         doc.text(`${pageNumber}`, circleX, circleY + 2, { align: "center" });
     }
@@ -839,15 +840,27 @@ window.PDF_Assurance = async function () {
                 title: "Catégories",
                 tickfont: { size: 12, color: "#000" },
                 showgrid: false,   // ✅ enlève les lignes verticales
+                gridcolor: gridcolor1,      // ✅ couleur des lignes de grille
                 zeroline: true,   // ✅ enlève la ligne de 0
+                showline: true,         // ✅ affiche la ligne de l’axe
+                linecolor: gridcolor1,      // couleur de la ligne de l’axe
+                linewidth: 1            // épaisseur de la ligne de l’axe
             },
             yaxis: {
                 title: "Valeurs",
                 tickfont: { size: 12, color: "#000" },
-                showgrid: false,   // ✅ enlève les lignes horizontales
-                zeroline: true,   // ✅ enlève la ligne de base
-                range: [0, yMax],   // ✅ borne max dynamique
-                dtick: step,        // ✅ graduations régulières
+                showgrid: false,        // enlève la grille horizontale
+                gridcolor: gridcolor1,      // ✅ couleur des lignes de grille
+                zeroline: false,        // enlève la ligne "0"
+                range: [0, yMax],       // borne max dynamique
+                dtick: step,            // pas régulier
+                ticks: "outside",       // ticks vers l’extérieur
+                ticklen: 6,             // longueur des ticks
+                tickwidth: 1,           // épaisseur des ticks
+                tickcolor: gridcolor1,      // couleur des ticks
+                showline: true,         // ✅ affiche la ligne de l’axe
+                linecolor: gridcolor1,      // couleur de la ligne de l’axe
+                linewidth: 1            // épaisseur de la ligne de l’axe
             },
             annotations: [
                 {
@@ -905,6 +918,9 @@ window.PDF_Assurance = async function () {
                 type: "category",   // ✅ espace égal entre A, B, C...
                 showgrid: false,
                 zeroline: true,
+                showline: true,         // ✅ affiche la ligne de l’axe
+                linecolor: gridcolor1,      // couleur de la ligne de l’axe
+                linewidth: 1            // épaisseur de la ligne de l’axe
             },
             yaxis: {
                 title: "Valeurs",
@@ -912,7 +928,14 @@ window.PDF_Assurance = async function () {
                 showgrid: false,
                 zeroline: true,
                 range: [0, yMaxline],
-                dtick: stepline
+                dtick: stepline,
+                ticks: "outside",       // ticks vers l’extérieur
+                ticklen: 6,             // longueur des ticks
+                tickwidth: 1,           // épaisseur des ticks
+                tickcolor: gridcolor1,      // couleur des ticks
+                showline: true,         // ✅ affiche la ligne de l’axe
+                linecolor: gridcolor1,      // couleur de la ligne de l’axe
+                linewidth: 1            // épaisseur de la ligne de l’axe
             },
             annotations: [
                 {
@@ -948,7 +971,7 @@ window.PDF_Assurance = async function () {
                 // text: valuesBar2.map(v => v), // valeurs visibles dans les barres
                 // textposition: "outside",       // ✅ au-dessus des barres
                 marker: {
-                    color: "#005EB8",
+                    color: color1,
                     line: { 
                         color: "#fff", 
                         width: 1,
@@ -965,7 +988,7 @@ window.PDF_Assurance = async function () {
                 y: valuesLine2,
                 name: "Ligne",
                 line: { color: color2, width: 3 },
-                marker: { size: 8, color: color1, line: { color: "#fff", width: 1 } },
+                marker: { size: 8, color: "#005EB8", line: { color: "#fff", width: 1 } },
                 // text: valuesLine2.map(v => v),      // valeurs affichées au-dessus des points
                 textposition: "top center",
                 textfont: { 
@@ -1013,6 +1036,9 @@ window.PDF_Assurance = async function () {
                 type: "category",
                 showgrid: false,
                 zeroline: true,
+                showline: true,         // ✅ affiche la ligne de l’axe
+                linecolor: gridcolor1,      // couleur de la ligne de l’axe
+                linewidth: 1            // épaisseur de la ligne de l’axe
             },
             yaxis: {
                 title: "Valeurs",
@@ -1020,7 +1046,14 @@ window.PDF_Assurance = async function () {
                 showgrid: false,
                 zeroline: true,
                 range: [0, yMaxBar],
-                dtick: stepBar
+                dtick: stepBar,
+                ticks: "outside",       // ticks vers l’extérieur
+                ticklen: 6,             // longueur des ticks
+                tickwidth: 1,           // épaisseur des ticks
+                tickcolor: gridcolor1,      // couleur des ticks
+                showline: true,         // ✅ affiche la ligne de l’axe
+                linecolor: gridcolor1,      // couleur de la ligne de l’axe
+                linewidth: 1            // épaisseur de la ligne de l’axe
             },
             // Axe droit (ligne)
             yaxis2: {
@@ -1031,7 +1064,14 @@ window.PDF_Assurance = async function () {
                 showgrid: false,
                 zeroline: true,
                 range: [0, yMaxLine],
-                dtick: stepLine
+                dtick: stepLine,
+                ticks: "outside",       // ticks vers l’extérieur
+                ticklen: 6,             // longueur des ticks
+                tickwidth: 1,           // épaisseur des ticks
+                tickcolor: gridcolor1,      // couleur des ticks
+                showline: true,         // ✅ affiche la ligne de l’axe
+                linecolor: gridcolor1,      // couleur de la ligne de l’axe
+                linewidth: 1            // épaisseur de la ligne de l’axe
             },
             annotations: [
                 {
@@ -1136,7 +1176,10 @@ window.PDF_Assurance = async function () {
 
         await titreLabel("SINISTRALITÉ GLOBALE 7", color2, y + 90);
 
-        await addQRCodePDF(doc, "https://mon-site.com/facture/12345", W / 2 - 15, 120, 30);
+        const textQrCode = `Code QR valide`;
+
+        await addQRCodePDF(doc, textQrCode, W / 2 - 15, 120, 30);
+
     }
     // -----------------------------------------------------------------------
 

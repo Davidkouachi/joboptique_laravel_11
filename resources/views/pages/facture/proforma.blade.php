@@ -356,6 +356,8 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
 <script src="{{ asset('assets/app/plotly_3.1.0/dist/plotly.min.js') }}"></script>
 <script src="{{ asset('assets/app/QRcode/qrcode.min.js') }}"></script>
 
