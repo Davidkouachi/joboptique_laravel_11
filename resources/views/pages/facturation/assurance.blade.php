@@ -104,28 +104,28 @@
                                         <span class="badge badge-md bg-warning" id="total"></span>
                                     </div>
                                     <table class="datatable-init table_facturation" data-auto-responsive="false" style="font-size:12px;" >
-                                        <thead>
+                                        <thead class="bg-azure" >
                                             <tr class="nk-tb-item nk-tb-head">
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text"></span>
+                                                    <span class="sub-text text-white"></span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Client</span>
+                                                    <span class="sub-text text-white">Client</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Assurance</span>
+                                                    <span class="sub-text text-white">Assurance</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Société</span>
+                                                    <span class="sub-text text-white">Société</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Matricule assurance</span>
+                                                    <span class="sub-text text-white">Matricule assurance</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Part Assurance</span>
+                                                    <span class="sub-text text-white">Part Assurance</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Date de création</span>
+                                                    <span class="sub-text text-white">Date de création</span>
                                                 </th>
                                                 <th class="nk-tb-col nk-tb-col-tools text-end"></th>
                                             </tr>

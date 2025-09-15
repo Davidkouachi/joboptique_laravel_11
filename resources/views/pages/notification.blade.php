@@ -103,23 +103,23 @@
                                                 </a>
                                             </div>
                                             <table class="datatable-init table_client" data-auto-responsive="false" style="font-size:12px;" >
-                                                <thead>
+                                                <thead class="bg-azure" >
                                                     <tr class="nk-tb-item nk-tb-head">
                                                         <th class="nk-tb-col" >
                                                         </th>
                                                         <th class="nk-tb-col" >
-                                                            <span class="sub-text"></span>
+                                                            <span class="sub-text text-white"></span>
                                                         </th>
                                                         <th class="nk-tb-col" >
-                                                            <span class="sub-text">Client</span>
+                                                            <span class="sub-text text-white">Client</span>
                                                         </th>
                                                         <th class="nk-tb-col" >
-                                                            <span class="sub-text">Contact</span>
+                                                            <span class="sub-text text-white">Contact</span>
                                                         </th><th class="nk-tb-col" >
-                                                            <span class="sub-text">Date d'enregistrement</span>
+                                                            <span class="sub-text text-white">Date d'enregistrement</span>
                                                         </th>
                                                         <th class="nk-tb-col" >
-                                                            <span class="sub-text">Membre depuis</span>
+                                                            <span class="sub-text text-white">Membre depuis</span>
                                                         </th>
                                                         <th class="nk-tb-col nk-tb-col-tools text-end"></th>
                                                     </tr>

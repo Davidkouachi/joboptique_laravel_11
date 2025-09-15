@@ -31,21 +31,19 @@ class DatabaseSeeder extends Seeder
 
         $caisse = DB::table('caisse')->select('caisse.*')->get();
         foreach ($caisse as $value) {
-            
-            if ($value->created_at == null || $value->updated_at == null) {
-                
-                $date = date('Y-m-d', strtotime($value->datecreat)).' '.$value->heure_crea;
 
-                $updateData = [
-                    'created_at' => $date,
-                    'updated_at' => $date,
-                ];
+            $dateop = date('Y-m-d', strtotime($value->dateop)).' '.$value->heure_crea;
+            $datecreat = date('Y-m-d', strtotime($value->datecreat)).' '.$value->heure_crea;
 
-                $Updated = DB::table('caisse')
-                    ->where('codeop', '=', $value->codeop)
-                    ->update($updateData);
+            $updateDataop = [
+                'dateop' => $dateop,
+                'created_at' => $datecreat,
+                'updated_at' => $datecreat,
+            ];
 
-            }
+            $Updated = DB::table('caisse')
+                ->where('codeop', '=', $value->codeop)
+                ->update($updateDataop);
 
             if ($value->mail == 0 || $value->mail == null) {
                 DB::table('caisse')

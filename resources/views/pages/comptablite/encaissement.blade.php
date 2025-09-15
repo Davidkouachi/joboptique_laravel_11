@@ -78,34 +78,34 @@
                                 </div>
                                 <div class="table-responsive datatable-wrap p-2 mt-0" id="donnee2" style="display: none;">
                                     <table class="datatable-init table_facture_client" data-auto-responsive="false" style="font-size:12px;" >
-                                        <thead>
+                                        <thead class="bg-azure">
                                             <tr class="nk-tb-item nk-tb-head">
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text"></span>
+                                                    <span class="sub-text text-white"></span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Code</span>
+                                                    <span class="sub-text text-white">Code</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Statut</span>
+                                                    <span class="sub-text text-white">Statut</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Total</span>
+                                                    <span class="sub-text text-white">Total</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Part Assurance</span>
+                                                    <span class="sub-text text-white">Part Assurance</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Part Client</span>
+                                                    <span class="sub-text text-white">Part Client</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Taux réduction</span>
+                                                    <span class="sub-text text-white">Taux réduction</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Reste à payer</span>
+                                                    <span class="sub-text text-white">Reste à payer</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Date création</span>
+                                                    <span class="sub-text text-white">Date création</span>
                                                 </th>
                                                 <th class="nk-tb-col nk-tb-col-tools text-end"></th>
                                             </tr>

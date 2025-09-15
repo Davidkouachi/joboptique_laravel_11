@@ -42,9 +42,9 @@
     <input type="hidden" id="API_SMS_SENDER" value="{{ env('API_SMS_SENDER') }}">
 
     <div class="js-preloader">
-        <div class="loading-animation">
-            <img class="mt-0" src="{{ asset('assets/images/logo.png') }}">
-            <div class="loading-animation tri-ring mt-5" style="margin-left: -30px; font-size: 10px;"></div>
+        <div class="loading-animation d-flex flex-column align-items-center justify-content-center g-3">
+            <img height="70" width="150" class="mt-0" src="{{ asset('assets/images/logo.png') }}">
+            <div class="spinner-border spinner-border-md text-warning" role="status" aria-hidden="true"></div>
         </div>
     </div>
     {{-- <div class="js-preloader">
@@ -155,7 +155,7 @@
                                         <span class="nk-menu-text">Comptablités</span>
                                     </a>
                                     <ul class="nk-menu-sub">
-                                        @if (session('user_magasin_id') === '1')
+                                        @if (session('user_magasin_id') == '1')
                                             <li class="nk-menu-item">
                                                 <a href="{{ route('bilan_generale_comptable') }}" class="nk-menu-link">
                                                     <span class="nk-menu-text">Bilan Générale</span>
@@ -164,7 +164,7 @@
                                         @endif
                                         <li class="nk-menu-item">
                                             <a href="{{ route('bilan_comptable') }}" class="nk-menu-link">
-                                                <span class="nk-menu-text">Rapport Magasin</span>
+                                                <span class="nk-menu-text">Bilan Agence</span>
                                             </a>
                                         </li>
                                         <li class="nk-menu-item">
@@ -222,14 +222,14 @@
                                     <img class="logo-dark logo-img" src="{{ asset('assets/images/logo.png') }}" srcset="{{ asset('assets/images/logo.png') }} 2x">
                                 </a>
                             </div>
-                            <marquee class="d-none d-xl-block" >
+                            {{-- <marquee class="d-none d-xl-block" >
                                 <span class="fw-bold text-info" style="font-size: 20px;" >JOB</span>
                                 <span class="fw-bold text-orange" style="font-size: 20px;" >OPTIQUE</span>
-                            </marquee>
+                            </marquee> --}}
                             <div class="nk-header-tools">
                                 <ul class="nk-quick-nav">
                                     <li class="dropdown chats-dropdown">
-                                        <span class="badge rounded-pill bg-azure p-1">
+                                        <span class="badge rounded-4 bg-azure p-1">
                                             {{session('user_magasin')}}
                                         </span>
                                     </li>
@@ -282,7 +282,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('deconnecter') }}">
+                                                        <a href="{{ route('deconnecter') }}" id="logoutBtn">
                                                             <em class="icon ni ni-signout"></em>
                                                             <span>se déconnecté</span>
                                                         </a>

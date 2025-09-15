@@ -1180,6 +1180,7 @@ window.PDF_Assurance = async function () {
 
         await addQRCodePDF(doc, textQrCode, W / 2 - 15, 120, 30);
 
+        await titreLabel("SINISTRALITÉ GLOBALE 8", color2, y + 150);
     }
     // -----------------------------------------------------------------------
 
@@ -1223,6 +1224,35 @@ window.PDF_Assurance = async function () {
     // -----------------------------------------------------------------------
 
 };
+
+// // ✅ En JavaScript
+
+// const dateDebut = new Date(2024, 0, 21); // mois en JS : 0 = janvier
+// const dateFin = new Date(2024, 6, 31);  // 6 = juillet
+
+// const options = { day: 'numeric', month: 'long', year: 'numeric' };
+// const formatter = new Intl.DateTimeFormat('fr-FR', options);
+
+// const periode = `du ${formatter.format(dateDebut)} au ${formatter.format(dateFin)}`;
+// console.log(periode);
+// // Résultat : "du 21 janvier 2024 au 31 juillet 2024"
+
+
+
+// // ✅ En Carbon (PHP)
+// <?php
+// use Carbon\Carbon;
+
+// Carbon::setLocale('fr'); // pour forcer le français
+
+// $dateDebut = Carbon::create(2024, 1, 21);
+// $dateFin   = Carbon::create(2024, 7, 31);
+
+// $periode = "du " . $dateDebut->translatedFormat('d F Y') . 
+//            " au " . $dateFin->translatedFormat('d F Y');
+
+// echo $periode;
+// // Résultat : "du 21 janvier 2024 au 31 juillet 2024"
 
 
 });

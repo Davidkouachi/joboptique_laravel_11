@@ -86,7 +86,7 @@ $(document).ready(function () {
 
                     const div = $(`
                         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                            <div class="card" style="background: linear-gradient(to right, #FFA500, #FF4500);">
+                            <div class="card rounded-5" style="background: linear-gradient(to right, #FFA500, #FF4500);">
                                 <div class="nk-ecwg nk-ecwg6">
                                     <div class="card-inner">
                                         <div class="card-title-group">
@@ -197,7 +197,7 @@ $(document).ready(function () {
 
                     const div = $(`
                         <div class="col" >
-                            <div class="card pricing text-center" style="background: linear-gradient(to right, #87CEEB, #4682B4);">
+                            <div class="card pricing text-center rounded-5" style="background: linear-gradient(to right, #87CEEB, #4682B4);">
                                 <div class="pricing-body">
                                     <ul class="nk-store-statistics">
                                         <li class="item">
@@ -319,12 +319,12 @@ $(document).ready(function () {
 
                 const div1 = $(`
                     <div class="nk-tb-list mt-2" id="div_table2" >
-                        <div class="nk-tb-item nk-tb-head">
-                            <div class="nk-tb-col"><span>Code vente</span></div>
-                            <div class="nk-tb-col tb-col-md"><span>Client</span></div>
-                            <div class="nk-tb-col tb-col-md"><span>Date</span></div>
-                            <div class="nk-tb-col"><span>Montant Total</span></div>
-                            <div class="nk-tb-col"><span class="d-none d-sm-inline">Statut</span></div>
+                        <div class="nk-tb-item nk-tb-head bg-azure">
+                            <div class="nk-tb-col text-white"><span>Code vente</span></div>
+                            <div class="nk-tb-col text-white tb-col-md"><span>Client</span></div>
+                            <div class="nk-tb-col text-white tb-col-md"><span>Date</span></div>
+                            <div class="nk-tb-col text-white"><span>Montant Total</span></div>
+                            <div class="nk-tb-col text-white"><span class="d-none d-sm-inline">Statut</span></div>
                         </div>
                     </div>
                 `);
@@ -337,11 +337,11 @@ $(document).ready(function () {
                         <div class="nk-tb-item">
                             <div class="nk-tb-col">
                                 <div class="user-card">
-                                    <div class="user-avatar sm bg-orange">
+                                    <div class="user-avatar sm bg-azure">
                                         <em class="ni ni-file"></em>
                                     </div>
                                     <div class="user-name">
-                                        <span style="color: orange;" class="tb-lead">${item.code}</span>
+                                        <span style="color: blue;" class="tb-lead">${item.code}</span>
                                     </div>
                                 </div>
                             </div>

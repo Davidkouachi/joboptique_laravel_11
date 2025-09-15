@@ -315,25 +315,25 @@
                                                 </div>
                                                 <div class="table-responsive datatable-wrap p-2 mt-5">
                                                     <table class="datatable-init table_proforma" data-auto-responsive="false" style="font-size:12px;" >
-                                                        <thead>
+                                                        <thead class="bg-azure" >
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text"></span>
+                                                                    <span class="sub-text text-white"></span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Code</span>
+                                                                    <span class="sub-text text-white">Code</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Client</span>
+                                                                    <span class="sub-text text-white">Client</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Contact</span>
+                                                                    <span class="sub-text text-white">Contact</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Valider</span>
+                                                                    <span class="sub-text text-white">Valider</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Date</span>
+                                                                    <span class="sub-text text-white">Date</span>
                                                                 </th>
                                                                 <th class="nk-tb-col nk-tb-col-tools text-end"></th>
                                                             </tr>
@@ -355,8 +355,6 @@
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 
 <script src="{{ asset('assets/app/plotly_3.1.0/dist/plotly.min.js') }}"></script>
 <script src="{{ asset('assets/app/QRcode/qrcode.min.js') }}"></script>

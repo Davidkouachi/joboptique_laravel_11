@@ -44,7 +44,7 @@
                         </div>
                     </div>
 
-                    <div class="card card-bordered card-preview mb-4">
+                    <div class="card card-bordered card-preview mb-4 mt-n4" style="border: none; background: transparent;">
                         <div class="card-inner">
                             <div class="py-2">
                                 <div id="div_nbre" class="slider-init" data-slick='{"slidesToShow": 4, "slidesToScroll": 1, "infinite":true, "responsive":[ {"breakpoint": 1500,"settings":{"slidesToShow": 3}},{"breakpoint": 892,"settings":{"slidesToShow": 2}}, {"breakpoint": 582,"settings":{"slidesToShow": 1}} ]}'>
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="card-inner" style="height: 377px;" data-simplebar="">
-                                    <div class="timeline text-center" id="div_his_op"></div>
+                                    <div class="timeline text-center pt-2 pb-2" id="div_his_op"></div>
                                 </div>
                             </div>
                         </div>

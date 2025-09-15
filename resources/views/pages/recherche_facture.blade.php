@@ -111,34 +111,34 @@
                                 </div>
                                 <div class="table-responsive datatable-wrap p-2 mt-3">
                                     <table class="datatable-init table_rech_fac" data-auto-responsive="false" style="font-size:12px;" >
-                                        <thead>
+                                        <thead class="bg-azure" >
                                             <tr class="nk-tb-item nk-tb-head">
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text"></span>
+                                                    <span class="sub-text text-white"></span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Code Vente</span>
+                                                    <span class="sub-text text-white">Code Vente</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Client</span>
+                                                    <span class="sub-text text-white">Client</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Total</span>
+                                                    <span class="sub-text text-white">Total</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Part Assurance</span>
+                                                    <span class="sub-text text-white">Part Assurance</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Net à Payer</span>
+                                                    <span class="sub-text text-white">Net à Payer</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Montant Payer</span>
+                                                    <span class="sub-text text-white">Montant Payer</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Montant Restant</span>
+                                                    <span class="sub-text text-white">Montant Restant</span>
                                                 </th>
                                                 <th class="nk-tb-col" >
-                                                    <span class="sub-text">Date de création</span>
+                                                    <span class="sub-text text-white">Date de création</span>
                                                 </th>
                                             </tr>
                                         </thead>

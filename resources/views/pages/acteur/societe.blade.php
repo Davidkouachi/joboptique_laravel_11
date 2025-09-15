@@ -73,13 +73,13 @@
                                                 </div>
                                                 <div class="table-responsive datatable-wrap p-2 mt-5">
                                                     <table class="datatable-init table_societe" data-auto-responsive="false" style="font-size:12px;" >
-                                                        <thead>
+                                                        <thead class="bg-azure" >
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text"></span>
+                                                                    <span class="sub-text text-white"></span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Sociétés</span>
+                                                                    <span class="sub-text text-white">Sociétés</span>
                                                                 </th>
                                                             </tr>
                                                         </thead>

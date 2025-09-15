@@ -32,9 +32,9 @@
                                             </button> 
                                         </li>
                                     </ul>
-                                    <h5 class="fw-bold mb-2 text-danger" id="message" style="display: none;" >
-                                        Une erreur est survenue lors de l'operation'. veuillez actualiser la page s'il vous plaît
-                                    </h5>
+                                    <h6 class="fw-bold mb-2 text-danger" id="message" style="display: none;" >
+                                        Une erreur est survenue lors de l'operation. veuillez actualiser la page s'il vous plaît
+                                    </h6>
                                 </div>
                             </div>
                         </div>

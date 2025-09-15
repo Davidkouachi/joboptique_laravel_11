@@ -53,7 +53,7 @@ $(document).ready(function () {
             
             },
             error: function() {
-                console.log('une erreur est survenue lors de l\'actualisation de solde')
+                console.log('une erreur est survenue lors de l\'actualisation de solde');
             }
         });
     }
@@ -94,13 +94,13 @@ $(document).ready(function () {
                         list_operation_all();
                     }
 
-                    showAlert2("Succès","La caisse été déjà ouverte","success");
+                    showAlert2("Succès","La caisse été déjà ouverte","info");
                     
                 } else {
                     $('#btn_ouvert').show();
                     $('#btn_fermer').hide();
                     $('#div_operation').hide();
-                    showAlert2("Alert","Une erreur c'est produite lors de l'ouverture de la caisse.","info");
+                    showAlert2("Alert","Imposible d'ouvrir la caisse pour le moment, veuillez réessayer plus tard.","warning");
                 }
             
             },
@@ -110,7 +110,7 @@ $(document).ready(function () {
                 $('#btn_ouvert').show();
                 $('#div_operation').hide();
                 $('#message').show();
-                showAlert2("Alert","Une erreur c'est produite.","info");
+                showAlert2("Alert","Une erreur c'est produite lors de l'ouverture de la caisse.","danger");
             }
         });
     }
@@ -143,13 +143,13 @@ $(document).ready(function () {
                     $('#btn_fermer').hide();
                     $('#div_operation').hide();
 
-                    showAlert2("Succès","La caisse été déjà fermer","success");
+                    showAlert2("Succès","La caisse été déjà fermer","info");
                     
                 } else {
                     $('#btn_ouvert').hide();
                     $('#btn_fermer').show();
                     $('#div_operation').show();
-                    showAlert2("Alert","Une erreur c'est produite lors de la fermeture de la caisse.","info");
+                    showAlert2("Alert","Imposible de fermer la caisse pour le moment, veuillez réessayer plus tard.","warning");
                 }
             
             },
@@ -159,7 +159,7 @@ $(document).ready(function () {
                 $('#btn_ouvert').hide();
                 $('#div_operation').show();
                 $('#message').show();
-                showAlert2("Alert","Une erreur c'est produite.","info");
+                showAlert2("Alert","Une erreur c'est produite lors de la fermeture de la caisse.","danger");
             }
         });
     }

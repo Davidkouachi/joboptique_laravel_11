@@ -288,28 +288,28 @@
                                                 </div>
                                                 <div class="table-responsive datatable-wrap p-2 mt-5">
                                                     <table class="datatable-init table_client" data-auto-responsive="false" style="font-size:12px;" >
-                                                        <thead>
+                                                        <thead class="bg-azure" >
                                                             <tr class="nk-tb-item nk-tb-head">
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text"></span>
+                                                                    <span class="sub-text text-white"></span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Client</span>
+                                                                    <span class="sub-text text-white">Client</span>
                                                                 </th>
                                                                 {{-- <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Matricule</span>
+                                                                    <span class="sub-text text-white">Matricule</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Nom et Prénoms</span>
+                                                                    <span class="sub-text text-white">Nom et Prénoms</span>
                                                                 </th> --}}
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Contact</span>
+                                                                    <span class="sub-text text-white">Contact</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Assurer ?</span>
+                                                                    <span class="sub-text text-white">Assurer ?</span>
                                                                 </th>
                                                                 <th class="nk-tb-col" >
-                                                                    <span class="sub-text">Date de création</span>
+                                                                    <span class="sub-text text-white">Date de création</span>
                                                                 </th>
                                                                 <th class="nk-tb-col nk-tb-col-tools text-end"></th>
                                                             </tr>

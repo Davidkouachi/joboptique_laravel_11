@@ -315,28 +315,28 @@
                                             </div>
                                             <div class="table-responsive datatable-wrap p-2 mt-3">
                                                 <table class="datatable-init table_operation" data-auto-responsive="false" style="font-size: 12px;" >
-                                                    <thead>
+                                                    <thead class="bg-azure" >
                                                         <tr class="nk-tb-item nk-tb-head">
                                                             <th class="nk-tb-col" >
-                                                                <span class="sub-text"></span>
+                                                                <span class="sub-text text-white"></span>
                                                             </th>
                                                             <th class="nk-tb-col" >
-                                                                <span class="sub-text">Type</span>
+                                                                <span class="sub-text text-white">Type</span>
                                                             </th>
                                                             <th class="nk-tb-col" >
-                                                                <span class="sub-text">Montant</span>
+                                                                <span class="sub-text text-white">Montant</span>
                                                             </th>
                                                             <th class="nk-tb-col" >
-                                                                <span class="sub-text">Créer par</span>
+                                                                <span class="sub-text text-white">Créer par</span>
                                                             </th>
                                                             <th class="nk-tb-col" >
-                                                                <span class="sub-text">Agence</span>
+                                                                <span class="sub-text text-white">Agence</span>
                                                             </th>
                                                             <th class="nk-tb-col" >
-                                                                <span class="sub-text">Date opération</span>
+                                                                <span class="sub-text text-white">Date opération</span>
                                                             </th>
                                                             <th class="nk-tb-col" >
-                                                                <span class="sub-text">Date création</span>
+                                                                <span class="sub-text text-white">Date création</span>
                                                             </th>
                                                             <th class="nk-tb-col nk-tb-col-tools text-end"></th>
                                                         </tr>

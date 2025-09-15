@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="base-url" content="{{ url('/') }}" id="url">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}">
-    <title>Login | JobOptique</title>
+    <title>Authentification | JobOptique</title>
     <script src="{{asset('jquery.min.js')}}"></script>
     <script src="{{asset('assets/app/js/alert.js')}}"></script>
     <script src="{{asset('assets/app/js/format.js')}}"></script>

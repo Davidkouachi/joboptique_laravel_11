@@ -41,13 +41,13 @@ $(document).ready(function () {
                                     <span class="tb-amount">${index + 1}</span>
                                 </td>
                                 <td class="nk-tb-col">
-                                    <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === '4' || item.type_operation === '5'   ? 'bg-warning' : 'bg-secondary'))}">
-                                        ${item.type ? item.type : (item.type_operation === '4' ? 'Ouverture de caisse' : (item.type_operation === '5'   ? 'Fermeture de caisse' : 'Systéme'))}
+                                    <span class="badge ${item.type == 'sortie' ? 'bg-danger' : (item.type == 'entree' ? 'bg-success' : (item.type_operation == '4' || item.type_operation == '5'   ? 'bg-secondary' : 'bg-secondary'))}">
+                                        ${item.type ? item.type : (item.type_operation == '4' ? 'Ouverture de caisse' : (item.type_operation == '5'   ? 'Fermeture de caisse' : 'Systéme'))}
                                     </span>
                                 </td>
                                 <td class="nk-tb-col">
-                                    <span class="badge ${item.type === 'sortie' ? 'bg-danger' : (item.type === 'entree' ? 'bg-success' : (item.type_operation === '4' || item.type_operation === '5'   ? 'bg-warning' : 'bg-secondary'))}">
-                                        ${(item.type === 'sortie' ? '-' : (item.type === 'entree' ? '+' : ''))} 
+                                    <span class="badge ${item.type == 'sortie' ? 'bg-danger' : (item.type == 'entree' ? 'bg-success' : (item.type_operation == '4' || item.type_operation == '5'   ? 'bg-secondary' : 'bg-secondary'))}">
+                                        ${(item.type == 'sortie' ? '-' : (item.type == 'entree' ? '+' : ''))} 
                                         ${item.montant ? item.montant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '0'} Fcfa
                                     </span>
 
@@ -58,7 +58,7 @@ $(document).ready(function () {
                                     </span>
                                 </td>
                                 <td class="nk-tb-col" >
-                                    <span class="badge bg-primary" >
+                                    <span class="badge bg-azure" >
                                         ${item.magasin_nom}
                                     </span>
                                 </td>

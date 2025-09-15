@@ -79,14 +79,14 @@ class CaisseController extends Controller
             $mail->Port = 587;
             $mail->setFrom(env('MAIL_USERNAME'), 'JOB OPTIQUE');
 
-            $recipients = [
-                'lukdio@hotmail.fr',
-                'myghislainyao@gmail.com',
-            ];
-
             // $recipients = [
-            //     'davidkouachi01@gmail.com',
+            //     'lukdio@hotmail.fr',
+            //     'myghislainyao@gmail.com',
             // ];
+
+            $recipients = [
+                'davidkouachi01@gmail.com',
+            ];
 
             foreach ($recipients as $recipient) {
                 $mail->addAddress($recipient);
@@ -94,7 +94,6 @@ class CaisseController extends Controller
 
             $mail->Subject = 'ALERT !';
             $mail->Body = 'OUVERTURE DE LA CAISSE, Solde caisse : '.number_format($caisse->solde, 0, '.', '.').' Fcfa ( par '.$login.' )';
-            $mail->send();
 
             if (!$mail->send()) {
                 throw new Exception('Erreur lors de l\'envoi de l\'email : ' . $mail->ErrorInfo);
@@ -230,14 +229,14 @@ class CaisseController extends Controller
             $mail->Port = 587;
             $mail->setFrom(env('MAIL_USERNAME'), 'JOB OPTIQUE');
             
-            $recipients = [
-                'lukdio@hotmail.fr',
-                'myghislainyao@gmail.com',
-            ];
-
             // $recipients = [
-            //     'davidkouachi01@gmail.com',
+            //     'lukdio@hotmail.fr',
+            //     'myghislainyao@gmail.com',
             // ];
+
+            $recipients = [
+                'davidkouachi01@gmail.com',
+            ];
 
             foreach ($recipients as $recipient) {
                 $mail->addAddress($recipient);

@@ -39,7 +39,7 @@ $(document).ready(function () {
                                 </td>
                                 <td class="nk-tb-col">
                                     <div class="user-card gap-1">
-                                        <div class="user-avatar bg-orange">
+                                        <div class="user-avatar bg-azure ">
                                             <em class="ni ni-file" ></em>
                                         </div>
                                         <div class="d-flex flex-column">
